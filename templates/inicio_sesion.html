@@ -1,0 +1,52 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    {% load static %}
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+
+    <!-- #{% block <name>%}{% endblock <name> %} -->
+
+    <title> {% block title %}GameHome{% endblock title %} </title>
+   
+    <!-- Fonts -->
+    <link href="https://fonts.googleapis.com/css?family=Bangers|Black+Ops+One|Orbitron|Roboto&display=swap" rel="stylesheet">     
+    
+    <!-- BOOTSTRAP-->
+    <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.4.1/css/bootstrap.min.css" 
+    rel="stylesheet" >
+    <!-- <link href="https://stackpath.bootstrapcdn.com/font-awesome/4.7.0/css/font-awesome.min.css" 
+    rel="stylesheet"> -->
+    <link rel="stylesheet" href="https://pro.fontawesome.com/releases/v5.10.0/css/all.css" integrity="sha384-AYmEC3Yw5cVb3ZcuHtOA93w35dYTsvhLPVnYs9eStHfGJvOvKxVfELGroGkvsg+p" crossorigin="anonymous"/>
+
+    <!-- Compiled and minified CSS -->
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/materialize/1.0.0/css/materialize.min.css">    
+
+    <!-- CSS Estilos -->
+    <link rel="stylesheet" href="{% static 'css/style.css' %}">
+
+</head>
+<body>
+    <div>
+        <h1 class="center-align titulo">LOGIN</h1>
+    </div>
+ <div class="row login-box">
+ <form method="POST">
+    {%csrf_token%}
+        <div class="login-text-box">
+            <i class="fa fa-user" aria-hidden="true"></i>
+            <input type="text" placeholder="Nombre usuario" name="username" >
+        </div>
+        <div class="login-text-box">
+            <i class="fa fa-lock" aria-hidden="true"></i>
+            <input type="password" placeholder="Introduce contraseña" name="password" >
+        </div>
+        <button  class="btn btn-sucess btn-lg btn-block" type="submit">Aceptar</button>
+        <a href="{% url 'registro' %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Registrar</a>
+   </form>
+   </div>
+</body>
+</html>
+      <!--BODY-->
+

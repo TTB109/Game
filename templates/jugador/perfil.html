@@ -1,0 +1,24 @@
+
+{% extends "baseU.html"%}
+{% block title %}Mi perfil{% endblock title %}
+{% block content %}    
+        <!--BODY-->
+        <div>
+            <h1 class="center-align titulo">BIENVEN1D0 {{user.username|upper}} </h1>
+        </div> 
+        <div class="row register-box">
+            <div class="col-md-4 text-white">
+                <H2>Usuario Numero: {{user.id}}</H2>
+            </div>
+            
+            <div class="col-md-3 center-align">
+                <a href="{% url 'iusuario' %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Perfil Principal</a>
+                <a href="{% url 'edit_perfil' user.id %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Modificar Perfil</a>
+                <a href="{% url 'mis_gustos' user.id %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Mis Gustos</a>                
+                <a href="{% url 'mis_opiniones' user.id %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Mis Opiniones</a>                
+                <a href="{% url 'eliminar'  user.id%}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Eliminar Perfil</a>                
+                <a href="{% url 'signout' %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Salir</a>                
+            </div>
+        </div>
+
+{% endblock content %}

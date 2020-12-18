@@ -1,0 +1,32 @@
+   {% extends "base.html" %}
+   {% block title %} Vista del Videojuego {% endblock title%}   
+   {% block content %}
+
+    <!--JUMBOTRON-->
+    <div>
+        <h1 class="center-align titulo">Vista del Videojuego</h1>
+    </div>
+    <div class="container game-details">
+        <div class="row">
+            <div class="col-md-6 left-box">
+                <h1>Halo 4</h1>
+                <p>Es un videojuego de disparos en primera persona desarrollado por la filial 343 Industries y distribuido por Microsoft Studios para la videoconsola Xbox 360. Halo 4 es el primero de "la trilogía del reclamador", y el séptimo lanzamiento de la franquicia Halo</p>
+                <p>Genero: </p>
+                <div class="enlaces">
+                    <div class="genering">
+                        <a href="Generos.html">Acción-Aventura</a>
+                        <a href="Generos.html">disparos </a>
+                    </div>
+                    <p>Consolas: </p>
+                    <div class="consoling">
+                        <a href="Generos.html">Xbox</a>
+                        <a href="Generos.html">Computadoras</a>           
+                    </div>
+                </div>                                                               
+            </div>
+        </div>              
+    </div>   
+	<a href="{% url 'regresar_adm' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Aceptar</a>
+
+    <!--FOOTER-->
+    {% endblock content %}
