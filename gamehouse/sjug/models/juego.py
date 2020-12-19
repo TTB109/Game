@@ -63,23 +63,10 @@ class Plataforma(models.Model):
   descripcion = models.TextField()
 
   class Meta:
-    ordering = ['-nombre']
+    ordering = ['nombre']
 
   def __str__(self):
-    return f'{self.nombre}'
-
-  # def __str__(self):
-  #  return self.nombre
-
-  
-  # generacion = models.ForeignKey(Generacion, 
-  #   on_delete = models.SET_NULL,
-  #   null = True,
-  #   to_field = 'generacion',
-  #   db_column = 'generacion',
-  #   related_name = 'plataformas',
-  #   verbose_name = 'Generacion a la que pertenece la consola',
-  # )
+    return f'{self.nombre}')
 
 class Genero(models.Model):
   # GCHOICES=(
@@ -107,6 +94,8 @@ class Genero(models.Model):
   id_genero = models.AutoField(primary_key=True)
   nombre = models.CharField(max_length=100)
   descripcion = models.TextField()
+  class Meta:
+    ordering = ['nombre']
   def __str__(self):
    return self.nombre
 
@@ -203,6 +192,7 @@ class ListGeneros(models.Model):
   verbose_name = 'generos en boolean',
   )
   listgenero=models.CharField(max_length=100)
+  listplataforma=models.CharField(max_length=100)
   def __str__(self):
     return self.juego
 
@@ -224,17 +214,6 @@ class PlataformasAsociadas(models.Model):
   def __str__(self):
     return self.plataforma
 
-class ListPlataformas(models.Model):
-  juego = models.ForeignKey(Juego,
-  on_delete=models.CASCADE,
-  db_column = 'juego',
-  null = True,
-  related_name = 'plataformas_boolean',
-  verbose_name = 'plataformas en boolean',
-  )
-  listplataforma=models.CharField(max_length=100)
-  def __str__(self):
-    return self.juego
   
 class CompaniasAsociadas(models.Model):
   # id_pAsociadas = models.AutoField(primary_key = True)

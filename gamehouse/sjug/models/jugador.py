@@ -139,7 +139,7 @@ class PlataformasFavoritas(models.Model):
   )
 
 
-class CDE(models.Model):
+class Cde(models.Model):
   jugador = models.OneToOneField(Usuario, 
     on_delete = models.CASCADE, 
     primary_key = True,
@@ -174,5 +174,23 @@ class Cpu(models.Model):
   carusu8 = models.CharField(max_length=256)
   carusu9 = models.CharField(max_length=256)
   carusu10 = models.CharField(max_length=256)
+
+class Vector_Caracteristicas(models.Model):
+  jugador = models.ForeignKey(Jugador,
+     on_delete = models.SET_NULL, #AL Borrar el creador se pone en nulo y no mueren comentarios
+     to_field = 'nickname',
+     related_name = 'opiniones',
+     db_column = 'jugador',
+     verbose_name = 'Creador de la opinion',
+     null = True # Activar para conservar la opinion SET_NULL CAMBIAR SI NECESARIO
+  ) #PONER EN NULL si jugador muere
+  juego = models.ForeignKey(Juego,
+     on_delete = models.CASCADE, #AL Borrar el juego se borran los comentarios relacionados
+     related_name = 'opiniones',
+     db_column = 'juego',
+     verbose_name = 'Juego al que pertenece la opinion',
+  )
+  cpu = models.CharField(max_length=100)
+  cde = models.CharField(max_length=100)
 
 

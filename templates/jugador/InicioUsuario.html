@@ -38,14 +38,18 @@ $(document).ready(function(){
 	        <div class="inner__sidebar_menu">
 
 	        	<ul>
-              <!--
-		          <li>
-                <a href="Perfil.html" class="nav__link">
-		              <span class="icon">
-		              	<i class="fas fa-border-all"></i></span>
-		              <span class="list">Inicio</span>
-		            </a>
-                  </li>-->
+              <li class="dropdown">
+                <a class="nav__link">
+                  <span class="icon">
+                    <i class="bx bx-bookmark"></i></span>
+                  <span class="list">Mis Recomendaciones</span></a>
+                <div>
+                  <a href="" class="nav__link">Mis palabras</a>
+                  <a href="{% url 'perfil_user' %}" class="nav__link">Palabras del juego</a>
+                  <a href="{% url 'perfil_user' %}" class="nav__link">Genero y Plataforma</a>
+                  <a href="{% url 'perfil_user' %}" class="nav__link">TF-IDF</a>
+                </div>
+              </li>
                   <li class="dropdown">
                     <a href="{% url 'caracteristicasDE' user.id%}" class="nav__link">
                       <span class="icon">
@@ -77,19 +81,7 @@ $(document).ready(function(){
                         <i class="bx bx-bookmark"></i></span>
                       <span class="list">Mi Lista de juegos</span>
                     </a>
-                  </li>
-                  <li class="dropdown">
-                    <a class="nav__link">
-                      <span class="icon">
-                        <i class="bx bx-bookmark"></i></span>
-                      <span class="list">Mis Recomendaciones</span></a>
-                    <div>
-                      <a href="" class="nav__link">Mis palabras</a>
-                      <a href="{% url 'perfil_user' %}" class="nav__link">Palabras del juego</a>
-                      <a href="{% url 'perfil_user' %}" class="nav__link">Genero y Plataforma</a>
-                      <a href="{% url 'perfil_user' %}" class="nav__link">TF-IDF</a>
-                    </div>
-                  </li>
+                  </li>                  
 		          <div>
                 <li>
                   <a href="{% url 'signout' %}" class="nav__link">
@@ -130,7 +122,7 @@ $(document).ready(function(){
   {%for LOL,juego in fvjuego %}
     <div class="col-sm-6 col-md-4">
       <a href="{% url 'VVJuego' LOL.id_imagen user.id%}">
-        <div class="size-image"
+        <div class="item"
             data-categoria="acción-aventura"
     data-etiquetas="acción aventura halo xbox">
             <img src="{{LOL.referencia}}">

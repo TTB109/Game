@@ -965,6 +965,13 @@ header .tiposgeneros a.activo{
 	vertical-align: top;
 }
 
+.item img {
+    width: 100px;
+    height: 150px;
+	cursor: pointer;
+	vertical-align: top;
+}
+
 /*-----     TABLES  --------*/  
 #container-table{
     margin: 150px auto;
