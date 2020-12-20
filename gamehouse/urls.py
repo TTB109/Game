@@ -19,23 +19,40 @@ from django.views.generic import TemplateView as tv
 from django.urls import path, include, re_path,reverse
 
 from gamehouse.sjug import views as sjug_views
+from gamehouse.sjug.vistas import jugador as sjug_jugador
 from gamehouse.sadm import views as sadm_views
 
 urls_juegos = [
-    #path("",tv.as_view(template_name="juegos/juego.html"), name="juegos"),
+    path("",tv.as_view(template_name="juegos/juego.html"), name="juegos"),
     path("consolas/",tv.as_view(template_name="juegos/consolas.html"), name="consolas"),
     path("generos/",tv.as_view(template_name="juegos/generos.html"), name="generos"),
     path('InfConsolas/',tv.as_view(template_name="juegos/InfoConsolas.html"), name='InfConsolas'),
     path('InfGeneros/', tv.as_view(template_name="juegos/InfoGeneros.html"), name='InfGeneros'),  
 ]
 
+sis_jug = [
+    path('',sjug_views.juegos101,name="juegos"),
+    path('dashboard/',sjug_jugador.dashboard,name="dashboard"),
+    path('<jugador>/',sjug_jugador.perfil,name='perfil1'),
+    #path('<slug:juego_slug>/',sjug_views.juegotal,name="juego"),
+]
+
+games = [
+    path('<int:id_juego>/',sjug_jugador.ver_juego,name="juego"),
+    ]
+
 urlpatterns = [
-    path('admin/', admin.site.urls),
     path('', tv.as_view(template_name="homepage.html"), name='index'),
     path('login/',sjug_views.perfil, name='login'),
     path('registro/', sjug_views.registro, name= 'registro'),
+    #path('juegos/',include(juegos)),
+    
     path('login/perfil/',include('gamehouse.sjug.urls')),
     path('login/perfil/',include('gamehouse.sadm.urls')),
+    path('sjug/',include(sis_jug)),
+    path('juegos/',include(games)),
     re_path(r'^juegos/',include(urls_juegos)),
-    path('operacion/',tv.as_view(template_name="operacion.html"),name="operacion-exitosa"),      
+    path('operacion/',tv.as_view(template_name="operacion.html"),name="operacion-exitosa"),
+    path('admin/', admin.site.urls),      
 ]
+

@@ -14,6 +14,8 @@ from .filters import JuegoFilter
 
 import random
 from scipy import spatial
+from django.core.exceptions import MultipleObjectsReturned
+from _testcapi import exception_print
 
 # Create your views here.
 @csrf_exempt
@@ -209,10 +211,11 @@ def iusuario(request):
   for r in randomList:
     LImagen.append(imagen[r])
     LJuego.append(juego[r])
-  VJuego=zip(LImagen,LJuego)
+  VJuego = zip(LImagen,LJuego)
   #return render(request,'jugador/InicioUsuario.html')
   return render(request,'jugador/InicioUsuario.html',{'fvjuego':VJuego})
   # return render(request,'jugador/InicioUsuario.html',{'fImagen':LImagen,'fJuego':LJuego})
+
 
 
 def VVJuego(request,id_juego,pk):
@@ -238,7 +241,7 @@ def VVJuego(request,id_juego,pk):
     imagen =Imagen.objects.get(id_imagen=id_juego)    
     return render(request,'juegos/juego.html',{'fopinion':opinion_form,'VJuego':VJuego,'fimagen':imagen})
 
-
+  
 def salir(request):
   return render(request,'homepage.html')
 
@@ -304,7 +307,7 @@ def CountPlat(plataformas):
 def Comparate(list1,list0):
   lista=list(list0)
   #use CountPlat or CountGen return list2
-  result = 1 - spatial.distance.cosine(list1, list2)
+  result = 1 - spatial.distance.cosine(list1, list0)
   if result >= 0.5:
     return 1
   return 0
@@ -687,8 +690,24 @@ def ViewcaracteristicasDE(request):
     posts=paginator.page(paginator.num_pages)
   return render(request,'adm/CaractDE.html',{'fvcde':vcde,'page':page})
 
-def prueba(request):
-  lg = [] #Lista de generos  
+def prueba(request,username):
+  jugador = get_object_or_404(Jugador,nickname=username)
+  print(jugador)
+  return render(request,'prueba.html')
+
+def juegos101(request):
+  juegos = Juego.objects.all()
+  slugs = [juego.slug() for juego in juegos]
+  print("REpetidos:"+str(len(slugs)-len(set(slugs))))
+  return render(request,'prueba.html')
+
+def juegotal(request,juego_slug):
+  print("SOlicitado:"+juego_slug)
+  juego = get_object_or_404(Juego,slug=juego_slug)
+  print(juego)
+  return render(request,'prueba.html')
+"""
+lg = [] #Lista de generos  
   aleatorios = []
   generos = []
   for favorito in GenerosFavoritos.objects.all():
@@ -710,12 +729,11 @@ def prueba(request):
   # listjuegos=[]
   # for i in randomList:
     
-  # """
   # for number in randomList:
   #    aleatorios.append()
   # for aleatorio in aleatorios:
   #   print(aleatorio)
-  # """  
+  
   # print("Cadenas")
-  return render(request,'prueba.html',{'generos':generos})
 
+"""

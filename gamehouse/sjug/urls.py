@@ -20,7 +20,7 @@ urlpatterns = [
     path('MiLista/<int:id>/',login_required(views.MiLista), name='MiLista'),
     path('caracteristicasDE/<int:id>/',login_required(views.caracteristicasDE), name='caracteristicasDE'),
     path('InicioCDE/<int:id>/',login_required(views.InicioCDE), name='InicioCDE'),
-    path('prueba/',views.prueba,name="prueba"),  
+    #path('prueba/',views.prueba,name="prueba"),  
     ###########################################################
     ###########################################################
     path('e_perfil/', views.editar_perfil, name='e_perfil'),

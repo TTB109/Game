@@ -143,10 +143,10 @@ class ImagenForm(forms.ModelForm):
 class JuegoForm(forms.ModelForm):
     class Meta:
         model=Juego
-        fields=['titulo','agnio','descripcion','generos','plataformas','companias']
+        fields=['titulo','anio','descripcion','generos','plataformas','companias']
         labels={
                 'titulo':'Título',
-                'agnio':'Año',
+                'anio':'Año',
                 'descripcion':'Descripción',
                 # 'generos':'Generos',
                 # 'plataformas':'Plataformas',
@@ -166,7 +166,7 @@ class JuegoForm(forms.ModelForm):
         widgets = {
         # telling Django your password field in the mode is a password input on the template
         'titulo':forms.TextInput(attrs={'class':'form-control'}),
-        'agnio':forms.TextInput(attrs={'class':'form-control'}),
+        'anio':forms.TextInput(attrs={'class':'form-control'}),
         'descripcion':forms.TextInput(attrs={'class':'form-control'}),
         #'referencia':forms.ImageField(),
         # 'generos':forms.TextInput(attrs={'class':'form-control'}),

@@ -3,6 +3,8 @@ from django.db import models
 from django.contrib.auth.models import User
 from django.core.files import File
 from django.core.validators import MaxValueValidator, MinValueValidator
+#from django.template.defaultfilters import slugify
+from django.utils.text import slugify
 #from multiselectfield import MultiSelectField
 import datetime
 import os
@@ -25,72 +27,15 @@ class Generacion(models.Model):
 
 
 class Plataforma(models.Model):
-  # descripcion = models.TextField()
-  # PCHOICES=(
-  #           ('XboxOne','XboxOne'),
-  #           ('Ps4','Ps4'),
-  #           ('Nintendo Switch','Nintendo Switch'),
-  #           ('Wii U','Wii U'),
-  #           ('PS Vita','PS Vita'),
-  #           ('3ds','3ds'),
-  #           ('Android','Android'),
-  #           ('Xbox360','Xbox360'),
-  #           ('Ps3','Ps3'),
-  #           ('Wii','Wii'),
-  #           ('Psp','Psp'),
-  #           ('Ds','Ds'),
-  #           ('Windows','Windows'),
-  #           ('Ipad','Ipad'),
-  #           ('Xbox','Xbox'),
-  #           ('Ps2','Ps2'),
-  #           ('GameCube','GameCube'),
-  #           ('GameboyAdvance','GameboyAdvance'),
-  #           ('Dreamcast','Dreamcast'),
-  #           ('J2me','J2me'),
-  #           ('Ps1','Ps1'),
-  #           ('Nintendo64','Nintendo64'),
-  #           ('GameboyColor','GameboyColor'),
-  #           ('Snes','Snes'),
-  #           ('NeoGeo','NeoGeo'),
-  #           ('Arcade','Arcade'),
-  #           ('Nes','Nes'),
-  #           ('Gameboy','Gameboy')
-  # )
-  # nombreP = MultiSelectField(choices=PCHOICES)
-  #nombreP = models.CharField(max_length=100)
   id_plataforma = models.AutoField(primary_key=True)
   nombre = models.CharField(max_length=100)
   descripcion = models.TextField()
-
   class Meta:
     ordering = ['nombre']
-
   def __str__(self):
     return self.nombre
 
 class Genero(models.Model):
-  # GCHOICES=(
-  #           ('Accion','Accion'),
-  #           ('Aventura','Aventura'),
-  #           ('Educativo','Educativo'),
-  #           ('Rompecabezas','Rompecabezas'),
-  #           ('Carreras','Carreras'),
-  #           ('Rol','Rol'),
-  #           ('Simulacion','Simulacion'),
-  #           ('Deporte','Deporte'),
-  #           ('Estrategia','Estrategia'),
-  #           ('Arcade','Arcade'),
-  #           ('Belico','Belico'),
-  #           ('Peleas','Peleas'),
-  #           ('JuegodeMesa','JuegodeMesa'),
-  #           ('Musica','Musica'),
-  #           ('Plataforma','Plataforma'),
-  #           ('Disparos','Disparos'),
-  #           ('Survivalhorror','Survivalhorror'),
-  #           ('Trivia','Trivia')
-  # )
-  # nombreG = MultiSelectField(choices=GCHOICES)
-  # nombreG = models.CharField(max_length=100)
   id_genero = models.AutoField(primary_key=True)
   nombre = models.CharField(max_length=100)
   descripcion = models.TextField()
@@ -111,8 +56,8 @@ class Compania(models.Model):
 
 class Juego(models.Model):
   id_juego = models.AutoField(primary_key=True)
-  titulo = models.CharField(max_length=100)
-  agnio=models.PositiveIntegerField(default = 2020)
+  titulo = models.CharField(max_length=200)
+  anio=models.PositiveIntegerField(default = 2020)
   descripcion = models.CharField(max_length=5000)
   generos = models.ManyToManyField(Genero,
     through = 'GenerosAsociados',
@@ -126,11 +71,25 @@ class Juego(models.Model):
     through = 'CompaniasAsociadas',
     through_fields=('juego','compania')
   )
-  # generos = models.CharField(max_length=100)
-  # plataformas = models.CharField(max_length=100)    
+  """
+  campo_slug = models.SlugField (
+    verbose_name = "Representacion slug del titulo",
+    allow_unicode = True,
+    unique=True,
+    blank = True,
+    null = True)
+  """
   def __str__(self):
     #return '%s, %s, %s' % (self.titulo, self.jgeneros, self.jplataformas)
     return self.titulo
+  def slug(self):
+    return slugify(self.titulo,allow_unicode=True)
+
+  """
+  def save(self, *args, **kwargs):
+    if not self.campo_slug: self.campo_slug = slugify(self.titulo)
+    super(Juego, self).save(*args, **kwargs)
+  """
 
   # def Obt_Gen(self):
   #   OGeneros=str([ogenero for generos in self.generos.all().values_list('nombreG',flat=True)]).replace("[","").replace("]","").replace("'","")
