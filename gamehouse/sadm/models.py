@@ -9,11 +9,11 @@ class MatrizJuegos(models.Model):
     db_column = "id_juego",
     verbose_name = "Identificador del juego"
   )
-  vector_genero =models.CharField(max_length=256)
-  vector_plataforma =models.CharField(max_length=256)
-  agno = models.IntegerField()
-  vector_cpu =models.CharField(max_length=256)
-  vector_cde =models.CharField(max_length=256)
+  vectorGENERO =models.CharField(max_length=256)
+  vectorPLATAFORMA =models.CharField(max_length=256)
+  agno = models.PositiveIntegerField(default = 2000)
+  vectorCPU =models.CharField(max_length=256)
+  vectorCDE =models.CharField(max_length=256)
 
   # caractpu0 = models.PositiveIntegerField(default = 0, blank = True)
   # caractpu1 = models.PositiveIntegerField(default = 0, blank = True)

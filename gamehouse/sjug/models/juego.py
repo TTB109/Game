@@ -66,7 +66,7 @@ class Plataforma(models.Model):
     ordering = ['nombre']
 
   def __str__(self):
-    return f'{self.nombre}')
+    return self.nombre
 
 class Genero(models.Model):
   # GCHOICES=(

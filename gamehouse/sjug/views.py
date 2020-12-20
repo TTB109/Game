@@ -313,13 +313,16 @@ def agregar_vector(request):
   platas=PlataformasAsociadas.objects.all()
   genes=GenerosAsociados.objects.all()
   listemp=[]
-  # for i in range(len(genes)):
-  #   genes[i].juego
-  #   # genres = ListGeneros.save(commit = False)
-  #   # genres.cde = gen.genero
-  #   for ge in ge:
-
-  #   genres.save()
+  for video in Juego.objects.all():
+    new=[]
+    newbi=[]
+    gnr=GenerosAsociados.objects.all().filter(juego=video.id_juego)
+    for gen in gnr:
+      new.append(gen.genero)
+    for i in range(len(new)):
+      newbi.append(new[i].nombre)
+    listemp.append(",".join(newbi))
+  print(len(listemp))
 
   return render(request,'jugador/RecMiPalabra.html',{'RMPform':Recomendacion})
 
@@ -363,10 +366,8 @@ def perfil_adm(request):
   platas=PlataformasAsociadas.objects.all()
   genes=GenerosAsociados.objects.all()
 
-  print(genes)
-
-  for gen in genes:
-    print(gen.genero)
+  # for gen in genes:
+  #   print(gen.genero)
 
   return render(request,'adm/perfil_adm.html')
 
@@ -706,15 +707,15 @@ def prueba(request):
     randomList = random.sample(range(0, len(rs)), max_lim)
     print("La lista aleatoria:",randomList)
   
-  listjuegos=[]
-  for i in randomList:
+  # listjuegos=[]
+  # for i in randomList:
     
-  """
-  for number in randomList:
-     aleatorios.append()
-  for aleatorio in aleatorios:
-    print(aleatorio)
-  """  
-  print("Cadenas")
+  # """
+  # for number in randomList:
+  #    aleatorios.append()
+  # for aleatorio in aleatorios:
+  #   print(aleatorio)
+  # """  
+  # print("Cadenas")
   return render(request,'prueba.html',{'generos':generos})
 

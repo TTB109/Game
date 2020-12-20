@@ -1,18 +1,18 @@
-Simulación
-Plataforma
-Deporte
-Aventura
-Survival horror
-Rompecabezas
-Carreras
-Disparo
-Estrategia
-Educacional
-Bélico
-Trivia
-Rol (RPG)
 Acción
-Música
 Arcade
+Aventura
+Bélico
+Carreras
+Deporte
+Disparo
+Educacional
+Estrategia
 Juegos de mesa
+Música
 Peleas
+Plataforma
+Rol (RPG)
+Rompecabezas
+Simulación
+Survival horror
+Trivia

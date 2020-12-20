@@ -145,17 +145,17 @@ class Cde(models.Model):
     primary_key = True,
     db_column = "id_jugador",
     verbose_name = "Jugador a quien pertenecen las CDE")
+  cardes1 = models.CharField(max_length=256)
+  cardes2 = models.CharField(max_length=256)
+  cardes3 = models.CharField(max_length=256)
+  cardes4 = models.CharField(max_length=256)
+  cardes5 = models.CharField(max_length=256)
+  cardes6 = models.CharField(max_length=256)
+  cardes7 = models.CharField(max_length=256)
+  cardes8 = models.CharField(max_length=256)
+  cardes9 = models.CharField(max_length=256)
+  cardes10 = models.CharField(max_length=256)
 
-  cde0 = models.CharField(max_length=256)
-  cde1 = models.CharField(max_length=256)
-  cde2 = models.CharField(max_length=256)
-  cde3 = models.CharField(max_length=256)
-  cde4 = models.CharField(max_length=256)
-  cde5 = models.CharField(max_length=256)
-  cde6 = models.CharField(max_length=256)
-  cde7 = models.CharField(max_length=256)
-  cde8 = models.CharField(max_length=256)
-  cde9 = models.CharField(max_length=256)
 
 
 class Cpu(models.Model):
@@ -179,14 +179,14 @@ class Vector_Caracteristicas(models.Model):
   jugador = models.ForeignKey(Jugador,
      on_delete = models.SET_NULL, #AL Borrar el creador se pone en nulo y no mueren comentarios
      to_field = 'nickname',
-     related_name = 'opiniones',
+     related_name = 'vector_caracteristicas',
      db_column = 'jugador',
      verbose_name = 'Creador de la opinion',
      null = True # Activar para conservar la opinion SET_NULL CAMBIAR SI NECESARIO
   ) #PONER EN NULL si jugador muere
   juego = models.ForeignKey(Juego,
      on_delete = models.CASCADE, #AL Borrar el juego se borran los comentarios relacionados
-     related_name = 'opiniones',
+     related_name = 'caracteristicas',
      db_column = 'juego',
      verbose_name = 'Juego al que pertenece la opinion',
   )
