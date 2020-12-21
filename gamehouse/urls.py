@@ -20,6 +20,7 @@ from django.urls import path, include, re_path,reverse
 
 from gamehouse.sjug import views as sjug_views
 from gamehouse.sjug.vistas import jugador as sjug_jugador
+from gamehouse.sjug.vistas import juego as sjug_juego
 from gamehouse.sadm import views as sadm_views
 
 urls_juegos = [
@@ -34,10 +35,11 @@ sis_jug = [
     path('',sjug_views.juegos101,name="juegos"),
     path('dashboard/',sjug_jugador.dashboard,name="dashboard"),
     path('<jugador>/',sjug_jugador.perfil,name='perfil1'),
-    #path('<slug:juego_slug>/',sjug_views.juegotal,name="juego"),
+    path('<slug:juego_slug>/',sjug_views.juegotal,name="juego"),
 ]
 
 games = [
+    #path('',sjug_juego),
     path('<int:id_juego>/',sjug_jugador.ver_juego,name="juego"),
     ]
 
@@ -46,7 +48,7 @@ urlpatterns = [
     path('login/',sjug_views.perfil, name='login'),
     path('registro/', sjug_views.registro, name= 'registro'),
     #path('juegos/',include(juegos)),
-    
+    path('prueba/',sjug_views.juegos101),
     path('login/perfil/',include('gamehouse.sjug.urls')),
     path('login/perfil/',include('gamehouse.sadm.urls')),
     path('sjug/',include(sis_jug)),

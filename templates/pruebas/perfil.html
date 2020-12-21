@@ -2,7 +2,7 @@
 {% block title %} Mi Perfil{% endblock title %}
 {% block content %}    
         <!--BODY-->
-        {% if user.is_authenticated %}
+        {% if user.get_username == jugador.nickname %}
         <div>
             <h1 class="center-align titulo">BIENVEN1D0 {{user.username|upper}} </h1>
         </div> 

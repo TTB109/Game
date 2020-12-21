@@ -698,7 +698,8 @@ def prueba(request,username):
 def juegos101(request):
   juegos = Juego.objects.all()
   slugs = [juego.slug() for juego in juegos]
-  print("REpetidos:"+str(len(slugs)-len(set(slugs))))
+  for slug in slugs:
+      print(slug)
   return render(request,'prueba.html')
 
 def juegotal(request,juego_slug):
