@@ -23,7 +23,72 @@ class UserForm(UserCreationForm):
         'password1': forms.PasswordInput(attrs={'class':'form-control'}) ,
         'password2': forms.PasswordInput(attrs={'class':'form-control'}) 
     }
+        
+#Valor para prueba: ♥
+#Revisar https://stackoverflow.com/questions/46749405/formatting-data-from-a-datefield-using-modelform-django-1-11
+#https://docs.djangoproject.com/en/3.1/ref/forms/widgets/#timeinput
+#https://docs.djangoproject.com/en/3.1/ref/forms/widgets/#customizing-widget-instances
+#https://docs.djangoproject.com/en/3.1/topics/forms/#looping-over-the-form-s-fields  
+class UsuarioForm(forms.ModelForm):
+  def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['nombre'].widget.attrs.update(size='40')
+        #self.fields['fec_nac'].widget.attrs.update({})
+        #print("Campo:",self.fields['fec_nac'])
+        #print("tipo:",type(self.fields['fec_nac']))
+        #self.fields['fec_nac'].widget.attrs.update({'class': 'special'})
+  def clean(self):
+    super(UsuarioForm, self).clean()
+    print(self.cleaned_data)
+    campo_nombre = self.cleaned_data.get('nombre')
+    campo_apellido = self.cleaned_data.get('apellido')
+    if len(campo_nombre) < 3:
+      self._errors['nombre'] = self.error_class(['Mínimo 3 caracteres'])
+    if len(campo_apellido) < 3:
+      self._errors['apellido'] = self.error_class(['Mínimo 3 caracteres'])
+    return self.cleaned_data
+  class Meta: #Esto solo se aplica a campos generados automaticamente
+    model = Usuario
+    fields = '__all__'
+    #exclude
+    #fields=['nombre','apellido','correo', 'fec_nac','contra']
+    labels = {
+            'nombre': 'Nombre de Usuario',
+            'apellido': 'Tus apellidos',
+            'correo': 'Introduce un correo electronico válido',
+            'fec_nac': 'Introduce tu fecha de nacimiento'
+    }
+    help_texts = {
+        'nombre': 'Texto de ayuda nombre.',
+    }
+    #https://stackoverflow.com/questions/37088697/showing-custom-error-messages-in-django-model-form-with-bootstrap
+    #Change error_messages  to  error
+    #https://docs.djangoproject.com/en/3.1/ref/models/fields/#error-messages
+    error_messages = {
+        'nombre': {
+           'blank' : 'Esta en blanco',
+           'invalid': 'No es valido',
+        },
+        'apellido': {
+           'invalid': 'El apellido no es valido',
+        },
+        'correo': {
+           'invalid': 'El correo introducido no es valido',
+           'blank' : 'Correo en blanco'
+        },
+        'fec_nac': {
+           'invalid': 'La fecha introducida no es valida',
+        }
+    }
+    widgets = {
+        # telling Django your password field in the mode is a password input on the template
+        'nombre' :forms.TextInput(attrs={'class':'form-control'}),
+        'apellido' :forms.TextInput(),
+        'correo' :forms.EmailInput(), #Indica que se debe renderizar como email
+        'fec_nac' :forms.DateInput(format='%d/%m/%Y',attrs={'placeholder': "Ejemplo.: dd/mm/aaaa"}) #FUnciona pero aun hay problema que no valida día
+    }
 
+"""
 class UsuarioForm(forms.ModelForm):
   class Meta:
     model = Usuario
@@ -51,7 +116,7 @@ class UsuarioForm(forms.ModelForm):
         'correo':forms.TextInput(attrs={'class':'form-control'}),
         'fec_nac':forms.TextInput(attrs={'class':'form-control'}),
     }
-
+"""
 """https://medium.com/@alfarhanzahedi/customizing-modelmultiplechoicefield-in-a-django-form-96e3ae7e1a07 
  generos = forms.ModelMultipleChoiceField(
                        widget = forms.CheckboxSelectMultiple,
