@@ -2,6 +2,18 @@ from django.db.models import *
 from django.db import models#, FloatField
 from gamehouse.sjug.models import Juego,Usuario,JuegosFavoritos,Opinion
 
+
+class Administrador(models.Model):
+  usuario = models.OneToOneField(Usuario,
+                                 on_delete=models.CASCADE,
+                                 primary_key=True,
+                                 to_field="id_usuario",
+                                 db_column="id_administrador",
+                                 verbose_name = "Identificador del administrador"
+                                 )
+  nombre = models.CharField(unique = True,max_length=256)
+  movimiento = DecimalField(null = True)
+
 class MatrizJuegos(models.Model):
   juego = models.OneToOneField(Juego, 
     on_delete = models.CASCADE, 
@@ -46,3 +58,7 @@ class TfIdf(models.Model):
   )
   vector=models.CharField(max_length=256)
   #vector = models.FileField(upload_to='raw/tfidf')
+  
+  
+  
+  
