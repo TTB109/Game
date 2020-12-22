@@ -5,21 +5,40 @@ from django.urls import path, re_path,include
 from django.shortcuts import redirect
 from gamehouse.sjug import views
 
+"""
+CAMBIOS:
+ACTUAL | CAMBIO | DESCRIPCION
+
+mis_gustos/<int:id_gustos>/ | /sjug/<jugador>/gustos | Mostrar tres botones: Modificar mis generos, Modificar mis plataformas y Modificar mis juegos
+mis_gustos/mis_gustos_2/<int:id>/ | indicado | Mostrar lista mis de juegos, un buscador de juegos y sus opciones añadir, ver y quitar
+VVJuego/<int:id_juego>/<int:pk> 
+juegos/<int:id_juego>
+
+
+PENDIENTES:
+
+/sjug/<jugador>/opinion/<int:id_opinion>  Muestra la opinion con id_opinion del jugador indicado
+/sjug/<jugador>/opinion/<slug: juego_buscado> Buscar opiniones de la lista de opiniones del jugador indicado cuyo videojuego sea el del slug
+                                              Por ejemplo /sjug/Mimir/opinion/grand-theft-auto busca opiniones que tengan que ver con GTA
+/sjug/<jugador>/opinion/<int:id_opinion>/eliminar    
+"""
+
+
 urlpatterns = [
-    path('mis_gustos/<int:id_gustos>/',login_required(views.mis_gustos), name='mis_gustos'),    
-    path('mis_gustos/mis_gustos_2/<int:id>/',login_required(views.mis_gustos_2), name='mis_gustos_2'),
-    path('mis_gustos/mis_gustos_2/eliminar_juego/<int:id>/<int:pk>/',login_required(views.eliminar_juego), name='eliminar_juego'),
-    path('mis_gustos/mis_gustos_2/agregar_juego/<int:id>/<int:pk>/',login_required(views.agregar_juego), name='agregar_juego'),
-    path('mis_opiniones/<int:id>/',login_required(views.mis_opiniones), name='mis_opiniones'),
-    path('edit_perfil/<int:id>/',login_required(views.edit_perfil), name='edit_perfil'),
-    path('eliminar/<int:id>/',login_required(views.eliminar), name='eliminar'),
-    path('',login_required(views.perfil_user), name='perfil_user'),
-    path('regresar_user/',login_required(views.regresar_user), name='regresar_user'),
-    path('iusuario/',login_required(views.iusuario), name='iusuario'),
-    path('VVJuego/<int:id_juego>/<int:pk>/',login_required(views.VVJuego), name='VVJuego'),
-    path('MiLista/<int:id>/',login_required(views.MiLista), name='MiLista'),
-    path('caracteristicasDE/<int:id>/',login_required(views.caracteristicasDE), name='caracteristicasDE'),
-    path('InicioCDE/<int:id>/',login_required(views.InicioCDE), name='InicioCDE'),
+    path('mis_gustos/<int:id_gustos>/',login_required(views.mis_gustos), name='mis_gustos'),  ### /sjug/<jugador>/gustos Ver y modificar generos y plataformas
+    path('mis_gustos/mis_gustos_2/<int:id>/',login_required(views.mis_gustos_2), name='mis_gustos_2'), ### /sjug/<jugador>/gustos/juegos Ver, añadir, o modificar mis juegos preferidos  
+    path('mis_gustos/mis_gustos_2/eliminar_juego/<int:id>/<int:pk>/',login_required(views.eliminar_juego), name='eliminar_juego'),  ### /sjug/<jugador>/gustos/juegos/<int:id_juego>/eliminar  
+    path('mis_gustos/mis_gustos_2/agregar_juego/<int:id>/<int:pk>/',login_required(views.agregar_juego), name='agregar_juego'),  ### /sjug/<jugador>/gustos/juegos/<int:id_juego>/agregar 
+    path('mis_opiniones/<int:id>/',login_required(views.mis_opiniones), name='mis_opiniones'),  ### /sjug/<jugador>/opinion  Muestra lista de opiniones hechas por el jugador indicado
+    path('edit_perfil/<int:id>/',login_required(views.edit_perfil), name='edit_perfil'), ### /sjug/<jugador>/editar 
+    path('eliminar/<int:id>/',login_required(views.eliminar), name='eliminar'), ### /sjug/<jugador>/eliminar
+    path('',login_required(views.perfil_user), name='perfil_user'),  ### /sjug/<jugador> Ver perfil con opciones
+    path('regresar_user/',login_required(views.regresar_user), name='regresar_user'), ### Borrar después mand inicio
+    path('iusuario/',login_required(views.iusuario), name='iusuario'),  ### /sjug/<jugador>/dashboard VEr recom.
+    path('VVJuego/<int:id_juego>/<int:pk>/',login_required(views.VVJuego), name='VVJuego'), ### juegos/
+    path('MiLista/<int:id>/',login_required(views.MiLista), name='MiLista'), ## Mis opniones cambiar a anterior
+    path('caracteristicasDE/<int:id>/',login_required(views.caracteristicasDE), name='caracteristicasDE'),  ###   /sjug/<jugador>/gustos/CDE    
+    path('InicioCDE/<int:id>/',login_required(views.InicioCDE), name='InicioCDE'), ### registro/CDE
     #path('prueba/',views.prueba,name="prueba"),  
     ###########################################################
     ###########################################################

@@ -24,17 +24,17 @@ from gamehouse.sjug.vistas import juego as sjug_juego
 from gamehouse.sadm import views as sadm_views
 
 urls_juegos = [
-    path("",tv.as_view(template_name="juegos/juego.html"), name="juegos"),
+    path("",tv.as_view(template_name="juegos/juego.html"), name="juegos"),  
     path("consolas/",tv.as_view(template_name="juegos/consolas.html"), name="consolas"),
     path("generos/",tv.as_view(template_name="juegos/generos.html"), name="generos"),
     path('InfConsolas/',tv.as_view(template_name="juegos/InfoConsolas.html"), name='InfConsolas'),
     path('InfGeneros/', tv.as_view(template_name="juegos/InfoGeneros.html"), name='InfGeneros'),  
 ]
-
+###
 sis_jug = [
-    path('',sjug_views.juegos101,name="juegos"),
-    path('dashboard/',sjug_jugador.dashboard,name="dashboard"),
-    path('<jugador>/',sjug_jugador.perfil,name='perfil1'),
+    path('',sjug_views.juegos101,name="juegos"), ## /sjug/  
+    path('<jugador>/',sjug_jugador.perfil,name='perfil1'), ## /sjug/<jugador> Ver y modificar perfil del jugador
+    path('<jugador>/dashboard/',sjug_jugador.dashboard,name="dashboard"), ### /sjug/<jugador>/dashboard  Presentación de recomendaciones
     path('<slug:juego_slug>/',sjug_views.juegotal,name="juego"),
 ]
 
