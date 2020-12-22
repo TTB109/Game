@@ -270,7 +270,6 @@ def MiLista(request,id):
     posts=paginator.page(paginator.num_pages)
   return render(request,'jugador/milista.html',{'fMLista':posts,'page':page})
 
-
 def CountGen(generos):
   genes=['Acción','Arcade','Aventura','Bélico','Carreras','Deporte','Disparo',
   'Educacional','Estrategia','Juegos de mesa','Música','Peleas','Plataforma',
@@ -278,12 +277,14 @@ def CountGen(generos):
   generos.sort()
   genes.sort()
   listgeneros=[]
-  for i in range(18):
-    if generos[i]==genes[i]:
-      listgeneros[i]=1
+  cero=0
+  uno=1
+  for i in range(18): 
+    if genes[i] not in generos:
+      listgeneros.append(cero)
     else:
-      listgeneros[i]=0
-
+      listgeneros.append(uno)
+  #print("Esta son los generos",listgeneros)
   return listgeneros
 
 def CountPlat(plataformas):
@@ -297,37 +298,52 @@ def CountPlat(plataformas):
   platas.sort()
   plataformas.sort()
   listplataformas=[]
-  for i in range(29):
-    if plataformas[i]==platas[i]:
-      listplataformas[i]=1
+  cero=0
+  uno=1
+  for i in range(29): 
+    if platas[i] not in plataformas:
+      listplataformas.append(cero)
     else:
-      listplataformas[i]=0
+      listplataformas.append(uno)
   return listplataformas
 
 def Comparate(list1,list0):
-  lista=list(list0)
+  list2=list(list0)
   #use CountPlat or CountGen return list2
-  result = 1 - spatial.distance.cosine(list1, list0)
+  result = 1 - spatial.distance.cosine(list1, list2)
   if result >= 0.5:
     return 1
   return 0
 
 def agregar_vector(request):
-  platas=PlataformasAsociadas.objects.all()
-  genes=GenerosAsociados.objects.all()
-  listemp=[]
   for video in Juego.objects.all():
     new=[]
-    newbi=[]
-    gnr=GenerosAsociados.objects.all().filter(juego=video.id_juego)
-    for gen in gnr:
-      new.append(gen.genero)
-    for i in range(len(new)):
-      newbi.append(new[i].nombre)
-    listemp.append(",".join(newbi))
-  print(len(listemp))
+    newps=[]
+    genres=""
+    platforms=""
+    print(video.titulo)
+    for gen in video.generos.all():
+      new.append(gen.nombre)
+    new=list(dict.fromkeys(new))#Delete duplicates
+    new.sort()#Sort list
+    new=CountGen(new)
+    #genres=(",".join(new))
+    genres=(','.join(str(x) for x in new))
 
-  return render(request,'jugador/RecMiPalabra.html',{'RMPform':Recomendacion})
+    for pat in video.plataformas.all():
+      newps.append(pat.nombre)
+    newps=list(dict.fromkeys(newps))#Delete duplicates
+    newps.sort()#Sort list
+    newps=CountPlat(newps)
+    platforms=(','.join(str(x) for x in newps))
+
+    listbinario=ListGeneros()
+    listbinario.juego=video
+    listbinario.listgenero=genres
+    listbinario.listplataforma=platforms
+    listbinario.save()
+
+  return render(request,'jugador/RecMiPalabra.html')
 
 
 def RecMisPalabras(request,id):
