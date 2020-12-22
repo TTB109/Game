@@ -1,8 +1,3 @@
-# Python program to read
-import os
-import re
-import sqlite3 
-
 """
 Leer como cadena todo el txt de datos.
 Separar cada juego utilizando split("|",7) que devuelve una lista de ocho elementos:
@@ -22,6 +17,7 @@ splited[5] --> descripcion
 splited[6] --> imagen
 splited[7] --> resto_del_texto
 
+Correr dos veces, la primera document_name es mobyset.txt, la segunda frenchset.txt
 """
 
 def guardar_txt(datos,nombre): #Datos es una lista de strings
@@ -32,11 +28,11 @@ def guardar_txt(datos,nombre): #Datos es una lista de strings
 
 
 if __name__ == "__main__":
-    document_name = "mini.txt"
+    document_name = "original/frenchset.txt"
     document = open(document_name, encoding = "utf-8")
     games = document.read() #Take the document as a simple string
     document.close()
-    resultado = open("mini_limpio.txt", encoding = "utf-8", mode="w")
+    resultado = open("cleaned/frenchset_cleaned.txt", encoding = "utf-8", mode="w")
     while games != "":
         if(games == "\n"):
             break
