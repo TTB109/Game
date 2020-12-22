@@ -36,6 +36,7 @@ if __name__ == "__main__":
     document = open(document_name, encoding = "utf-8")
     games = document.read() #Take the document as a simple string
     document.close()
+    resultado = open("mini_limpio.txt", encoding = "utf-8", mode="w")
     while games != "":
         if(games == "\n"):
             break
@@ -62,8 +63,8 @@ if __name__ == "__main__":
         print(splited) 
         print("\n\n")
         splited = "|".join(splited)
-        #print(splited)
-        
+        resultado.write(splited)
+    resultado.close()   
         
         
         
