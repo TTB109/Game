@@ -67,7 +67,7 @@ def registro(request):
       jugador.save()
       user_form.save()
       username = user_form.cleaned_data['username']
-      print(usuario.id)
+      print(usuario.id_usuario)
 
       password = user_form.cleaned_data['password1']
       user = authenticate(username = username,password = password)
