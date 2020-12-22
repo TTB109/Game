@@ -394,23 +394,6 @@ def perfil_adm(request):
 #   #TodoU=Usuario.objects.all()
 #   return render(request,'adm/gestion_usuario.html')
 
-def gestion_videojuegos(request):
-  VJuegos=Juego.objects.all()
-  # for game in VJuegos:
-  #   print(game.generos)
-  myFilter=JuegoFilter(request.GET,queryset=VJuegos)
-  VJuegos=myFilter.qs
-
-  paginator=Paginator(VJuegos,10)
-  page=request.GET.get('page')
-  try:
-    posts=paginator.page(page)
-  except PageNotAnInteger:
-    posts=paginator.page(1)
-  except EmptyPage:
-    posts=paginator.page(paginator.num_pages)
-
-  return render(request,'adm/gestion_videojuego.html',{'fVJuegos':posts,'myFilter':myFilter,'page':page})
 
 # def changeVector(request):
 #   VJuegos=Juego.objects.all()

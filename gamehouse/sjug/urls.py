@@ -42,7 +42,7 @@ urlpatterns = [
     #path('prueba/',views.prueba,name="prueba"),  
     ###########################################################
     ###########################################################
-    path('g_videojuegos/', views.gestion_videojuegos, name='g_videojuegos'),####################################/sadm/<administrador>/videojuegos   mostrar lista de videojuegos
+    
     path('g_videojuegos/editar_J/<int:id>/', views.editar_J, name='editar_J'),##################################/sadm/<administrador>/videojuegos/<Int: id_juego >    editar juego con id id_juego
     path('g_videojuegos/eliminar_J/<int:id>/', views.eliminar_J, name='eliminar_J'),############################/sadm/<administrador>/videojuegos/<Int: id_juego >/eliminar   Borrar juego con id_juego         modificar con un alert
     path('g_videojuegos/r_videojuegos/', views.registro_videojuegos, name='r_videojuegos'),#####################/sadm/<administrador>/videojuegos/nuevo         Agregar un juego nuevo

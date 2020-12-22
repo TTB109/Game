@@ -52,6 +52,7 @@ urlpatterns = [
     path('login/perfil/',include('gamehouse.sjug.urls')),
     path('login/perfil/',include('gamehouse.sadm.urls')),
     path('sjug/',include(sis_jug)),
+    path('sadm/',include('gamehouse.sadm.urls')),
     path('juegos/',include(games)),
     re_path(r'^juegos/',include(urls_juegos)),
     path('operacion/',tv.as_view(template_name="operacion.html"),name="operacion-exitosa"),
