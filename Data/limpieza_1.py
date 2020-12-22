@@ -24,6 +24,12 @@ splited[7] --> resto_del_texto
 
 """
 
+def guardar_txt(datos,nombre): #Datos es una lista de strings
+    txt = open(nombre, encoding = "utf-8", mode ="a+")
+    for dato in datos:
+        txt.write(dato)
+    txt.close()
+
 
 if __name__ == "__main__":
     document_name = "mini.txt"
@@ -36,13 +42,29 @@ if __name__ == "__main__":
         splited = games.split("|",7)
         games = splited [7]
         splited = splited[0:7]
-        print(splited) 
-        print("\n\n")
+        """ Limpiar espacios extras """
+        if splited[5][0] == '\"':
+            splited[5] = splited[5][1:]
+        if splited[5][-1] == '\"':
+            splited[5] = splited[5][:-1]
+        splited[5] = splited[5].strip()
+        """ Limpieza de generos """
         generos = splited[3].split(",") # Crear una lista con los datos entre cada coma
         generos = [genero for genero in generos if genero] ## Remove empty elem.
         generos = ",".join(generos) # Regresar a representación de string
-        print(generos)
+        """ Limpieza de plataformas """
         plataformas = splited[4].split(",")
         plataformas = [plataforma for plataforma in plataformas if plataforma]
-        plataformas = ",".join(plataformas)
-        print(plataformas)
+        plataformas = ",".join(plataformas) 
+        """ Escritura de limpio """
+        splited[3] = generos
+        splited[4] = plataformas
+        print(splited) 
+        print("\n\n")
+        splited = "|".join(splited)
+        #print(splited)
+        
+        
+        
+        
+        
