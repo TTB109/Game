@@ -47,8 +47,8 @@ class Compania(models.Model):
 class Juego(models.Model):
     id_juego = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
-    anio = models.PositiveIntegerField(default=2020)
-    descripcion = models.TextField(max_lenght=5000)
+    anio = models.PositiveIntegerField(default=2020) #Tipo Date >:( 
+    descripcion = models.TextField(max_length=5000)
     generos = models.ManyToManyField(Genero,
                                      through='GenerosAsociados',
                                      through_fields=('juego', 'genero')
