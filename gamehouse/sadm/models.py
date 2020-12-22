@@ -12,7 +12,7 @@ class Administrador(models.Model):
                                  verbose_name = "Identificador del administrador"
                                  )
   nombre = models.CharField(unique = True,max_length=256)
-  movimiento = DecimalField(null = True)
+  #movimiento = DecimalField(null = True)
 
 class MatrizJuegos(models.Model):
   juego = models.OneToOneField(Juego, 
