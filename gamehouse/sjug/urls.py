@@ -32,13 +32,13 @@ PENDIENTES:
     #path('iusuario/',login_required(views.iusuario), name='iusuario'),  ### /sjug/<jugador>/dashboard VEr recom.
 #/sjug/
 urlpatterns = [
-   path('',sjug_juego.default, name = 'sjug'),
-   path('<jugador>',sjug_jugador.perfil, name = 'jugador'),
-   path('<jugador>/editar',login_required(sjug_jugador.editar_perfil), name = 'editar_jugador'),
-   path('<jugador>/eliminar',login_required(sjug_jugador.eliminar_perfil), name = 'eliminar_jugador'),
-   path('<jugador>/gustos',login_required(sjug_jugador.mis_gustos), name = 'mis_gustos'),
-   path('<jugador>/dashboard',login_required(sjug_jugador.dashboard), name = 'dashboard'), ### /sjug/<jugador>/dashboard  Presentación de recomendaciones
-   path('<jugador>/dashboard/tf-idf',login_required(sjug_jugador.tf_idf), name = 'tf_idf'),
-   path('<jugador>/opinion',sjug_juego.opiniones, name = 'mis_opiniones'),
+   path('',sjug_juego.default, name = 'sjug'), #Terminada
+   path('<jugador>/',sjug_jugador.perfil, name = 'jugador'),
+   path('<jugador>/editar/',login_required(sjug_jugador.editar_perfil), name = 'editar_jugador'),
+   path('<jugador>/eliminar/',login_required(sjug_jugador.eliminar_perfil), name = 'eliminar_jugador'),
+   path('<jugador>/gustos/',login_required(sjug_jugador.mis_gustos), name = 'mis_gustos'),
+   path('<jugador>/dashboard/',login_required(sjug_jugador.dashboard), name = 'dashboard'), ### /sjug/<jugador>/dashboard  Presentación de recomendaciones
+   path('<jugador>/dashboard/tf-idf/',login_required(sjug_jugador.tf_idf), name = 'tf_idf'),
+   path('<jugador>/opinion/',sjug_juego.opiniones, name = 'mis_opiniones'),
 ]
 

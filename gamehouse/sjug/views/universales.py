@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from gamehouse.sadm.models import Administrador
 from django.shortcuts import redirect,render
 from gamehouse.sjug.forms import UserForm,JugadorForm,UsuarioForm
-from gamehouse.sjug.models import Jugador
+from gamehouse.sjug.models import Jugador, Usuario
 from django.http import Http404
 
 """
@@ -18,7 +18,7 @@ PENDIENTES:
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect('/juegos')    
+        return redirect('/juegos/')    
     if request.method == 'POST':     
         username = request.POST['username']
         password = request.POST['password']
@@ -27,24 +27,26 @@ def login(request):
             usuario = authenticate(request, username = username, password = password)
             if usuario:
                 auth_login(request,usuario)
-                return redirect('/sjug/'+jugador.nickname+'/dashboard')
+                return redirect('/sjug/'+jugador.nickname+'/dashboard/')
             else:
-                return redirect("/login")
+                return redirect("/login/")
         except Jugador.DoesNotExist:
             try:
                 admin = Administrador.objects.get(nombre = username)
-                usuario = authenticate(request, username = username, password = password)
+                usuario = Usuario.objects.get(id_usuario = admin.usuario.id_usuario)
+                jugador = Jugador.objects.get(usuario_id = usuario.id_usuario)
+                usuario = authenticate(request, username = jugador.nickname, password = password)
                 if usuario:
                     auth_login(request,usuario)
                     return redirect('/sadm/'+admin.nombre)
                 else:
-                    return redirect("/login")
+                    return redirect("/login/")
             except Administrador.DoesNotExist:
                 raise Http404("El usuario con el que intentas iniciar sesión no existe!")
     else:        
         return render(request,'inicio_sesion.html')
 
-@login_required(login_url='/login')
+@login_required(login_url='/login/')
 def logout(request):
     auth_logout(request)
     return redirect('index')

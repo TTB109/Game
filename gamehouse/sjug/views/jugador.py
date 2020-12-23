@@ -24,9 +24,9 @@ def editar_perfil(request,jugador):
     if request.user.get_username() != jugador:
         return redirect('error_403')
     else:
-        solicitado = get_object_or_404(Jugador, nickname = jugador)
-    juegos = juegos_random()
-    return render(request,'pruebas/dashboard.html',{'juegos' : juegos})
+        pass
+    return render(request,'prueba.html')
+
 #no hecha
 @login_required()
 def eliminar_perfil(request,jugador):
@@ -48,8 +48,6 @@ def mis_gustos(request,jugador):
     return render(request,'pruebas/dashboard.html',{'juegos' : juegos})
 
 
-
-
 @login_required(login_url='/login')
 def dashboard(request,jugador):
     if request.user.get_username() != jugador:
@@ -59,22 +57,6 @@ def dashboard(request,jugador):
     juegos = juegos_random()
     return render(request,'pruebas/dashboard.html',{'juegos' : juegos})
 
-"""
-def iusuario(request):  
-  # Generate 'n' unique random numbers within a range
-  imagen =Imagen.objects.all()
-  juego=Juego.objects.all()
-  randomList = random.sample(range(0, len(imagen)), 12)
-  LImagen=[]
-  LJuego=[]
-  for r in randomList:
-    LImagen.append(imagen[r])
-    LJuego.append(juego[r])
-  VJuego = zip(LImagen,LJuego)
-  #return render(request,'jugador/InicioUsuario.html')
-  return render(request,'jugador/InicioUsuario.html',{'fvjuego':VJuego})
-  # return render(request,'jugador/InicioUsuario.html',{'fImagen':LImagen,'fJuego':LJuego})
-"""
 
 def ver_juego(request,juego=0):
     print("Llegue")

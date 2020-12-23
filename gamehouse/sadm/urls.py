@@ -6,6 +6,7 @@ from django.shortcuts import redirect
 from gamehouse.sadm.views import juegos,jugadores,administrador
 
 urlpatterns = [
+    path('<administrador>/',login_required(administrador.perfil_adm), name='perfil_adm'),
     path('<administrador>/videojuegos',login_required(juegos.lista_videojuegos), name='lista_videojuegos'),####################################/sadm/<administrador>/videojuegos   mostrar lista de videojuegos
     path('<administrador>/videojuegos/<int:id_juego>/', login_required(juegos.editar_videojuegos), name='editar_videojuegos'),##################################/sadm/<administrador>/videojuegos/<Int: id_juego >    editar juego con id id_juego
     path('<administrador>/videojuegos/<int:id_juego>/eliminar', login_required(juegos.eliminar_videojuegos), name='eliminar_videojuegos'),############################/sadm/<administrador>/videojuegos/<Int: id_juego >/eliminar   Borrar juego con id_juego         modificar con un alert
@@ -22,6 +23,5 @@ urlpatterns = [
     path('<administrador>/jugadores/registro',login_required(jugadores.registro_usuarios), name='registro_usuarios'),
     path('<administrador>/jugadores/<int:id_usuario>/eliminar/',login_required(jugadores.eliminar_usuarios), name='eliminar_usuarios'),
     path('<administrador>/jugadores/<int:id_usuario>/',login_required(jugadores.editar_usuarios), name='editar_usuarios'),
-    path('<administrador>/perfil_adm',login_required(administrador.perfil_adm), name='perfil_adm'),
     path('<administrador>/signout/',login_required(administrador.signout), name= 'signout'),
   ]

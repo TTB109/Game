@@ -147,7 +147,7 @@ STATICFILES_DIRS = [STATIC_DIR,
 """ Redireccionamiento automatico """
 #https://docs.djangoproject.com/en/3.1/ref/settings/#login-url
 LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
-LOGIN_URL = '/login'
+LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/'
 
 ###
