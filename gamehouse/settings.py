@@ -144,9 +144,11 @@ STATICFILES_DIRS = [STATIC_DIR,
  #('jquery-ui','%s/jquery-ui-1.10.4/'% (STATIC_DIR)), 
 ]
 
-# url to redirect after successfull login
-LOGIN_REDIRECT_URL = reverse_lazy('perfil_user')
-LOGIN_URL= reverse_lazy('perfil_user')
+""" Redireccionamiento automatico """
+#https://docs.djangoproject.com/en/3.1/ref/settings/#login-url
+LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
+LOGIN_URL = '/login'
+LOGOUT_REDIRECT_URL = '/'
 
 ###
 MEDIA_ROOT = STATIC_DIR+'/Raw/'

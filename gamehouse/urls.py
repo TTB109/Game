@@ -22,18 +22,23 @@ from gamehouse.sjug.views import universales
 
 urls_universales = [
     path('', tv.as_view(template_name="homepage.html"), name='index'),  
+    path('login/',universales.login, name='login'),
+    path('registro/', universales.registro, name= 'registro'),
+    path('logout/',universales.logout, name='logout'), 
+    path('error/403',universales.solicitud_denegada,name='error_403'),
+    path('error/404',universales.no_encontrado,name='error_404'),
+    
     path('consolas/',tv.as_view(template_name="juegos/consolas.html"), name="consolas"),
     path('generos/',tv.as_view(template_name="juegos/generos.html"), name="generos"),
     path('InfConsolas/',tv.as_view(template_name="juegos/InfoConsolas.html"), name='InfConsolas'),
     path('InfGeneros/', tv.as_view(template_name="juegos/InfoGeneros.html"), name='InfGeneros'),
-    path('login/',universales.login, name='login'),
-    path('registro/', universales.registro, name= 'registro'),  
+    
 ]
 
 urlpatterns = [
     path('',include(urls_universales)),
     path('sjug/',include('gamehouse.sjug.urls')),
     path('sadm/',include('gamehouse.sadm.urls')),
-    path('admin/', admin.site.urls)   
+    #path('admin/', admin.site.urls)   
 ]
 

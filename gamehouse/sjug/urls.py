@@ -1,11 +1,11 @@
 from django.contrib import admin
-from django.contrib.auth.decorators import login_required
 from django.views.generic import TemplateView as tv
 from django.urls import path, re_path,include
 from django.shortcuts import redirect
+from django.contrib.auth.decorators import login_required
 
 from gamehouse.sjug.views import jugador as sjug_jugador
-
+from gamehouse.sjug.views import juego as sjug_juego
 
 """
 CAMBIOS:
@@ -26,11 +26,19 @@ PENDIENTES:
 
  path('',sjug_jugador.inicio ,name="inicio_jugador"), ## /sjug/  
     path('<jugador>/',sjug_jugador.perfil,name='perfil1'), ## /sjug/<jugador> Ver y modificar perfil del jugador
-    path('<jugador>/dashboard/',sjug_jugador.dashboard,name="dashboard"), ### /sjug/<jugador>/dashboard  Presentación de recomendaciones
+    
     path('<slug:juego_slug>/',sjug_views.juegotal,name="juego"),
 """
-
+    #path('iusuario/',login_required(views.iusuario), name='iusuario'),  ### /sjug/<jugador>/dashboard VEr recom.
 #/sjug/
 urlpatterns = [
-   
+   path('',sjug_juego.default, name = 'sjug'),
+   path('<jugador>',sjug_jugador.perfil, name = 'jugador'),
+   path('<jugador>/editar',login_required(sjug_jugador.editar_perfil), name = 'editar_jugador'),
+   path('<jugador>/eliminar',login_required(sjug_jugador.eliminar_perfil), name = 'eliminar_jugador'),
+   path('<jugador>/gustos',login_required(sjug_jugador.mis_gustos), name = 'mis_gustos'),
+   path('<jugador>/dashboard',login_required(sjug_jugador.dashboard), name = 'dashboard'), ### /sjug/<jugador>/dashboard  Presentación de recomendaciones
+   path('<jugador>/dashboard/tf-idf',login_required(sjug_jugador.tf_idf), name = 'tf_idf'),
+   path('<jugador>/opinion',sjug_juego.opiniones, name = 'mis_opiniones'),
 ]
+

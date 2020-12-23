@@ -13,7 +13,6 @@ urlpatterns = [
     path('eliminar/<int:id>/',login_required(views.eliminar), name='eliminar'), ### /sjug/<jugador>/eliminar
     path('',login_required(views.perfil_user), name='perfil_user'),  ### /sjug/<jugador> Ver perfil con opciones
     path('regresar_user/',login_required(views.regresar_user), name='regresar_user'), ### Borrar después mand inicio
-    path('iusuario/',login_required(views.iusuario), name='iusuario'),  ### /sjug/<jugador>/dashboard VEr recom.
     path('VVJuego/<int:id_juego>/<int:pk>/',login_required(views.VVJuego), name='VVJuego'), ### juegos/
     path('MiLista/<int:id>/',login_required(views.MiLista), name='MiLista'), ## Mis opniones cambiar a anterior
     path('caracteristicasDE/<int:id>/',login_required(views.caracteristicasDE), name='caracteristicasDE'),  ###   /sjug/<jugador>/gustos/CDE    
@@ -57,11 +56,6 @@ def signin(request):
   if request.POST['usuario'] == 'admin':
     return render(request,'adm/perfil_adm.html',context)
   return render(request,'jugador/perfil.html',context)
-
-
-def signout(request):
-    logout(request)
-    return redirect('/')
 
 def perfil_user(request):
   return render(request,'jugador/perfil.html')
@@ -188,22 +182,6 @@ def eliminar(request,id):
 def regresar_user(request):
   return render(request,'jugador/perfil.html')
 
-def iusuario(request):  
-  # Generate 'n' unique random numbers within a range
-  imagen =Imagen.objects.all()
-  juego=Juego.objects.all()
-  randomList = random.sample(range(0, len(imagen)), 12)
-  LImagen=[]
-  LJuego=[]
-  for r in randomList:
-    LImagen.append(imagen[r])
-    LJuego.append(juego[r])
-  VJuego = zip(LImagen,LJuego)
-  #return render(request,'jugador/InicioUsuario.html')
-  return render(request,'jugador/InicioUsuario.html',{'fvjuego':VJuego})
-  # return render(request,'jugador/InicioUsuario.html',{'fImagen':LImagen,'fJuego':LJuego})
-
-
 
 def VVJuego(request,id_juego,pk):
   VJuego=Juego.objects.get(id_juego=id_juego)
@@ -229,9 +207,6 @@ def VVJuego(request,id_juego,pk):
     return render(request,'juegos/juego.html',{'fopinion':opinion_form,'VJuego':VJuego,'fimagen':imagen})
 
   
-def salir(request):
-  return render(request,'homepage.html')
-
 def consolas(request):
   imagen =Imagen.objects.all()
   juego=Juego.objects.all()
@@ -365,254 +340,7 @@ def info_consolas(request):
 
 def info_generos(request):
   return render(request,'juegos/InfoGeneros.html')
-###############################################################################################
-################################ADMINISTRADOR##################################################
-###############################################################################################
-def perfil_adm(request):
-  platas=PlataformasAsociadas.objects.all()
-  genes=GenerosAsociados.objects.all()
 
-  # for gen in genes:
-  #   print(gen.genero)
-
-  return render(request,'adm/perfil_adm.html')
-
-# def gestion_usuarios(request):
-#   #TodoU=Usuario.objects.all()
-#   return render(request,'adm/gestion_usuario.html')
-
-
-# def changeVector(request):
-#   VJuegos=Juego.objects.all()
-#   for game in VJuegos:
-#     print(game.genero)
-#   return 
-
-
-def registro_videojuegos(request):
-  if request.method == 'POST':         
-    juego_form = JuegoForm(request.POST)
-    imagen_form = ImagenForm(request.POST)
-    # compania_form = CompaniaForm(request.POST)
-    if all([juego_form.is_valid(),imagen_form.is_valid()]):
-      #photo = Juego()    # set any other fields, but don't commit to DB (ie. don't save())
-      
-      # imagen_form.imageurl=request.POST.get('imageurl')
-      # img_url=request.POST.get('imageurl')
-      # name = urlparse(img_url).path.split('/')[-1]
-      # content =urllib.request.urlretrieve(img_url)
-      # imagefile.save('imagen.jpg', File(open(content[0])), save=True)
-      
-      ######STRING DATA
-      # juego_form.generos=request.POST.get('nombreG')
-      # juego_form.plataformas=request.POST.get('nombreP')
-
-      # See also: http://docs.djangoproject.com/en/dev/ref/files/file/
-      imagen_form.save()
-      juego_form.save()
-      return redirect('g_videojuegos')
-  else:
-    juego_form=JuegoForm()
-    imagen_form = ImagenForm()
-  return render(request,'adm/registro_videojuego.html',{'VJuegos':juego_form,'fImagen':imagen_form})
-
-def editar_J(request,id):
-  try:    
-    vjuego=get_object_or_404(Juego,id_juego=id)
-    vimagen=get_object_or_404(Imagen,id_imagen=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method == 'POST':
-    vjuego_form = JuegoForm(request.POST, instance=vjuego)
-    imagen_form = ImagenForm(request.POST, instance=vimagen)
-    if all([vjuego_form.is_valid(),imagen_form.is_valid()]):      
-      ###STRING DATA
-      # vjuego.plataformas=request.POST.get('nombreP')
-      # vjuego.generos=request.POST.get('nombreG')
-    
-      imagen_form.save()
-      vjuego_form.save()
-      return redirect('g_videojuegos')
-  else:
-    imagen_form = ImagenForm(instance=vimagen)
-    vjuego_form = JuegoForm(instance=vjuego)
-    return render(request,'adm/editar_videojuego.html',{'VJuegos':vjuego_form,'fImagen':imagen_form})
-
-def eliminar_J(request,id):
-  try:
-    vjuego=get_object_or_404(Juego,id_juego = id)
-    vimagen=get_object_or_404(Imagen,id_imagen=id)
-    # vgenero=get_object_or_404(  Genero,id = id)
-    # vplataforma=get_object_or_404(Plataforma, id=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method=="POST":
-    # vgenero.delete()
-    # vplataforma.delete()
-    vimagen.delete()
-    vjuego.delete()
-    return redirect('g_videojuegos')
-  else:
-    return render(request,'adm/eliminarJ.html')
-
-def aceptado(request):
-  return render(request,'adm/juego_aceptado.html')
-
-def gestion_usuarios(request):
-    dataset = Usuario.objects.all()
-    paginator=Paginator(dataset,2)
-    page=request.GET.get('page')
-    try:
-      posts=paginator.page(page)
-    except PageNotAnInteger:
-      posts=paginator.page(1)
-    except EmptyPage:
-      posts=paginator.page(paginator.num_pages)
-    return render(request,'adm/gestion_usuario.html',{'dataset':posts,'page':page})
-
-def gestion_GP(request):
-    print('hola')
-    plataforma=Plataforma.objects.all()
-    genero=Genero.objects.all()
-    return render(request,'adm/gestion_GP.html',{'fgenero':genero,'fplataforma':plataforma})
-
-def registro_usuarios(request):
-  if request.method == 'POST':
-    user_form = UserForm(request.POST) 
-    usuario_form = UsuarioForm(request.POST)
-    jugador_form = JugadorForm(request.POST)
-
-    if all([usuario_form.is_valid(),jugador_form.is_valid(),user_form.is_valid()]):
-      usuario = usuario_form.save()
-      jugador = jugador_form.save(commit = False)
-      jugador.id_jugador = usuario
-      jugador.save()
-      user_form.save()
-      username = user_form.cleaned_data['username']
-      password = user_form.cleaned_data['password1']
-      user = authenticate(username = username,password = password)
-      login(request, user)
-      return redirect('g_usuarios')
-      #return HttpResponseRedirect(reverse('registro-exitoso'),mensaje = 'Felicidades te registraste')
-  else:
-    user_form=UserForm()
-    usuario_form = UsuarioForm()
-    jugador_form = JugadorForm()
-  #  context={'fusuario':usuario_form, 'fjugador':jugador_form}
-  return render(request,'adm/registro.html',{'fusuario':usuario_form, 'fuser':user_form, 'fjugador':jugador_form})
-
-def editar_usuarios(request,id):
-  try:    
-    usuario=get_object_or_404(Usuario,id=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method == 'POST':
-    usuario_form = UsuarioForm(request.POST, instance=usuario)
-    if usuario_form.is_valid():
-      usuario = usuario_form.save()
-      return redirect('g_usuarios')
-  else:
-    usuario_form = UsuarioForm(instance=usuario)
-  return render(request,'adm/Actualizar.html',{'fusuario':usuario_form})
-
-def eliminar_usuarios(request,id):
-  try:
-    usuario=get_object_or_404(Usuario,id=id)
-    userio=get_object_or_404(User,id=id)
-    jugador=get_object_or_404(Jugador,usuario=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method=="POST":
-    jugador.delete()
-    userio.delete()
-    usuario.delete()
-    return redirect('g_usuarios')
-  else:
-    return render(request,'adm/eliminar.html')
-
-def registro_GP(request):
-  if request.method == 'POST':
-    genero_form = GeneroForm(request.POST)
-    plataforma_form = PlataformaForm(request.POST)
-    if all([genero_form.is_valid(),plataforma_form.is_valid()]):
-      genero_form.save()
-      plataforma_form.save()
-      return redirect('g_GP')
-  else:
-    genero_form = GeneroForm()
-    plataforma_form = PlataformaForm()
-  return render(request,'adm/registroGP.html',{'fgenero':genero_form, 'fplataforma':plataforma_form})
-
-def editar_G(request,id):
-  try:    
-    genero=get_object_or_404(Genero,id_genero=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method == 'POST':
-    genero_form = GeneroForm(request.POST, instance=genero)
-    if genero_form.is_valid():
-      genero_form.save()
-      return redirect('g_GP')
-  else:
-    genero_form = GeneroForm(instance=genero)
-  return render(request,'adm/ActualizarG.html',{'fgenero':genero_form})
-
-def eliminar_G(request,id):
-  try:
-    usuario=get_object_or_404(Genero,id_genero=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method=="POST":
-    usuario.delete()
-    return redirect('g_GP')
-  else:
-    return render(request,'adm/eliminarG.html')
-
-def editar_P(request,id):
-  try:    
-    usuario=get_object_or_404(Plataforma,id_plataforma=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method == 'POST':
-    usuario_form = PlataformaForm(request.POST, instance=usuario)
-    if usuario_form.is_valid():
-      usuario_form.save()
-      return redirect('g_GP')
-  else:
-    usuario_form = PlataformaForm(instance=usuario)
-  return render(request,'adm/ActualizarP.html',{'fplataforma':usuario_form})
-
-def eliminar_P(request,id):
-  try:
-    usuario=get_object_or_404(Plataforma,id_plataforma=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method=="POST":
-    usuario.delete()
-    return redirect('g_GP')
-  else:
-    return render(request,'adm/eliminarP.html')
-
-def editar_perfil(request):
-  return render(request,'adm/editar_jugador.html')
-
-def regresar_adm(request):
-  platas=PlataformasAsociadas.objects.all()
-  genes=GenerosAsociados.objects.all()
-
-  # print(genes.genero)
-
-  for gen in genes:
-    print(gen.genero)
-  return render(request,'adm/perfil_adm.html')
 
 ######################################################################
 ######################################################################

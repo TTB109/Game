@@ -8,3 +8,11 @@ from gamehouse.sjug.models import Jugador,Usuario,Juego,Imagen
 from django.http import Http404
 
 
+def default(request):
+    return render(request,'jugador/sjug.html')
+
+"""  Vistas de interaccion jugador-juego """
+#no hecha
+def opiniones(request,jugador):
+    return render(request,'pruebas/dashboard.html',{})
+
