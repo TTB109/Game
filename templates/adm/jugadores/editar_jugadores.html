@@ -1,8 +1,8 @@
 {% extends "base.html" %}    
-{% block title %} Registrar Videojuego {% endblock title %}
+{% block title %} Editar Usuario {% endblock title %}
 {% block content %}
 <div>
-    <h1 class="center-align titulo">Registrar Videojuego</h1>
+    <h1 class="center-align titulo">Editar Usuario</h1>
 </div>
 <form method="POST">
 	{% csrf_token %}
@@ -40,7 +40,7 @@
 </div> 
 </form> 	
 		<div class="col-md-4">
-                <a href="{% url 'g_usuarios' %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Aceptar</a>                
+                <a href="{% url 'gestion_usuarios' %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Aceptar</a>                
               </div>
                 
  {% endblock content %}

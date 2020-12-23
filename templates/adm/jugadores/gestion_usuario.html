@@ -40,14 +40,14 @@
                                 <td>{{Usuario.id}}</td>
                                 <td>{{user.id}}</td>
                                 <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'eliminar_usuarios' Usuario.id %}">Eliminar</a></td>
-                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'e_usuarios' Usuario.id %}">Modificar</a></td>
+                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'editar_usuarios' Usuario.id %}">Modificar</a></td>
                             </tr>
                         {%endfor%}
                     </table>
                     {%include 'pagination.html' with page=dataset%}	                    
-                    <a href="{% url 'r_usuarios' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Agregar</a>                      
+                    <a href="{% url 'registro_usuarios' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Agregar</a>                      
                 </div> 
-            <a href="{% url 'regresar_adm' %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Atras</a>
+            <a href="{% url 'perfil_adm' %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Atras</a>
         </div>
     </div>
     <!--FOOTER-->    

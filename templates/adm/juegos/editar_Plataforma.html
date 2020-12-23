@@ -1,21 +1,22 @@
 {% extends "base.html" %}    
-{% block title %} Modificar Genero {% endblock title %}
+{% block title %} Modificar Plataforma {% endblock title %}
 {% block content %}
+
 <div>
-    <h1 class="center-align titulo">Modificar Genero</h1>
+    <h1 class="center-align titulo">Modificar Plataforma</h1>
 </div>
 <div class="login-text-box">
     <form action="." method="POST">
 	    {% csrf_token %}
 		<div class="row" id="container-table" >
 	        <table>
-		{{fgenero.as_table}}
+		{{fplataforma.as_table}}
 		</table>
 		</div>
 	    <input type="submit" value="Submit form">
 	    </form>
 		<div class="col-md-4">
-                <a href="{% url 'g_GP' %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Aceptar</a>                
+                <a href="{% url 'genero_plataforma' %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Aceptar</a>                
               </div>
           </div>        
  {% endblock content %}

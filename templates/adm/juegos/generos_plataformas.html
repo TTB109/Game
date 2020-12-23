@@ -27,12 +27,12 @@
                             <tr>
                                 <td>{{genero.nombre}}</td>
                                 <td>{{genero.id_genero}}</td>
-                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'eliminar_G' genero.id_genero %}">Eliminar</a></td>
-                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'e_G' genero.id_genero %}">Modificar</a></td>
+                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'eliminar_Genero' genero.id_genero %}">Eliminar</a></td>
+                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'editar_Genero' genero.id_genero %}">Modificar</a></td>
                             </tr>
                         {%endfor%}
                     </table>					                    
-                    <a href="{% url 'r_GP' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Agregar</a>                      
+                    <a href="{% url 'registro_gen_pla' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Agregar</a>                      
                 </div> 
             </div>   
             
@@ -59,15 +59,15 @@
                             <tr>
                                 <td>{{plataforma.nombre}}</td>
                                 <td>{{plataforma.id_plataforma}}</td>
-                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'eliminar_P' plataforma.id_plataforma%}">Eliminar</a></td>
-                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'e_P' plataforma.id_plataforma %}">Modificar</a></td>
+                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'eliminar_Plataforma' plataforma.id_plataforma%}">Eliminar</a></td>
+                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'editar_Plataforma' plataforma.id_plataforma %}">Modificar</a></td>
                             </tr>
                         {%endfor%}
                     </table>					                    
-                    <a href="{% url 'r_GP' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Agregar</a>                      
+                    <a href="{% url 'registro_gen_pla' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Agregar</a>                      
                 </div>                          
-            <a href="{% url 'regresar_adm' %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Atras</a>
+            <a href="{% url 'perfil_adm' %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Atras</a>
         </div>
     </div>
-    <!--FOOTER-->    
+    <!--FOOTER-->
     {% endblock content %}

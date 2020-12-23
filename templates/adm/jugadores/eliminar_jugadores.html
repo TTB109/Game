@@ -8,9 +8,9 @@
         <div class="row">
           <form method="POST">
             {%csrf_token%}
-            <input  href="{% url 'g_usuarios' %}" class="btn btn-primary btn-lg btn-block" type = "submit" value="YES">
-            <!-- <a href="{% url 'g_usuarios' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">YES</a>       -->
-            <a href="{% url 'g_usuarios' %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Cancelar</a>
+            <input  href="{% url 'gestion_usuarios' %}" class="btn btn-primary btn-lg btn-block" type = "submit" value="YES">
+            <!-- <a href="{% url 'gestion_usuarios' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">YES</a>       -->
+            <a href="{% url 'gestion_usuarios' %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Cancelar</a>
           </form>                                                                    
         </div>
     </div>
