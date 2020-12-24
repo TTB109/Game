@@ -1,0 +1,18 @@
+http://www.corpus.unam.mx/cursopln/plnPython/
+https://medium.com/@cmukesh8688/tf-idf-vectorizer-scikit-learn-dbc0244a911a
+https://towardsdatascience.com/tf-idf-for-document-ranking-from-scratch-in-python-on-real-world-dataset-796d339a4089
+https://www.kite.com/python/answers/how-to-remove-all-punctuation-marks-with-nltk-in-python
+https://towardsdatascience.com/how-sklearns-tf-idf-is-different-from-the-standard-tf-idf-275fa582e73d
+http://www.corpus.unam.mx/cursopln/plnPython/clase8.pdf
+http://www.tsc.uc3m.es/~miguel/MLG/adjuntos/NLTK.pdf
+https://sci2lab.github.io/ml_tutorial/tfidf/
+https://sci2lab.github.io/ml_tutorial/tfidf/
+
+python3 -m pip install --upgrade pip
+pip3 install --user -U nltk 
+pip3 install --user -U numpy
+pip install num2words
+##Run on a terminal
+import nltk
+nltk.download()
+
