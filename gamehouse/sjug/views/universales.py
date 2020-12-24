@@ -33,9 +33,10 @@ def login(request):
         except Jugador.DoesNotExist:
             try:
                 admin = Administrador.objects.get(nombre = username)
-                usuario = Usuario.objects.get(id_usuario = admin.usuario.id_usuario)
-                jugador = Jugador.objects.get(usuario_id = usuario.id_usuario)
-                usuario = authenticate(request, username = jugador.nickname, password = password)
+                # usuario = Usuario.objects.get(id_usuario = admin.usuario.id_usuario)
+                # jugador = Jugador.objects.get(usuario_id = usuario.id_usuario)
+                #usuario = authenticate(request, username = jugador.nickname, password = password)
+                usuario = authenticate(request, username = username, password = password)
                 if usuario:
                     auth_login(request,usuario)
                     return redirect('/sadm/'+admin.nombre)

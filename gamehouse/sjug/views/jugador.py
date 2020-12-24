@@ -35,7 +35,7 @@ def eliminar_perfil(request,jugador):
     else:
         solicitado = get_object_or_404(Jugador, nickname = jugador)
     juegos = juegos_random()
-    return render(request,'pruebas/dashboard.html',{'juegos' : juegos})
+    return render(request,'jugador/dashboard.html',{'juegos' : juegos})
 
 #no hecha
 @login_required()
@@ -45,7 +45,7 @@ def mis_gustos(request,jugador):
     else:
         solicitado = get_object_or_404(Jugador, nickname = jugador)
     juegos = juegos_random()
-    return render(request,'pruebas/dashboard.html',{'juegos' : juegos})
+    return render(request,'jugador/dashboard.html',{'juegos' : juegos})
 
 
 @login_required(login_url='/login')
@@ -55,14 +55,14 @@ def dashboard(request,jugador):
     else:
         solicitado = get_object_or_404(Jugador, nickname = jugador)
     juegos = juegos_random()
-    return render(request,'pruebas/dashboard.html',{'juegos' : juegos})
+    return render(request,'jugador/dashboard.html',{'juegos' : juegos})
 
 
 def ver_juego(request,juego=0):
     print("Llegue")
     solicitado = get_object_or_404(Juego, id_juego = juego)
     print("VEr juego:",solicitado)
-    return render(request,'pruebas/perfil.html',{'juego':solicitado})
+    return render(request,'jugador/perfil.html',{'juego':solicitado})
 
 
 """ Vistas para recomendacion """
