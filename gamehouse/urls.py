@@ -20,6 +20,7 @@ from django.urls import path, include, re_path,reverse
 
 from gamehouse.sjug.views import universales
 
+
 urls_universales = [
     path('', tv.as_view(template_name="homepage.html"), name='index'),  
     path('login/',universales.login, name='login'),
@@ -33,8 +34,9 @@ urls_universales = [
     path('InfConsolas/',tv.as_view(template_name="juegos/InfoConsolas.html"), name='InfConsolas'),
     path('InfGeneros/', tv.as_view(template_name="juegos/InfoGeneros.html"), name='InfGeneros'),
     
+    #path('juegos/',universales.juegos,name = 'juegos'),
+    #path('juegos/<int:id_juego>',universales.ver_juego,name='ver_juego')
 ]
-
 urlpatterns = [
     path('',include(urls_universales)),
     path('sjug/',include('gamehouse.sjug.urls')),

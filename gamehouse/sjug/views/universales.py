@@ -4,8 +4,8 @@ from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 from gamehouse.sadm.models import Administrador
 from django.shortcuts import redirect,render
-from gamehouse.sjug.forms import UserForm,JugadorForm,UsuarioForm
-from gamehouse.sjug.models import Jugador, Usuario
+from gamehouse.sjug.forms import UserForm,JugadorForm,UsuarioForm,OpinionForm
+from gamehouse.sjug.models import Jugador, Usuario,Imagen,Juego
 from django.http import Http404
 
 """

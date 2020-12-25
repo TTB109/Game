@@ -9,7 +9,6 @@ urlpatterns = [
     path('mis_gustos/mis_gustos_2/eliminar_juego/<int:id>/<int:pk>/',login_required(views.eliminar_juego), name='eliminar_juego'),  ### /sjug/<jugador>/gustos/juegos/<int:id_juego>/eliminar  
     path('mis_gustos/mis_gustos_2/agregar_juego/<int:id>/<int:pk>/',login_required(views.agregar_juego), name='agregar_juego'),  ### /sjug/<jugador>/gustos/juegos/<int:id_juego>/agregar 
     path('mis_opiniones/<int:id>/',login_required(views.mis_opiniones), name='mis_opiniones'),  ### /sjug/<jugador>/opinion  Muestra lista de opiniones hechas por el jugador indicado
-    path('edit_perfil/<int:id>/',login_required(views.edit_perfil), name='edit_perfil'), ### /sjug/<jugador>/editar 
     path('eliminar/<int:id>/',login_required(views.eliminar), name='eliminar'), ### /sjug/<jugador>/eliminar
     path('',login_required(views.perfil_user), name='perfil_user'),  ### /sjug/<jugador> Ver perfil con opciones
     path('regresar_user/',login_required(views.regresar_user), name='regresar_user'), ### Borrar después mand inicio
@@ -163,21 +162,6 @@ def edit_perfil(request,id):
     jugador_form = JugadorForm(instance=jugador)
   return render(request,'jugador/editar_jugador.html',{'fusuario':usuario_form, 'fuser':user_form, 'fjugador':jugador_form})
 
-def eliminar(request,id):
-  try:
-    usuario=get_object_or_404(Usuario,id=id)
-    userio=get_object_or_404(User,id=id)
-    jugador=get_object_or_404(Jugador,usuario=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method=="POST":
-    jugador.delete()
-    userio.delete()
-    usuario.delete()
-    return redirect('index')
-  else:
-    return render(request,'jugador/eliminar.html')
 
 def regresar_user(request):
   return render(request,'jugador/perfil.html')
