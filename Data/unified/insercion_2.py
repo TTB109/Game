@@ -99,7 +99,7 @@ if __name__ == "__main__":
         print(splited[1]+"("+str(id_compania)+") insertada!")
         """ Insertar la imagen"""
         print("\n----Insertando imagen...")
-        t = (splited[6],"Texto alternativo por defecto del juego "+splited[0],id_juego)
+        t = (splited[6],"Texto alternativo por defecto de la imagen del juego "+splited[0],id_juego)
         cr.execute(queries[8],t)
         print("Imagen:"+splited[6]+"\nde id_juego:"+str(id_juego)+" insertada!")
     cr.close()

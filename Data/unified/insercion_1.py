@@ -14,7 +14,7 @@ def insert_database(datos,tabla):
     for dato in datos:
         #dato = dato.strip() ##Remove blank spaces
         dato = dato.replace("\n","") ##Remove new line characters
-        cr.execute(query,(dato,"Descripción por defecto"))
+        cr.execute(query,(dato,"Descripción por defecto de "+dato))
     cr.close()
     conn.commit()
     conn.close()

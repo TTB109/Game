@@ -12,7 +12,6 @@ Nintendo 3DS
 Nintendo 64
 Nintendo DS
 Nintendo GameCube
-Nintendo Gamecube
 Nintendo Switch
 PS Vita
 PSP
