@@ -36,9 +36,16 @@ urlpatterns = [
    path('<jugador>/',sjug_jugador.perfil, name = 'jugador'),
    path('<jugador>/editar/',login_required(sjug_jugador.editar_perfil), name = 'editar_jugador'),
    path('<jugador>/eliminar/',login_required(sjug_jugador.eliminar_perfil), name = 'eliminar_jugador'),
+   
    path('<jugador>/gustos/',login_required(sjug_jugador.mis_gustos), name = 'mis_gustos'),
+   path('<jugador>/gustos/juegos/',login_required(sjug_jugador.mis_juegos), name = 'mis_juegos'),
+   path('<jugador>/gustos/juegos/<int:id_juego>/agregar/',login_required(sjug_jugador.agregar_mi_juego), name='agregar_mi_juego'),
+   path('<jugador>/gustos/juegos/<int:id_juego>/eliminar/',login_required(sjug_jugador.eliminar_mi_juego), name = 'eliminar_mi_juego'),
+      
    path('<jugador>/dashboard/',login_required(sjug_jugador.dashboard), name = 'dashboard'), ### /sjug/<jugador>/dashboard  Presentación de recomendaciones
    path('<jugador>/dashboard/tf-idf/',login_required(sjug_jugador.tf_idf), name = 'tf_idf'),
-   path('<jugador>/opinion/',sjug_juego.opiniones, name = 'mis_opiniones'),
+   path('<jugador>/opiniones/',sjug_jugador.mis_opiniones, name = 'mis_opiniones'),  #Ver mis opiniones de todos los juegos
+   #path('<jugador>/opiniones/<genero>/',sjug_juego.opiniones, name = 'mis_opiniones'), ## ver opiniones de cierto genero
+   #path('<jugador>/opiniones/<plataforma>/',sjug_juego.opiniones, name = 'mis_opiniones'), ## ver opiniones de cierta plataforma   
 ]
 

@@ -6,11 +6,12 @@ Created on 20/12/2020
 from django.contrib.auth.models import User
 from django.shortcuts import render, get_object_or_404, redirect
 from gamehouse.sjug.models import Jugador,Usuario,Juego,Imagen
-from gamehouse.sjug.forms import UserForm,UsuarioForm,JugadorForm
+from gamehouse.sjug.forms import UserForm,UsuarioForm,JugadorForm,MisGustosForm
 from django.http import Http404
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 import random
+from gamehouse.sjug.models.jugador import JuegosFavoritos
 
 
 """ Vistas de perfil """
@@ -21,7 +22,7 @@ def perfil(request,jugador):
     except Jugador.DoesNotExist:
         return redirect('error_404')
 
-   
+#Por el momento sólo se puede cambiar el Usuario y no User ni Jugador
 @login_required()
 def editar_perfil(request,jugador):
     try:
@@ -45,7 +46,7 @@ def editar_perfil(request,jugador):
     except Jugador.DoesNotExist:
         return redirect('error_404')
 
-#no hecha
+#Error al eliminar y querer registrarse de nuevo
 @login_required()
 def eliminar_perfil(request,jugador):
     try:
@@ -55,91 +56,126 @@ def eliminar_perfil(request,jugador):
         if request.method == 'POST':
             usuario = jugador.usuario
             user = request.user
-            auth_logout(request)
             jugador.delete()
             usuario.delete()
             user.delete()
+            auth_logout(request)
             return redirect('index')
         else:
             return render(request,'jugador/eliminar_jugador.html')
     except Jugador.DoesNotExist:
         return redirect('error_404')
 
-"""
-def eliminar(request,id):
-  try:
-    usuario=get_object_or_404(Usuario,id=id)
-    userio=get_object_or_404(User,id=id)
-    jugador=get_object_or_404(Jugador,usuario=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method=="POST":
-    jugador.delete()
-    userio.delete()
-    usuario.delete()
-    return redirect('index')
-  else:
-    return render(request,'jugador/eliminar.html')
-
-
-"""
-
-
-#no hecha
+#Doble submit, corregir
 @login_required()
 def mis_gustos(request,jugador):
-    if request.user.get_username() != jugador:
-        return redirect('error_403')
-    else:
-        solicitado = get_object_or_404(Jugador, nickname = jugador)
-    juegos = juegos_random()
-    return render(request,'jugador/dashboard.html',{'juegos' : juegos})
+    """ Mostrar formulario con Generos y Plataformas para su cambio """
+    try:
+        jugador = Jugador.objects.get(nickname = jugador)
+        if request.user.get_username() != jugador.nickname:
+            return redirect('error_403')    
+        if request.method == 'POST':
+            gustos_form = MisGustosForm(request.POST, instance=jugador)
+            if gustos_form.is_valid():
+                gustos_form.save()
+                #return redirect('mis_gustos_2',id=id_gustos)
+                return redirect('mis_juegos',jugador = jugador.nickname)
+        else:
+            gustos_form = MisGustosForm(instance = jugador)
+            return render(request,'jugador/gustos/mis_gustos.html',{'fgustos':gustos_form})
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
 
+#Obtiene todos, limitar a cien y verificar funcionalidad 
+@login_required()
+def mis_juegos(request,jugador):
+    """ Ver, añadir, o modificar mis juegos preferidos """
+    try:
+        jugador = Jugador.objects.get(nickname = jugador)
+        if request.user.get_username() != jugador.nickname:
+            return redirect('error_403')    
+        juegos = Juego.objects.all()
+        juegos = juegos[:15]
+        favoritos = jugador.juegos.all()
+        return render(request,'jugador/gustos/mis_juegos.html',{'juegos':juegos,'favoritos':favoritos}) 
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
+
+#Accesible, pero aún con problemas, falta comprobar
+@login_required()
+def eliminar_mi_juego(request,jugador: str, id_juego: int):
+    """ Eliminar un juego escogido """
+    try:
+        jugador = Jugador.objects.get(nickname = jugador)
+        if request.user.get_username() != jugador.nickname:
+            return redirect('error_403')
+        try: 
+            juego = Juego.objects.get(id_juego = id_juego)
+            if request.method == 'POST':
+                jugador.juegos.remove(juego)
+                return redirect('mis_juegos',jugador = jugador.nickname)
+            else:
+                return render(request,'jugador/gustos/eliminar_mi_juego.html')
+        except Juego.DoesNotExist:
+            return redirect('error_404')    
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
+    
+#Accesible, pero aún con problemas, falta comprobar
+@login_required()
+def agregar_mi_juego(request,jugador: str, id_juego: int):
+    """ Agregar un juego escogido """
+    try:
+        jugador = Jugador.objects.get(nickname = jugador)
+        if request.user.get_username() != jugador.nickname:
+            return redirect('error_403')
+        try: #Intentar recuperar jugador con ese juego
+            juego = Juego.objects.get(id_juego = id_juego)
+            if request.method == 'POST':
+                jugador.juegos.add(juego)
+                return redirect('mis_juegos',jugador = jugador.nickname)
+            else:
+                return render(request,'jugador/gustos/agregar_mi_juego.html')
+        except Juego.DoesNotExist:
+            return redirect('error_404')    
+    except Jugador.DoesNotExist:
+        return redirect('error_404')    
 
 @login_required(login_url='/login')
 def dashboard(request,jugador):
-    if request.user.get_username() != jugador:
-        return redirect('error_403')
-    else:
-        solicitado = get_object_or_404(Jugador, nickname = jugador)
-    juegos = juegos_random()
-    return render(request,'jugador/dashboard.html',{'juegos' : juegos})
+    try:
+        jugador = Jugador.objects.get(nickname = jugador)
+        if request.user.get_username() != jugador.nickname:
+            return redirect('error_403')
+        juegos = juegos_random()
+        return render(request,'jugador/dashboard.html',{'juegos' : juegos})
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
 
+""" Funciones de opinion """
 
-def ver_juego(request,juego=0):
-    print("Llegue")
-    solicitado = get_object_or_404(Juego, id_juego = juego)
-    print("VEr juego:",solicitado)
-    return render(request,'jugador/perfil.html',{'juego':solicitado})
-
+def mis_opiniones(request, jugador):
+    try:
+        jugador = Jugador.objects.get(nickname = jugador)
+        opiniones = jugador.opiniones.all()
+        for opinion in opiniones:
+            print(opinion)
+            print(type(opinion))
+        return render(request,'prueba.html') 
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
 
 """ Vistas para recomendacion """
 @login_required(login_url='/')
 def tf_idf(request,jugador):
     return render(request,'jugador/recomendacion/tf_idf.html')
 
-    """
-        {% if user.is_authenticated %}
-        # only owner can view his page
-        if self.request.user.get_username() == object.username:
-            return object
-        else:
-            # redirect to 404 page
-            print("you are not the owner!!")
-    """
-    """
-    if request.user.is_authenticated:
-    else:
-    nickname = request.user.get_username()
-    """     
 
 """ Funciones que no son puntos de URL """
 
 def juegos_random():
     ##https://serpapi.com/images-results
     """ Esta funcion regresa pares juego, su imagen aleatorio """
-    import random
     from django.core.exceptions import MultipleObjectsReturned
     disponibles = Juego.objects.all().count()  
     aleatorios = []

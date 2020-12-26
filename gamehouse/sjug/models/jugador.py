@@ -74,27 +74,38 @@ class Opinion(models.Model):
                               verbose_name='Juego al que pertenece la opinion',
                               )
     comentario = models.TextField(blank=True)
-    gusto = models.PositiveIntegerField(default=1, blank=True,
+    CHOICES = [(1,'1'),(2,'2'),(3,'3'),(4,'4'),(5,'5'),
+               (6,'6'),(7,'7'),(8,'8'),(9,'9'),(10,'10')]
+    gusto = models.PositiveSmallIntegerField(default=1, blank=True,
                                         validators=[
-                                            MinValueValidator(1), MaxValueValidator(10)]
+                                            MinValueValidator(1), MaxValueValidator(10)],
+                                        choices = CHOICES,
+                                        verbose_name='Qué tanto te gustó el juego en general',
                                         )
-    guion = models.PositiveIntegerField(default=1, blank=True,
+    guion = models.PositiveSmallIntegerField(default=1, blank=True,
                                         validators=[
-                                            MinValueValidator(1), MaxValueValidator(10)]
+                                            MinValueValidator(1), MaxValueValidator(10)],
+                                        choices = CHOICES,
+                                        verbose_name='Calificación del guión del juego',
                                         )
-    artes = models.PositiveIntegerField(default=1, blank=True,
+    artes = models.PositiveSmallIntegerField(default=1, blank=True,
                                         validators=[
-                                            MinValueValidator(1), MaxValueValidator(10)]
+                                            MinValueValidator(1), MaxValueValidator(10)],
+                                        choices = CHOICES,
+                                        verbose_name='Calificación de la arte del juego',
                                         )
-    jugabilidad = models.PositiveIntegerField(default=1, blank=True,
-                                              validators=[
-                                                  MinValueValidator(1), MaxValueValidator(10)]
-                                              )
-    tecnico = models.PositiveIntegerField(default=1, blank=True,
-                                          validators=[
-                                              MinValueValidator(1), MaxValueValidator(10)]
-                                          )
-
+    jugabilidad = models.PositiveSmallIntegerField(default=1, blank=True,
+                                        validators=[
+                                            MinValueValidator(1), MaxValueValidator(10)],
+                                        choices = CHOICES,
+                                        verbose_name='Calificación de la jugabilidad del juego',
+                                        )
+    tecnico = models.PositiveSmallIntegerField(default=1, blank=True,
+                                        validators=[
+                                            MinValueValidator(1), MaxValueValidator(10)],
+                                        choices = CHOICES,
+                                        verbose_name='Calificación del aspecto técnico del juego',
+                                        )
     def __str__(self):
         return '%s, %s' % (self.jugador.id, self.juego.titulo)
 

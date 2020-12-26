@@ -239,21 +239,37 @@ class JuegoForm(forms.ModelForm):
     }    
 
 class OpinionForm(forms.ModelForm):
+    def __init__(self, *args, **kwargs):
+        super().__init__(*args, **kwargs)
+        self.fields['gusto'].widget.attrs.update({'class': 'star'})
+        self.fields['guion'].widget.attrs.update({'class': 'star'})
+        self.fields['artes'].widget.attrs.update({'class': 'star'})
+        self.fields['jugabilidad'].widget.attrs.update({'class': 'star'})
+        self.fields['tecnico'].widget.attrs.update({'class': 'star'})
+        
+    gusto = forms.TypedChoiceField(choices=Opinion.CHOICES, widget=forms.RadioSelect, coerce=int)
+    guion = forms.TypedChoiceField(choices=Opinion.CHOICES, widget=forms.RadioSelect, coerce=int)
+    artes = forms.TypedChoiceField(choices=Opinion.CHOICES, widget=forms.RadioSelect, coerce=int)
+    jugabilidad = forms.TypedChoiceField(choices=Opinion.CHOICES, widget=forms.RadioSelect, coerce=int)
+    tecnico = forms.TypedChoiceField(choices=Opinion.CHOICES, widget=forms.RadioSelect, coerce=int)
     class Meta:
-        model=Opinion
-        fields=['comentario']
+        model = Opinion
+        exclude = ['jugador','juego','comentario']
+        """
         labels={
-                'comentario':'Comentario',
-                # 'gusto':'Gusto',
-                # 'guion':'Guión',
-                # 'artes':'Artes',
-                # 'jugabilidad':'Jugabilidad',
-                # 'tecnico':'Técnico',
+                'comentario':'Introduce tu impresión en general de este juego',
         }
+        
         widgets = {
-        # telling Django your password field in the mode is a password input on the template
-        'comentario':forms.TextInput(attrs={'rows':5, 'cols':20,'class':'form-control'}),     
-    }
+        'gusto': forms.TypedChoiceField(),
+        #'guion': forms.RadioSelect(choices = Opinion.CHOICES),
+        #'artes': forms.RadioSelect(),
+        #'jugabilidad': forms.RadioSelect(),
+        #'tecnico': forms.RadioSelect(),
+        }
+        """
+        
+        
 
 class JuegosFavoritosForm(forms.ModelForm):
     class Meta:

@@ -62,10 +62,8 @@
             </div>
             {% endfor %}
         </div>
-    <input href="{% url 'mis_gustos_2' user.id %}" id="btn1" class="btn btn-sucess btn-lg btn-block" type="submit" value="Aceptar" >
-    
-    
-    <a href="{% url 'regresar_user' %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Atras</a>
+    <input href="{% url 'mis_juegos' user.get_username %}" id="btn1" class="btn btn-sucess btn-lg btn-block" type="submit" value="Aceptar" >
+    <a href="{% url 'jugador' user.get_username %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Ir a perfil</a>
     </div>
 </form>
      {% endblock content %}

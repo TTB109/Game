@@ -12,7 +12,7 @@
             </div>
             
             <div class="col-md-3 center-align">
-                <a href="{% url 'dashboard' jugador.nickname %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Mi dashboard</a>
+                <a href="{% url 'dashboard' user.get_username %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Mi dashboard</a>
                 <a href="{% url 'editar_jugador' jugador.nickname %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Modificar Perfil</a>
                 <a href="{% url 'mis_gustos' jugador.nickname %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Mis Gustos</a>                
                 <a href="{% url 'mis_opiniones' jugador.nickname %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Mis Opiniones</a>                

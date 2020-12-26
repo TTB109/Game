@@ -51,41 +51,17 @@ $(document).ready(function(){
                 </div>
               </li>
                   <li class="dropdown">
-                    <!-- <a href="{% url 'index' user.id%}" class="nav__link">
-                      <span class="icon">
-                        <i class="bx bx-user nav__icon"></i></span>
-                      <span class="list">Mis palabras</span>
-                    </a> -->
-
-                    <!-- <a class="nav__link">
-                      <span class="icon">
-                        <i class="bx bx-bookmark"></i></span>
-                      <span class="list">Palabras Clave</span></a>
-                    <div class="nav__link_area">
-                        <input class="nav__link chkvalue" type="text" name="Primera" id='Primera' placeholder="Primera">
-                        <input class="nav__link chkvalue" type="text" name="Segunda" id='Segunda' placeholder="Segunda">
-                        <input class="nav__link chkvalue" type="text" name="Tercera" id='Tercera' placeholder="Tercera">
-                        <input class="white-text" type="text" name="valores" id="txtvalues"/>
-                        <a href="#"  name="" type="submit">Aceptar </a>
-                    </div> -->
                   </li>
                   <li>
-		            <a href="{% url 'index' %}" class="nav__link">
+		            <a href="{% url 'jugador' user.get_username %}" class="nav__link">
 		              <span class="icon">
 		              	<i class="bx bx-user nav__icon"></i></span>
 		              <span class="list">Mi perfil</span>
 		            </a>
-                  </li>
-                  <li>
-                    <!-- <a href="{% url 'MiLista' user.id%}" class="nav__link">
-                      <span class="icon">
-                        <i class="bx bx-bookmark"></i></span>
-                      <span class="list">Mi Lista de juegos</span>
-                    </a> -->
-                  </li>                  
+                  </li>             
 		          <div>
                 <li>
-                  <a href="{% url 'index' %}" class="nav__link">
+                  <a href="{% url 'logout' %}" class="nav__link">
                     <span class="icon"><i class="bx bx-log-out-circle"></i></span>
                     <span class="list">Salir</span>
                   </a>
@@ -113,7 +89,7 @@ $(document).ready(function(){
   <div class="row">
   {%for juego,imagen in juegos %}
     <div class="col-sm-6 col-md-4">
-      <a href="{% url 'juego' juego.id_juego%}">
+      <a href="{% url 'ver_juego' juego.id_juego%}">
         <div class="item"
             data-categoria="acción-aventura"
             data-etiquetas="acción aventura halo xbox">

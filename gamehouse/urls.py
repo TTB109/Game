@@ -19,6 +19,7 @@ from django.views.generic import TemplateView as tv
 from django.urls import path, include, re_path,reverse
 
 from gamehouse.sjug.views import universales
+from gamehouse.sjug.views import juego as sjug_juego
 
 
 urls_universales = [
@@ -33,9 +34,13 @@ urls_universales = [
     path('generos/',tv.as_view(template_name="juegos/generos.html"), name="generos"),
     path('InfConsolas/',tv.as_view(template_name="juegos/InfoConsolas.html"), name='InfConsolas'),
     path('InfGeneros/', tv.as_view(template_name="juegos/InfoGeneros.html"), name='InfGeneros'),
+    path('juegos/',sjug_juego.juegos, name = 'juegos'),
+    path('juegos/<int:id_juego>',sjug_juego.ver_juego,name='ver_juego'), #Ver el juego y un snippet de opiniones
+    path('juegos/<int:id_juego>/opiniones',sjug_juego.ver_juego,name='opiniones'), #Lista de opiniones
+   # path('juegos/<int:id_juego>/opiniones/<jugador>',sjug_juego.opiniones_jugador,name='opiniones_juego'), #Ver la opinion de cierto juego
+   # path('juegos/<int:id_juego>/opiniones/<jugador>/crear',sjug_juego.ver_juego,name='ver_juego'),
+   # path('juegos/<int:id_juego>/opiniones/<jugador>/eliminar',sjug_juego.ver_juego,name='ver_juego'),
     
-    #path('juegos/',universales.juegos,name = 'juegos'),
-    #path('juegos/<int:id_juego>',universales.ver_juego,name='ver_juego')
 ]
 urlpatterns = [
     path('',include(urls_universales)),

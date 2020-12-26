@@ -18,7 +18,7 @@ PENDIENTES:
 
 def login(request):
     if request.user.is_authenticated:
-        return redirect('/juegos/')    
+        return redirect('juegos')    
     if request.method == 'POST':     
         username = request.POST['username']
         password = request.POST['password']

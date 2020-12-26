@@ -3,11 +3,7 @@
 path('login/perfil/',include('gamehouse.sjug.urls')),
 path('login/perfil/',include('gamehouse.sadm.urls')),
 
-urlpatterns = [
-    path('mis_gustos/<int:id_gustos>/',login_required(views.mis_gustos), name='mis_gustos'),  ### /sjug/<jugador>/gustos Ver y modificar generos y plataformas
-    path('mis_gustos/mis_gustos_2/<int:id>/',login_required(views.mis_gustos_2), name='mis_gustos_2'), ### /sjug/<jugador>/gustos/juegos Ver, añadir, o modificar mis juegos preferidos  
-    path('mis_gustos/mis_gustos_2/eliminar_juego/<int:id>/<int:pk>/',login_required(views.eliminar_juego), name='eliminar_juego'),  ### /sjug/<jugador>/gustos/juegos/<int:id_juego>/eliminar  
-    path('mis_gustos/mis_gustos_2/agregar_juego/<int:id>/<int:pk>/',login_required(views.agregar_juego), name='agregar_juego'),  ### /sjug/<jugador>/gustos/juegos/<int:id_juego>/agregar 
+urlpatterns = [  
     path('mis_opiniones/<int:id>/',login_required(views.mis_opiniones), name='mis_opiniones'),  ### /sjug/<jugador>/opinion  Muestra lista de opiniones hechas por el jugador indicado
     path('eliminar/<int:id>/',login_required(views.eliminar), name='eliminar'), ### /sjug/<jugador>/eliminar
     path('',login_required(views.perfil_user), name='perfil_user'),  ### /sjug/<jugador> Ver perfil con opciones
@@ -65,61 +61,6 @@ def perfil_user(request):
 ######################################USUARIO##################################################
 ###############################################################################################
 
-#Modificar las listas Genero y Plataforma
-def mis_gustos(request,id_gustos):
-  try:    
-    MGustos=get_object_or_404(Jugador,usuario=id_gustos)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method == 'POST':
-    ILike_form = MisGustosForm(request.POST, instance=MGustos)
-    if ILike_form.is_valid():
-      ILike_form.save()
-      #return redirect('mis_gustos_2',id=id_gustos)
-      return redirect('prueba')
-  else:
-    ILike_form = MisGustosForm(instance=MGustos)
-    return render(request,'jugador/gustos/mis_gustos.html',{'fgustos':ILike_form})
-
-def mis_gustos_2(request, id ):
-  List_juegos=Juego.objects.all()
-  #########Pizza.objects.all().prefetch_related('toppings')###############################################################
-  #########b = Book.objects.select_related('author__hometown').get(id=4)
-  ########from django.db.models import Q
-  ########Model.objects.filter(Q(x=1) | Q(y=2))
-  ########Model.objects.filter(Q(x=1) & Q(y=2))
-
-
-  ############SEARCH
-  ############Entry.objects.filter(headline__in='abc')
-  List_Agregar=JuegosFavoritos.objects.filter(jugador=id)
-  return render(request,'jugador/gustos/mis_gustos_2.html',{'fVJuegos':List_juegos,'fAgregar':List_Agregar})
-
-def eliminar_juego(request,id,pk):
-  try:
-    usuario=get_object_or_404(JuegosFavoritos,id=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method=="POST":
-    usuario.delete()
-    return redirect('mis_gustos_2',id=pk)
-  else:
-    return render(request,'jugador/gustos/eliminar.html')
-
-def agregar_juego(request,id,pk):
-  try:
-    vjuego=get_object_or_404(Juego,id_juego=id)
-    vjugador=get_object_or_404(Jugador,usuario=pk)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-  if request.method=="POST":
-    vjugador.juegos = vjuego
-    vjugador.save()
-    return redirect('mis_gustos_2',id=pk)
-  else:
-    return render(request,'jugador/gustos/agregar.html')
 
 def mis_opiniones(request,id):
     jugador=Jugador.objects.filter(usuario=id).first()
