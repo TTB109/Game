@@ -13,14 +13,13 @@ Including another URLconf
     1. Import the include() function: from django.urls import include, path
     2. Add a URL to urlpatterns:  path('blog/', include('blog.urls'))
 """
-
-from django.contrib import admin
 from django.views.generic import TemplateView as tv
 from django.urls import path, include, re_path,reverse
 
 from gamehouse.sjug.views import universales
 from gamehouse.sjug.views import juego as sjug_juego
-
+from decouple import config
+from django.conf import settings
 
 urls_universales = [
     path('', tv.as_view(template_name="homepage.html"), name='index'),  
@@ -42,10 +41,13 @@ urls_universales = [
    # path('juegos/<int:id_juego>/opiniones/<jugador>/eliminar',sjug_juego.ver_juego,name='ver_juego'),
     
 ]
+
 urlpatterns = [
     path('',include(urls_universales)),
     path('sjug/',include('gamehouse.sjug.urls')),
-    path('sadm/',include('gamehouse.sadm.urls')),
-    #path('admin/', admin.site.urls)   
+    path('sadm/',include('gamehouse.sadm.urls')), 
 ]
+if settings.ADMIN_ENABLED is True:
+	from django.contrib import admin
+	urlpatterns += [path('admin/', admin.site.urls),]
 

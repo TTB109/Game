@@ -10,10 +10,10 @@ STATIC_DIR = os.path.join(BASE_DIR, 'static')
 SECRET_KEY = config('SECRET_KEY')
 #DEBUG = config('DEBUG', default=False, cast=bool)
 
+
 # Application definition
 
 INSTALLED_APPS = [
-    'django.contrib.admin',
     'django.contrib.auth', #Para autenticacion
     'django.contrib.contenttypes', #Para autenticacion
     'django.contrib.sessions',
