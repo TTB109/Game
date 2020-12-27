@@ -53,6 +53,18 @@ Ir a https://dashboard.heroku.com/apps para ver la aplicacion
 # Crear el remoto de heroku
 heroku create gamehouse-b109 
 # Sale algo similar a https://gamehouse-b109.herokuapp.com/ | https://git.heroku.com/gamehouse-b109.git
+# Primero ingresar las variables de entorno a heroku
+heroku config:set ALLOWED_HOSTS=gamehouse-b109.herokuapp.com
+heroku config:set DJANGO_SETTINGS_MODULE=gamehouse.settings.production
+heroku config:set SECRET_KEY=<gobbledygook> # Sin escapar % y con comillas
+heroku config:set ADMIN_ENABLED=False
+#Poner la base de datos
+#Verificar que instalado postgres
+heroku addons
+#Agregar la base de datos postgres
+heroku addons:create heroku-postgresql:hobby-dev
 
+#Hacer el push a heroku 
+git push heroku master
 
 
