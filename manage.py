@@ -5,8 +5,8 @@ import sys
 
 
 def main():
-    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gamehouse.settings.local')
-    #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gamehouse.settings.production')
+    #os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gamehouse.settings.local')
+    os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gamehouse.settings.production')
 
     try:
         from django.core.management import execute_from_command_line
