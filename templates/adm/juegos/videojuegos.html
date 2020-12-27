@@ -38,15 +38,15 @@
                                     <td>{{juego.anio}}</td>
                                     <td>{{juego}}</td>
                                     <td>{{juego}}</td>                                    
-                                    <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'eliminar_videojuegos' juego.id_juego %}">Eliminar</a></td>
-                                    <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'editar_videojuegos' juego.id_juego %}">Modificar</a></td>
+                                    <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'eliminar_videojuegos' administrador.nombre juego.id_juego %}">Eliminar</a></td>
+                                    <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'editar_videojuegos' administrador.nombre juego.id_juego %}">Modificar</a></td>
                                 </tr>
                             {%endfor%}
                           </table>
                     {%include 'pagination.html' with page=juegos%}	                    
-                    <a href="{% url 'registro_videojuegos' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Agregar</a>
+                    <a href="{% url 'registro_videojuegos' administrador.nombre %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Agregar</a>
                 </div>
-            <a href="{% url 'perfil_adm' %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Atras</a>
+            <a href="{% url 'perfil_adm' administrador.nombre %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Atras</a>
         </div>
     </div>
 

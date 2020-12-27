@@ -1,28 +1,150 @@
-<!doctype html>
-<html>
-<head>
-<meta charset="utf-8">
-<meta http-equiv="X-UA-Compatible" content="IE=edge,chrome=1">
-<meta name="viewport" content="width=device-width, initial-scale=1">
-<title>stars.css Demos</title>
-<link rel="stylesheet" href="http://netdna.bootstrapcdn.com/font-awesome/4.2.0/css/font-awesome.min.css">
+{% extends "baseU.html" %}
+{% load static %}
+{% block title %} Juegos {% endblock title%}   
+{% block content %}
+<!-- https://codepen.io/jexordexan/pen/yyYEJa -->
 <style>
-@import url(http://fonts.googleapis.com/css?family=Roboto:500,100,300,700,400);
+@import url(https://fonts.googleapis.com/css?family=Lato:400,300,700);
 
-* {
-  margin: 0;
-  padding: 0;
-  font-family: roboto;
+@import url(//netdna.bootstrapcdn.com/font-awesome/3.2.1/css/font-awesome.css);
+
+*, *:before, *:after {
+  box-sizing: border-box;
 }
 
-body { background: #000; }
+body {
+  background: white;
+}
 
-.cont {
+a .game_imagen{
+    text-decoration: none;
+    color: #5C7FB8
+  }
+  
+a .game_imagen:hover{
+    text-decoration: underline;
+  }
+  
+.videogame-card {
+    font: 14px/22px "Lato", Arial, sans-serif;
+    color: #A9A8A3;
+    padding: 40px 0;
+  }
+  
+.container_videogame {
+    margin: 0 auto;
+    width: 780px;
+    height: 2840px;
+    background: #F0F0ED;
+    border-radius: 5px;
+    position: relative;
+  }
+  
+.hero {
+    height: 342px;  
+    margin:0;
+    position: relative;
+    overflow: hidden;
+    z-index:1;
+    
+    border-top-left-radius: 5px;
+    border-top-right-radius: 5px;
+      
+  }
+  
+.hero:before {
+    content:'';
+    width:100%; height:100%;
+    position:absolute;
+    overflow: hidden;
+    top:0; left:0;
+    background:red;
+    background: url("https://wallpapercave.com/wp/wp7864479.png");
+    z-index:-1;
+   
+    transform: skewY(-2.2deg);
+    transform-origin:0 0;
+    /* -webkit-backface-visibility: hidden;  */
+    
+  }
+  
+.cover {
+    position: absolute;
+    top: 160px;
+    left: 40px;
+    z-index: 2;
+  }
+  
+
+.details_videogame {
+    font-family: 'Black+Ops+One', sans-serif;
+    padding: 190px 0 0 280px;
+}   
+    
+.title111 {
+      color: white;
+      font-size: 26px;
+      margin-bottom: 13px;
+      position: relative;
+}
+  
+.title222 {    
+      color: #C7C1BA;
+      font-size: 23px;    
+      font-weight: 300;
+      margin-bottom: 15px;
+}
+
+.description_videogame {
+    
+    bottom: 0px;
+    height: 200px;
+    font-size: 16px;
+    line-height: 26px;
+    color: #B1B0AC;
+    
+  }
+  
+.column111 {
+    padding-left: 50px;
+    padding-top: 120px;
+    width: 220px;
+    float: left;
+    text-align: center;
+  }
+  
+.tag_tipo {
+    background: white;
+    border-radius: 10px;
+    padding: 3px 8px;
+    font-size: 14px;
+    margin-right: 4px;
+    line-height: 35px;
+    cursor: pointer;
+  }
+  
+.tag_tipo:hover {
+    background: #ddd;
+  }
+  
+.column222 {
+    padding-left: 41px;
+    padding-top: 30px;
+    margin-left: 20px;
+    width: 480px;
+    float: left;
+  }
+  
+.avatars {
+    margin-top: 23px; 
+  }
+
+  .cont {
   width: 93%;
   max-width: 1200px;
   text-align: center;
   margin: 4% auto;
-  padding: 30px 0;
+  padding: 3px 0;
   background: #111;
   color: #EEE;
   border-radius: 5px;
@@ -30,20 +152,7 @@ body { background: #000; }
   overflow: hidden;
 }
 
-hr {
-  margin: 20px;
-  border: none;
-  border-bottom: thin solid rgba(255,255,255,.1);
-}
-
-div.title { font-size: 2em; }
-
-h1 span {
-  font-weight: 300;
-  color: #Fd4;
-}
-
-div.stars {
+  div.stars {
   /* width: 540px; */
   width: 900px;
   display: inline-block;
@@ -78,63 +187,83 @@ label.star:before {
   content: '\f006';
   font-family: FontAwesome;
 }
+
 </style>
-<link href="http://www.cssscript.com/wp-includes/css/sticky.css" rel="stylesheet" type="text/css">
-</head>
+ <!--JUMBOTRON-->
 
-<body>
+ <div class="videogame-card">
+   
+   <div class="container_videogame">
+     <a href="{{imagen.referencia}}" class="game_imagen"><img src="{{imagen.referencia}}" width="160" height="230" alt="{{imagen.alt}}" class="cover" /></a>
+         
+     <div class="hero">
+             
+       <div class="details_videogame">
+         <div class="title222" >Videojuego:</div>        
+         <div class="title111" ><strong>{{juego.titulo}}</strong></div>
+       </div> <!-- end details_videogame -->
+       
+     </div> <!-- end hero -->
+     
+     <div class="description_videogame">
+       
+       <div class="column111" >
+         <p>Plataforma: </p>
+         <div class="row tag_tipo">
+          {% for plataforma in juego.plataformas.all %}
+          <span style="color:black;">{{plataforma.nombre}}, </span>
+          {% endfor %}                   
+         </div>
+         <p>Generos: </p>
+         <div class="row tag_tipo">
+           {% for genero in juego.generos.all %}
+           <span class="tag_tipo" style="color:black;">{{genero.nombre}}, </span>
+          {% endfor %}
+         </div>
+         <div class="avatars">
+          {% for opinion in opiniones %}
+          <p>Jugador:{{ opinion.jugador }}</p>
+          <p>Comentario:{{ opinion.comentario }}</p>
+          <p>Calificacion:{{ opinion.gusto }}</p>
+        {% endfor%}
+         </div>
+       </div> <!-- end column111 -->
+       
+       <div class="column222">        
+         <p style="color:black;">{{juego.descripcion}}</p>
+         <div class="avatars">
+         
+ 
+       
+         </div> <!-- end avatars --> 
+ 
+       </div> <!-- end column222 -->
+       {% if user.is_authenticated %}
+       <form method="POST">
+       {% csrf_token %}
+       {% for aspecto in fopinion %}
+       <div class="cont">
+         <div class="stars">
+         {% for radio in aspecto reversed %}
+         {{ radio.tag }}
+           <label class="star star-{{radio.choice_label}}" for="{{ radio.id_for_label }}">
+           {{ radio.choice_label }}    
+           </label>
+         {% endfor %}
+         </div>
+       </div>
+       {% endfor %}
+       <input type="hidden" name="jugador" value="{{ user.get_username }}">
+       <p style="color:black;" >¿Que te parece el juego?</p>
+       <textarea style="color:black;" name="comentario" cols="100" rows="20" placeholder="Escribir comentario..." >                        
+       </textarea>
+       <span style="white-space: pre-wrap;">
+         <input id="btn1" type="submit" value="Enviar Todo" >      
+       </span>
+       </form>
+       {% endif %}
+     </div> <!-- end description_videogame -->
+   </div> <!-- end container_videogame -->
+ </div> <!-- end videogame-card -->
 
-<div class="title">
-    <h1>Juegos<span>sjug</span></h1>
-</div>   
-
-<div class = "cont">
-
-<p>Videojuego:</p>
-{{ juego.titulo }}            
-<p>Consolas: </p>
-            <div>
-              {% for plataforma in juego.plataformas.all %}
-              <span style="color:black;">{{plataforma.nombre}}, </span>
-              {% endfor %}
-            </div>
-            <p>Generos: </p>
-            <div>
-             {% for genero in juego.generos.all %}
-              <span class="tag_tipo" style="color:black;">{{genero.nombre}}, </span>
-             {% endfor %}
-            </div>
-          <p> Descripcion: </p>        
-            <p style="color:black;">{{juego.descripcion}}</p>             
-</div>
-
-<div class="cont">
-  {% for opinion in opiniones %}
-    <p>Jugador:{{ opinion.jugador }}</p>
-    <p>Comentario:{{ opinion.comentario }}</p>
-    <p>Calificacion:{{ opinion.gusto }}</p>
-  {% endfor%}
-</div>
-
-{% if user.is_authenticated %}
-<form method="POST">
-{% csrf_token %}
-{% for aspecto in fopinion %}
-<div class="cont">
-  <div class="stars">
-  {% for radio in aspecto reversed %}
-	{{ radio.tag }}
-    <label class="star star-{{radio.choice_label}}" for="{{ radio.id_for_label }}">
-    {{ radio.choice_label }}    
-    </label>
-  {% endfor %}
-  </div>
-</div>
-<input type="hidden" name="jugador" value="{{ user.get_username }}">
-{% endfor %}
-<input type ="submit" >
-</form>
-{% endif %}
-
-</body>
-</html>
+{% endblock content %}

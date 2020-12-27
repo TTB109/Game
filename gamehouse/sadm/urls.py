@@ -19,9 +19,9 @@ urlpatterns = [
     path('<administrador>/genero/<int:id_genero>/', login_required(juegos.editar_Genero), name='editar_Genero'),###############################################/sadm/<administrador>/genero/<Int: id_genero >                  Editar genero
     path('<administrador>/VCPU', login_required(juegos.ViewcaracteristicasPU), name='ViewcaracteristicasPU'),################################### Ver las lista de vectores de los Usuario 
     path('<administrador>/VCDE', login_required(juegos.ViewcaracteristicasDE), name='ViewcaracteristicasDE'),###################################Ver la lista de vectores de caracteristica
-    path('<administrador>/jugadores', login_required(jugadores.gestion_usuarios), name='gestion_usuarios'),#############################################/sadm/<administrador>/jugadores  mostrar lista de jugadores
+    path('<administrador>/jugadores', login_required(jugadores.gestion_usuarios), name='gestion_usuarios'),
     path('<administrador>/jugadores/registro',login_required(jugadores.registro_usuarios), name='registro_usuarios'),
-    path('<administrador>/jugadores/<int:id_usuario>/eliminar/',login_required(jugadores.eliminar_usuarios), name='eliminar_usuarios'),
+    path('<administrador>/jugadores/<int:id_usuario>/eliminar',login_required(jugadores.eliminar_usuarios), name='eliminar_usuarios'),
     path('<administrador>/jugadores/<int:id_usuario>/',login_required(jugadores.editar_usuarios), name='editar_usuarios'),
     path('<administrador>/signout/',login_required(administrador.signout), name= 'signout'),
   ]

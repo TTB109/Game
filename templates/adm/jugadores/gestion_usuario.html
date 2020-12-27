@@ -23,10 +23,9 @@
                         <thead>
                             <tr>
                                 <td>Nombre</td>
-                                <td>NickName</td>
+                                <td>Correo</td>
                                 <td>Edad</td>
                                 <td>Id Usuario</td>
-                                <td>Id User</td>
                                 <td>Eliminar</td>
                                 <td>Modificar</td>
                             </tr>
@@ -35,19 +34,18 @@
                         {%for Usuario in dataset %}
                             <tr>
                                 <td>{{Usuario.nombre}}</td>
-                                <td>{{user.username}}</td>
+                                <td>{{Usuario.correo}}</td>
                                 <td>{{Usuario.fec_nac}}</td>
-                                <td>{{Usuario.id}}</td>
-                                <td>{{user.id}}</td>
-                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'eliminar_usuarios' Usuario.id %}">Eliminar</a></td>
-                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'editar_usuarios' Usuario.id %}">Modificar</a></td>
+                                <td>{{Usuario.id_usuario}}</td>
+                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'eliminar_usuarios' administrador.nombre Usuario.id_usuario %}">Eliminar</a></td>
+                                <td><a class="btn btn-primary btn-lg btn-block" name="" type="submit" href="{% url 'editar_usuarios' administrador.nombre Usuario.id_usuario %}">Modificar</a></td>
                             </tr>
                         {%endfor%}
                     </table>
-                    {%include 'pagination.html' with page=dataset%}	                    
-                    <a href="{% url 'registro_usuarios' %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Agregar</a>                      
+                    {%include 'pagination.html' with page=dataset%}                  
+                    <a href="{% url 'registro_usuarios' administrador.nombre %}" class="btn btn-primary btn-lg btn-block" name="" type="submit">Agregar</a>                      
                 </div> 
-            <a href="{% url 'perfil_adm' %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Atras</a>
+            <a href="{% url 'perfil_adm' administrador.nombre %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Atras</a>
         </div>
     </div>
     <!--FOOTER-->    

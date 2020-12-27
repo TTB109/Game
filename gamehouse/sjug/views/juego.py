@@ -38,11 +38,11 @@ def ver_juego(request,id_juego):
                 jugador = Jugador.objects.get(nickname = request.POST.get('jugador')) #Recibiendo campo oculto
                 if opinion_form.is_valid():
                     opinion = opinion_form.save(commit = False)
-                    opinion.comentario = "Muy buen juego, pero pues equis XD"
+                    opinion.comentario = request.POST.get('comentario')
                     opinion.jugador = jugador 
                     opinion.juego = juego
                     opinion.save()
-                    return redirect('index')
+                    return redirect('/juegos/'+str(juego.id_juego)+'/')
             except Jugador.DoesNotExist:
                 return redirect('error_404')
         else:

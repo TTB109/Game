@@ -22,27 +22,30 @@ def login(request):
     if request.method == 'POST':     
         username = request.POST['username']
         password = request.POST['password']
+        print("El admin tiene:",username)
         try:
-            jugador = Jugador.objects.get(nickname = username)
-            usuario = authenticate(request, username = username, password = password)
-            if usuario:
-                auth_login(request,usuario)
-                return redirect('/sjug/'+jugador.nickname+'/dashboard/')
-            else:
-                return redirect("/login/")
-        except Jugador.DoesNotExist:
-            try:
-                admin = Administrador.objects.get(nombre = username)
-                # usuario = Usuario.objects.get(id_usuario = admin.usuario.id_usuario)
-                # jugador = Jugador.objects.get(usuario_id = usuario.id_usuario)
-                #usuario = authenticate(request, username = jugador.nickname, password = password)
-                usuario = authenticate(request, username = username, password = password)
+            admin = Administrador.objects.get(nombre = username)
+            print("El admin tiene:",admin.nombre)            
+            if admin:
+                jugador = Jugador.objects.get(usuario = admin.usuario)
+                print("El admin tiene:",jugador.nickname)
+                usuario = authenticate(request, username = jugador.nickname, password = password)
+                # usuario = authenticate(request, username = username, password = password)
                 if usuario:
                     auth_login(request,usuario)
                     return redirect('/sadm/'+admin.nombre)
                 else:
                     return redirect("/login/")
-            except Administrador.DoesNotExist:
+        except Administrador.DoesNotExist:
+            try:
+                jugador = Jugador.objects.get(nickname = username)
+                usuario = authenticate(request, username = username, password = password)
+                if usuario:
+                    auth_login(request,usuario)
+                    return redirect('/sjug/'+jugador.nickname+'/dashboard/')
+                else:
+                    return redirect("/login/")
+            except Jugador.DoesNotExist:
                 raise Http404("El usuario con el que intentas iniciar sesión no existe!")
     else:        
         return render(request,'inicio_sesion.html')
@@ -51,7 +54,9 @@ def login(request):
 def logout(request):
     auth_logout(request)
     return redirect('index')
-    
+
+## Falta guardar datos de genero consolas    
+## Falta la página de 10 palabras
 def registro(request):
     if request.method == 'POST':
         user_form = UserForm(request.POST)

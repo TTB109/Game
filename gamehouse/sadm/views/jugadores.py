@@ -5,12 +5,14 @@ from django.shortcuts import redirect,render,get_object_or_404
 from gamehouse.sjug.models import *
 from gamehouse.sjug.forms import UsuarioForm,JugadorForm,UserForm
 from gamehouse.sjug.filters import JuegoFilter
+from gamehouse.sadm.models import Administrador
 
 def gestion_usuarios(request,administrador):
     try:
         solicitado = Administrador.objects.get(nombre = administrador)
-        if user.get_username() == solicitado.username: ## Tengo iniciada una sesión de adm
-            dataset = Usuario.objects.all()
+        jugador = Jugador.objects.get(usuario = solicitado.usuario)
+        if request.user.get_username() == jugador.nickname: 
+            dataset = Usuario.objects.exclude(nombre__icontains=administrador)
             paginator=Paginator(dataset,2)
             page=request.GET.get('page')
             try:
@@ -19,18 +21,21 @@ def gestion_usuarios(request,administrador):
                 posts=paginator.page(1)
             except EmptyPage:
                 posts=paginator.page(paginator.num_pages)
-            return render(request,'adm/jugadores/gestion_usuario.html',{'dataset':posts,'page':page})
+            print("si se acepta")
+            print("largo ",len(dataset))
+            return render(request,'adm/jugadores/gestion_usuario.html',{'dataset':posts,'page':page,'administrador':solicitado})
                 
-        else:# Tengo iniciada sesión como jugador normal
+        else:
             print("No tienes permisos!!")
-            raise PermissionDenied # Error 403 forbidden             
+            raise PermissionDenied            
     except Jugador.DoesNotExist:
         raise Http404("Ese administrador no existe!")
 
 def registro_usuarios(request,administrador):
     try:
         solicitado = Administrador.objects.get(nombre = administrador)
-        if user.get_username() == solicitado.username: ## Tengo iniciada una sesión de adm
+        jugador = Jugador.objects.get(usuario = solicitado.usuario)
+        if request.user.get_username() == jugador.nickname: 
             if request.method == 'POST':
                 user_form = UserForm(request.POST) 
                 usuario_form = UsuarioForm(request.POST)
@@ -46,53 +51,59 @@ def registro_usuarios(request,administrador):
                     password = user_form.cleaned_data['password1']
                     user = authenticate(username = username,password = password)
                     login(request, user)
-                    return redirect('gestion_usuarios')
-                #return HttpResponseRedirect(reverse('registro-exitoso'),mensaje = 'Felicidades te registraste')
+                    return redirect('gestion_usuarios',administrador=administrador)
             else:
                 user_form=UserForm()
                 usuario_form = UsuarioForm()
                 jugador_form = JugadorForm()
-            #  context={'fusuario':usuario_form, 'fjugador':jugador_form}
-            return render(request,'adm/jugadores/registro_jugadores.html',{'fusuario':usuario_form, 'fuser':user_form, 'fjugador':jugador_form})    
+            return render(request,'adm/jugadores/registro_jugadores.html',{'fusuario':usuario_form, 'fuser':user_form, 'fjugador':jugador_form,'administrador':solicitado})    
                 
-        else:# Tengo iniciada sesión como jugador normal
+        else:
             print("No tienes permisos!!")
-            raise PermissionDenied # Error 403 forbidden             
+            raise PermissionDenied            
     except Jugador.DoesNotExist:
         raise Http404("Ese administrador no existe!")
 
 def editar_usuarios(request,administrador,id_usuario):
     try:
         solicitado = Administrador.objects.get(nombre = administrador)
-        if user.get_username() == solicitado.username: ## Tengo iniciada una sesión de adm
+        jugador = Jugador.objects.get(usuario = solicitado.usuario)
+        if request.user.get_username() == jugador.nickname: 
             try:    
                 usuario=get_object_or_404(Usuario,id=id_usuario)
+                jugador=get_object_or_404(Jugador,usuario=usuario)
             except Exception:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
 
             if request.method == 'POST':
                 usuario_form = UsuarioForm(request.POST, instance=usuario)
+                jugador_form = JugadorForm(request.POST, instance=jugador)
                 if usuario_form.is_valid():
                     usuario = usuario_form.save()
-                    return redirect('gestion_usuarios')
+                    jugador=jugador_form.save()
+                    return redirect('gestion_usuarios',administrador=administrador)
             else:
                 usuario_form = UsuarioForm(instance=usuario)
-            return render(request,'adm/jugadores/editar_jugadores.html',{'fusuario':usuario_form})
+                jugador_form = JugadorForm(instance=usuario)
+            return render(request,'adm/jugadores/editar_jugadores.html',{'fusuario':usuario_form,'fjugador':jugador_form,'administrador':solicitado})
                 
-        else:# Tengo iniciada sesión como jugador normal
+        else:
             print("No tienes permisos!!")
-            raise PermissionDenied # Error 403 forbidden             
+            raise PermissionDenied            
     except Jugador.DoesNotExist:
         raise Http404("Ese administrador no existe!")
 
 def eliminar_usuarios(request,administrador,id_usuario):
+    print("usuario id",id_usuario)
+    print("usuario",administrador)
     try:
         solicitado = Administrador.objects.get(nombre = administrador)
-        if user.get_username() == solicitado.username: ## Tengo iniciada una sesión de adm
+        jugador = Jugador.objects.get(usuario = solicitado.usuario)
+        if request.user.get_username() == jugador.nickname: 
             try:
                 usuario=get_object_or_404(Usuario,id=id_usuario)
                 userio=get_object_or_404(User,id=id_usuario)
-                jugador=get_object_or_404(Jugador,usuario=id_usuario)
+                jugador=get_object_or_404(Jugador,usuario=usuario)
             except Exception:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
 
@@ -100,11 +111,11 @@ def eliminar_usuarios(request,administrador,id_usuario):
                 jugador.delete()
                 userio.delete()
                 usuario.delete()
-                return redirect('gestion_usuarios')
+                return redirect('gestion_usuarios',administrador=administrador)
             else:
-                return render(request,'adm/jugadores/eliminar_jugadores.html')                
-        else:# Tengo iniciada sesión como jugador normal
+                return render(request,'adm/jugadores/eliminar_jugadores.html',{'administrador':solicitado})
+        else:
             print("No tienes permisos!!")
-            raise PermissionDenied # Error 403 forbidden             
+            raise PermissionDenied         
     except Jugador.DoesNotExist:
         raise Http404("Ese administrador no existe!")

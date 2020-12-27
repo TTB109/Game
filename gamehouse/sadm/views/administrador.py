@@ -4,28 +4,20 @@ from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
 from django.shortcuts import redirect,render,get_object_or_404
 from gamehouse.sjug.models import *
 #from .forms import Administrador
+from gamehouse.sadm.models import Administrador
 from gamehouse.sjug.filters import JuegoFilter
+from django.contrib.auth import logout
 
 def perfil_adm(request,administrador):
     try:
-        solicitado = Administrador.objects.get(nombre = administrador)
-        if user.get_username() == solicitado.username: ## Tengo iniciada una sesión de adm
-            return render(request,'adm/perfil_adm.html')       
-                
-        else:# Tengo iniciada sesión como jugador normal
-            print("No tienes permisos!!")
-            raise PermissionDenied # Error 403 forbidden             
+        print(administrador)
+        solicitado = Administrador.objects.get(nombre = administrador)       
+        return render(request,'adm/perfil_adm.html',{'administrador':solicitado})                
     except Jugador.DoesNotExist:
         raise Http404("Ese administrador no existe!")
 
 def signout(request,administrador):
-    try:
-        solicitado = Administrador.objects.get(nombre = administrador)
-        if user.get_username() == solicitado.username: ## Tengo iniciada una sesión de adm
-            logout(request)
-            return redirect('/')            
-        else:# Tengo iniciada sesión como jugador normal
-            print("No tienes permisos!!")
-            raise PermissionDenied # Error 403 forbidden             
-    except Jugador.DoesNotExist:
-        raise Http404("Ese administrador no existe!")
+    admin = Administrador.objects.get(nombre = administrador)
+    jugador = Jugador.objects.get(usuario = admin.usuario)
+    logout(request)
+    return redirect('index')
