@@ -1,7 +1,71 @@
-#Empezar aplicacion
-python3 manage.py startapp sadm
+""" CONFIGURACION DE PAQUETES """
+#Activar entorno virtual
+#Instalar dj-database-url, gunicorn whitenoise
+pip3 install dj-database-url gunicorn whitenoise
+#Crear archivo de requerimientos
+pip3 freeze > requirements.txt
+#Instalar psycopg2 para postgreSQL
+pip3 install django-toolkit psycopg2
+# Agregar line al final de requirements.txt 
+psycopg2==2.8.6
+# Crear archivo Procfile y agregar la siguiente linea al final
+web: gunicorn miSitio.wsgi #Donde miSitio.wsgi es el nombre del proyecto
+# Indicar version python creando archivo runtime.txt y agregar
+python-3.9.1
+# Instalar decouple para variables de entorno
+pip3 install python-decouple
 
-#AUtenticacion
-https://docs.djangoproject.com/es/3.0/topics/auth/
+""" CONFIGURACION DE DJANGO """
+#Crear folder de settings 
+#Crear archivo __init__.py, base.py, local.py, production.py  dentro de
+#base.py contiene lo comun a ambos (Quitar DEBUG, SECRET_KEY y demas y agregar algo como:
+from decouple import config
 
-skdhsjdhsakjdh
+SECRET_KEY = config('SECRET_KEY')
+
+)
+
+#En local.py extender de base, luce algo así:
+from .base import *
+
+DEBUG = True
+
+INSTALLED_APPS += [
+    'debug_toolbar',
+]
+
+MIDDLEWARE += ['debug_toolbar.middleware.DebugToolbarMiddleware', ]
+
+EMAIL_BACKEND = 'django.core.mail.backends.console.EmailBackend'
+
+DEBUG_TOOLBAR_CONFIG = {
+    'JQUERY_URL': '',
+}
+
+#En production.py luce como así:
+from .base import *
+
+DEBUG = False
+
+ALLOWED_HOSTS = ['mysite.com', ]
+
+CACHES = {
+    'default': {
+        'BACKEND': 'django.core.cache.backends.memcached.MemcachedCache',
+        'LOCATION': '127.0.0.1:11211',
+    }
+}
+
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+EMAIL_HOST = 'smtp.mailgun.org'
+EMAIL_PORT = 587
+EMAIL_HOST_USER = config('EMAIL_HOST_USER')
+EMAIL_HOST_PASSWORD = config('EMAIL_HOST_PASSWORD')
+EMAIL_USE_TLS = True
+
+## COmo correr :
+python3 manage.py runserver --settings=gamehouse.settings.local
+
+""" Variables de entorno """
+
+
