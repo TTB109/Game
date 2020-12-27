@@ -46,4 +46,13 @@ application = get_wsgi_application()
 from whitenoise.django import DjangoWhiteNoise  
 application = DjangoWhiteNoise(application)
 
+""" SUbida a heroku """
+# Logearse con
+heroku login
+Ir a https://dashboard.heroku.com/apps para ver la aplicacion
+# Crear el remoto de heroku
+heroku create gamehouse-b109 
+# Sale algo similar a https://gamehouse-b109.herokuapp.com/ | https://git.heroku.com/gamehouse-b109.git
+
+
 

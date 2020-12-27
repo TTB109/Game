@@ -1,7 +1,7 @@
 from gamehouse.settings.base import *
 
 DEBUG = False
-ALLOWED_HOSTS = ['gamehouse.herokuapp.com']
+ALLOWED_HOSTS = ['gamehouse-b109.herokuapp.com']
 
 
 #Configuracion de estaticos
