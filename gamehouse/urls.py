@@ -47,7 +47,22 @@ urlpatterns = [
     path('sjug/',include('gamehouse.sjug.urls')),
     path('sadm/',include('gamehouse.sadm.urls')), 
 ]
-if settings.ADMIN_ENABLED is True:
+
+ADMIN_ENABLED = config('ADMIN_ENABLED', default=False, cast=bool)
+if ADMIN_ENABLED is True:
 	from django.contrib import admin
 	urlpatterns += [path('admin/', admin.site.urls),]
 
+
+""" Para modo local
+
+if settings.ADMIN_ENABLED is True:
+	from django.contrib import admin
+	urlpatterns += [path('admin/', admin.site.urls),]
+  
+  Para modo produccion:
+ ADMIN_ENABLED = config('ADMIN_ENABLED', default=False, cast=bool)
+ if ADMIN_ENABLED is True:
+	from django.contrib import admin
+	urlpatterns += [path('admin/', admin.site.urls),]
+"""

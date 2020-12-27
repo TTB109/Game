@@ -70,6 +70,10 @@ heroku addons:create heroku-postgresql:hobby-dev
 #Hacer el push a heroku 
 git push heroku master
 
+## Hacer la migración de las tablas
+heroku run python manage.py migrate
+
+
 ##Debbuging of the page
 # Show current logs
 heroku logs
