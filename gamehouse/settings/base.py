@@ -5,7 +5,6 @@ from decouple import config
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 PROJECT_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-STATIC_DIR = os.path.join(BASE_DIR, 'static')
 
 SECRET_KEY = config('SECRET_KEY')
 #DEBUG = config('DEBUG', default=False, cast=bool)
@@ -99,11 +98,11 @@ DATE_INPUT_FORMATS = ('%d/%m/%Y','%d-%m-%Y') #('%d-%m-%Y','%Y-%m-%d')
 
 # Static files (CSS, JavaScript, Images)
 # https://docs.djangoproject.com/en/3.0/howto/static-files/
-
+STATIC_ROOT = os.path.join(BASE_DIR, 'static')
 STATIC_URL = '/static/'
-STATICFILES_DIRS = [STATIC_DIR,
-  ('css','%s/css' % STATIC_DIR),
-  ('js','%s/js' % STATIC_DIR),
+STATICFILES_DIRS = [STATIC_ROOT,
+  ('css','%s/css' % STATIC_ROOT),
+  ('js','%s/js' % STATIC_ROOT),
  #('bootstrap','%s/bootstrap-3.1.1-dist/'% (STATIC_DIR)),
  #('jquery','%s/jquery-1-11-1-dist/'% (STATIC_DIR)),
  #('jquery-ui','%s/jquery-ui-1.10.4/'% (STATIC_DIR)), 
