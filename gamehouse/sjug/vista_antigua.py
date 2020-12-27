@@ -41,95 +41,11 @@ from scipy import spatial
 from django.core.exceptions import MultipleObjectsReturned
 from _testcapi import exception_print
 
-# Create your views here.
-@csrf_exempt
-def signin(request):
-  context = { 
-          'username': request.POST['usuario'] , 
-          'password': request.POST['pass']
-  }
-  if request.POST['usuario'] == 'admin':
-    return render(request,'adm/perfil_adm.html',context)
-  return render(request,'jugador/perfil.html',context)
-
-def perfil_user(request):
-  return render(request,'jugador/perfil.html')
-
 
 
 ###############################################################################################
 ######################################USUARIO##################################################
 ###############################################################################################
-
-
-def mis_opiniones(request,id):
-    jugador=Jugador.objects.filter(usuario=id).first()
-    print(jugador.nickname)
-    miOpinion=Opinion.objects.filter(jugador=jugador.nickname)
-    paginator=Paginator(miOpinion,5)
-    page=request.GET.get('page')
-    try:
-      posts=paginator.page(page)
-    except PageNotAnInteger:
-      posts=paginator.page(1)
-    except EmptyPage:
-      posts=paginator.page(paginator.num_pages)
-    return render(request,'jugador/opiniones.html',{'fOpinion':posts,'page':page})
-    # return render(request,'jugador/opiniones.html',{'fOpinion':miOpinion,'page':page})
-
-def edit_perfil(request,id):
-  try:    
-    usuario=get_object_or_404(Usuario,id=id)
-    userio=get_object_or_404(User,id=id)
-    jugador=get_object_or_404(Jugador,usuario=id)
-  except Exception:
-    return HttpResponseNotFound('<h1>Page not found</h1>')
-
-  if request.method == 'POST':
-    user_form = UserForm(request.POST, instance=userio)
-    usuario_form = UsuarioForm(request.POST, instance=usuario)
-    jugador_form = JugadorForm(request.POST, instance=jugador)
-    if all([usuario_form.is_valid(),jugador_form.is_valid(),user_form.is_valid()]):
-      usuario = usuario_form.save()
-      jugador = jugador_form.save(commit = False)
-      jugador.id_jugador = usuario
-      jugador_form.save()
-      user_form.save()
-      return redirect('perfil_user')
-      #return HttpResponseRedirect(reverse('registro-exitoso'),mensaje = 'Felicidades te registraste')
-  else:
-    usuario_form = UsuarioForm(instance=usuario)
-    user_form = UserForm(instance=userio)
-    jugador_form = JugadorForm(instance=jugador)
-  return render(request,'jugador/editar_jugador.html',{'fusuario':usuario_form, 'fuser':user_form, 'fjugador':jugador_form})
-
-
-def regresar_user(request):
-  return render(request,'jugador/perfil.html')
-
-
-def VVJuego(request,id_juego,pk):
-  VJuego=Juego.objects.get(id_juego=id_juego)
-  imagen =Imagen.objects.get(id_imagen=id_juego)
-  if request.method == 'POST':
-    opinion_form = OpinionForm(request.POST)
-    if opinion_form.is_valid():
-      rOpinion=opinion_form.save(commit = False)
-      rOpinion.juego=Juego.objects.get(id_juego=id_juego)##############corregir con Jugador
-      rOpinion.jugador=Jugador.objects.get(usuario=pk)##################corregir con Jugador
-      rOpinion.gusto=request.POST.get('gusto')
-      rOpinion.guion=request.POST.get('guion')
-      rOpinion.artes=request.POST.get('artes')
-      rOpinion.jugabilidad=request.POST.get('jugabilidad')
-      rOpinion.tecnico=request.POST.get('tecnico')
-      rOpinion.save()
-      return redirect('VVJuego',id_juego=id_juego,pk=pk)
-      #return redirect('regresar_user')
-  else:
-    opinion_form=OpinionForm()
-    VJuego=Juego.objects.get(id_juego=id_juego)
-    imagen =Imagen.objects.get(id_imagen=id_juego)    
-    return render(request,'juegos/juego.html',{'fopinion':opinion_form,'VJuego':VJuego,'fimagen':imagen})
 
   
 def consolas(request):
@@ -329,23 +245,124 @@ def ViewcaracteristicasDE(request):
     posts=paginator.page(paginator.num_pages)
   return render(request,'adm/CaractDE.html',{'fvcde':vcde,'page':page})
 
-def prueba(request,username):
-  jugador = get_object_or_404(Jugador,nickname=username)
-  print(jugador)
-  return render(request,'prueba.html')
 
-def juegos101(request):
-  juegos = Juego.objects.all()
-  slugs = [juego.slug() for juego in juegos]
-  for slug in slugs:
-      print(slug)
-  return render(request,'prueba.html')
+def prueba(request,id):
+    listdesc=[]
+    listgames=[]
+    listidf=[]
+    list7=[]
+    list8=[]
+    list9=[]
+    list10=[]
 
-def juegotal(request,juego_slug):
-  print("SOlicitado:"+juego_slug)
-  juego = get_object_or_404(Juego,slug=juego_slug)
-  print(juego)
-  return render(request,'prueba.html')
+    ############    FILTER LIST
+    usuario=Usuario.objects.get(id=id)
+    jugador=Jugador.objects.get(usuario=usuario)
+    setGames=Opinion.objects.all().filter(jugador=jugador.nickname,gusto__gte=6)
+
+    ############    SEPARATE LIST
+    for game in setGames:
+      print("El juego es:",game)
+      temp=[]
+      suma=game.guion+game.artes+game.jugabilidad+game.tecnico
+      print("La suma es:",suma)
+      if game.gusto == 10:
+        temp.append(game.juego)
+        temp.append(suma)
+        list10.append(temp)
+      elif game.gusto == 9:
+        temp.append(game.juego)
+        temp.append(suma)
+        list9.append(temp)
+      elif game.gusto == 8:
+        temp.append(game.juego)
+        temp.append(suma)
+        list8.append(temp)
+      elif game.gusto == 7 or game.gusto == 6:
+        temp.append(game.juego)
+        temp.append(suma)
+        list7.append(temp)
+
+    ############    SORT LIST
+    list10.sort(key=lambda x: x[1], reverse=True)
+    list9.sort(key=lambda x: x[1], reverse=True)
+    list8.sort(key=lambda x: x[1], reverse=True)
+    list7.sort(key=lambda x: x[1], reverse=True)
+
+    # for ele in list10:
+    #   print("lista 10:",ele[0])
+
+    ############    CHANGE LISTS IN LIST OF 10
+    if len(list10)>0:
+      if len(list10) >= 5:
+        #listtemp=list(split(list10, 5)) #seccionar la lista
+        listtemp = np.array_split(list10, 5)
+        for evry in listtemp:
+          listgames=random.sample(range(0, len(evry)), 1)
+      else:#si no cumple con el ancho
+        for elemento in list10:
+          listgames.append(elemento)
+
+    if len(list9)>0:
+      limit=8-len(listgames)#Se resta 8 para saber los que faltan    
+      if len(listgames)<5 and len(list9) >=3:#Agrega si en la lista no hay 5
+        listtemp=np.array_split(list9,limit)#seccionar la lista
+        for evry in listtemp:#de cada seccion obtiene un elemento
+          listgames=random.sample(range(0, len(evry)), 1)
+      elif len(list9) >=3:#Agrega 3
+        listtemp=np.array_split(list9, 3)#seccionar la lista
+        for evry in listtemp:#de cada seccion obtiene un elemento
+          listgames=random.sample(range(0, len(evry)), 1)
+      else:
+        for elemento in list9:
+          listgames.append(elemento)
+    
+    if len(list8)>0:
+      limit=10-len(listgames)#Se resta 10 para saber los que faltan
+      if len(listgames)<8 and len(list8) >=2:#Agrega si en la lista no hay 5
+        listtemp=np.array_split(list8,limit)#seccionar la lista
+        for evry in listtemp:#de cada seccion obtiene un elemento
+          listgames=random.sample(range(0, len(evry)), 1)
+      elif len(list8) >=2:
+        listtemp=np.array_split(list8, 2)#seccionar la lista
+        for evry in listtemp:#de cada seccion obtiene un elemento
+          listgames=random.sample(range(0, len(evry)), 1)
+      else:
+        for elemento in list8:
+          listgames.append(elemento)
+
+    if len(list7)>0:
+      limit=10-len(listgames)#Se resta 10 para saber los que faltan
+      if len(listgames)<10 and len(list7) >=limit:
+        listtemp=np.array_split(list7, limit)#seccionar la lista
+        for evry in listtemp:#de cada seccion obtiene un elemento
+          listgames=random.sample(range(0, len(evry)), 1)
+      else:
+        for elemento in list7:
+          listgames.append(elemento)
+
+    ############    CREATE LIST OF DESCRIPTION
+    for ele in listgames:
+      description=Juego.objects.filter(titulo=ele[0])
+      for desc in description:
+        listdesc.append(desc.descripcion)
+    print("lista :",listdesc)
+    
+    for listtext in listdesc:
+      listidf.append(idf(listtext))
+    
+    listidf.sort(reverse=True)
+
+    
+
+
+    return render(request,'prueba.html')
+
+
+
+
+
+
 
 lg = [] #Lista de generos  
   aleatorios = []
