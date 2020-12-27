@@ -3,6 +3,8 @@
 # Referencia: https://codigofacilito.com/articulos/deploy-django-heroku
 # Referencia: https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Deployment
 # Referencia: https://blog.heroku.com/from-project-to-productionized-python
+#Referencia si probelmas con db: https://stackoverflow.com/questions/23964807/django-south-heroku-keyerror-default
+
 #Activar entorno virtual
 #Instalar dj-database-url, gunicorn whitenoise
 pip3 install dj-database-url gunicorn whitenoise
