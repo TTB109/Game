@@ -1,6 +1,8 @@
 """ CONFIGURACION DE PAQUETES """
 # Referencia: https://medium.com/fixtergeek/sube-tu-proyecto-django-a-heroku-en-7-pasos-92c20b7986c4
 # Referencia: https://codigofacilito.com/articulos/deploy-django-heroku
+# Referencia: https://developer.mozilla.org/es/docs/Learn/Server-side/Django/Deployment
+# Referencia: https://blog.heroku.com/from-project-to-productionized-python
 #Activar entorno virtual
 #Instalar dj-database-url, gunicorn whitenoise
 pip3 install dj-database-url gunicorn whitenoise
@@ -12,6 +14,10 @@ pip3 install django-toolkit psycopg2
 psycopg2==2.8.6
 # Crear archivo Procfile y agregar la siguiente linea al final
 web: gunicorn miSitio.wsgi #Donde miSitio.wsgi es el nombre del proyecto
+#Si se requiere el log: 
+web: gunicorn <el nombre de tu proyecto>.wsgi --log-file -
+
+
 # Indicar version python creando archivo runtime.txt y agregar
 python-3.9.1
 # Instalar decouple para variables de entorno
@@ -29,5 +35,15 @@ pip3 install python-decouple
 python3 manage.py runserver --settings=gamehouse.settings.local
 
 """ Variables de entorno """
+#Indicados en los archivos de settings
+
+""" Configuracion del wsgi """
+AL final de wsgi agregar
+import os  
+from django.core.wsgi import get_wsgi_application  
+os.environ.setdefault("DJANGO_SETTINGS_MODULE", "gamehouse.settings")  
+application = get_wsgi_application()  
+from whitenoise.django import DjangoWhiteNoise  
+application = DjangoWhiteNoise(application)
 
 

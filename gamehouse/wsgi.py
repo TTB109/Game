@@ -11,9 +11,10 @@ import os
 
 from django.core.wsgi import get_wsgi_application
 
-os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gamehouse.settings')
-#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gamehouse.settings.production')
+#os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gamehouse.settings')
+os.environ.setdefault('DJANGO_SETTINGS_MODULE', 'gamehouse.settings.production')
 
 application = get_wsgi_application()
-# from dj_static import Cling
-# application = Cling(get_wsgi_application())
+# Las siguientes lineas son para Deployment
+from whitenoise.django import DjangoWhiteNoise  
+application = DjangoWhiteNoise(application)
