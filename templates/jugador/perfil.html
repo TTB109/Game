@@ -27,7 +27,7 @@
                 <h3>Edad: {{jugador.usuario.fec_nac}} </h3>
             </div>
             <div class="col-md-3 center-align">                
-                <a href="{% url 'index' %}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Sus Opiniones</a>                                
+                <a href="{% url 'opinion' jugador.nickname%}" class="btn btn-sucess btn-lg btn-block" name="" type="submit">Sus Opiniones</a>                                
             </div>
         </div>
         {% endif %}

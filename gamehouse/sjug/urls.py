@@ -47,6 +47,7 @@ urlpatterns = [
       
    path('<jugador>/dashboard/',login_required(sjug_jugador.dashboard), name = 'dashboard'), ### /sjug/<jugador>/dashboard  Presentación de recomendaciones
    path('<jugador>/opiniones/',sjug_jugador.mis_opiniones, name = 'mis_opiniones'),  #Ver mis opiniones de todos los juegos
+   path('<jugador>/opinion/',sjug_jugador.opinion, name = 'opinion'),  #Ver mis opiniones de todos los juegos
    #path('<jugador>/opiniones/<genero>/',sjug_juego.opiniones, name = 'mis_opiniones'), ## ver opiniones de cierto genero
    #path('<jugador>/opiniones/<plataforma>/',sjug_juego.opiniones, name = 'mis_opiniones'), ## ver opiniones de cierta plataforma 
     

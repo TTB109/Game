@@ -23,6 +23,20 @@ def perfil(request,jugador):
     except Jugador.DoesNotExist:
         return redirect('error_404')
 
+def opinion(request, jugador):
+    solicitado = Jugador.objects.get(nickname = jugador)
+    miOpinion=Opinion.objects.filter(jugador=jugador)
+    paginator=Paginator(miOpinion,5)
+    page=request.GET.get('page')
+    try:
+        posts=paginator.page(page)
+    except PageNotAnInteger:
+        posts=paginator.page(1)
+    except EmptyPage:
+        posts=paginator.page(paginator.num_pages)
+    return render(request,'opinion.html',{'fOpinion':posts,'page':page,'jugador':solicitado})
+
+
 #Por el momento sólo se puede cambiar el Usuario y no User ni Jugador
 @login_required()
 def editar_perfil(request,jugador):
@@ -123,7 +137,7 @@ def registro_palabras(request,jugador):
             cde_form = CdeForm(request.POST)
             if cde_form.is_valid():
                 caracteristicas = cde_form.save(commit = False)
-                caracteristicas.jugador = solicitado.usuario
+                caracteristicas.jugador = solicitado
                 caracteristicas.save()
                 return redirect('jugador',solicitado.nickname )
         else:
@@ -141,7 +155,7 @@ def mis_palabras(request,jugador):
             return redirect('error_403')    
         try:
             #usuario=Usuario.objects.get(id_usuario=solicitado.usuario)
-            carDE=get_object_or_404(CDE,jugador=solicitado.usuario)
+            carDE=get_object_or_404(CDE,jugador=solicitado)
         except Exception:
             return HttpResponseNotFound('<h1>Page not found</h1>')
 
@@ -149,7 +163,7 @@ def mis_palabras(request,jugador):
             cde_form = CdeForm(request.POST,instance=carDE)
             if cde_form.is_valid():
                 caracteristicas = cde_form.save(commit = False)
-                caracteristicas.jugador = solicitado.usuario
+                caracteristicas.jugador = solicitado
                 caracteristicas.save()      
                 return redirect('mis_palabras',jugador=solicitado.nickname)  
         else:

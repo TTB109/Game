@@ -438,8 +438,9 @@ nav.sticky ul li a{
 .register-box .col-md-2,
 .register-box .col-md-4,
 .register-box .col-md-3{
+    position: relative;
+    margin: 90px 0 0 500px;
     background: rgba(0, 0, 0, 0.918);  /* fallback for old browsers */
-    margin: 10px 0px;    
 }
 
 .register-box .custom-checkbox{

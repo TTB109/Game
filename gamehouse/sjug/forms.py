@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import models
 from django.forms.fields import MultipleChoiceField
-from .models import Usuario,Jugador,Genero,Plataforma,Juego,Opinion,JuegosFavoritos,Imagen,Compania,Cde,Cpu
+from .models import Usuario,Jugador,Genero,Plataforma,Juego,Opinion,JuegosFavoritos,Imagen,Compania,CDE,CPU
 import datetime
 
 class UserForm(UserCreationForm):
