@@ -18,8 +18,8 @@ PENDIENTES:
 """
 
 def login(request):
-    if request.user.is_authenticated:
-        return redirect('juegos')    
+    # if request.user.is_authenticated:
+    #     return redirect('juegos')    
     if request.method == 'POST':     
         username = request.POST['username']
         password = request.POST['password']
@@ -69,7 +69,11 @@ def registro(request):
             jugador.id_jugador = usuario.id_usuario
             jugador.save()
             user_form.save()
-            return redirect('/login')
+            username = user_form.cleaned_data['username']
+            password = user_form.cleaned_data['password1']
+            usuario = authenticate(request, username =username, password = password)
+            auth_login(request,usuario)        
+            return redirect('registro_palabras',jugador=username)
         else: # Renderizar de nuevo con errores
             return render(request,'registro.html',{'fusuario':usuario_form, 'fuser':user_form,'fjugador':jugador_form}) 
     else:

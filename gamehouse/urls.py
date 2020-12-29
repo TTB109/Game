@@ -19,6 +19,7 @@ urls_universales = [
     path('InfConsolas/',tv.as_view(template_name="juegos/InfoConsolas.html"), name='InfConsolas'),
     path('InfGeneros/', tv.as_view(template_name="juegos/InfoGeneros.html"), name='InfGeneros'),
     path('juegos/',sjug_juego.juegos, name = 'juegos'),
+    path('Busqueda/',sjug_juego.busqueda, name = 'busqueda'),
     path('juegos/<int:id_juego>',sjug_juego.ver_juego,name='ver_juego'), #Ver el juego y un snippet de opiniones
     path('juegos/<int:id_juego>/opiniones',sjug_juego.ver_juego,name='opiniones'), #Lista de opiniones
    # path('juegos/<int:id_juego>/opiniones/<jugador>',sjug_juego.opiniones_jugador,name='opiniones_juego'), #Ver la opinion de cierto juego

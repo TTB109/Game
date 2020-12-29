@@ -5,10 +5,11 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import models
 from django.forms.fields import MultipleChoiceField
-from .models import Usuario,Jugador,Genero,Plataforma,Juego,Opinion,JuegosFavoritos,Imagen,Compania,CDE,CPU
+from .models import Usuario,Jugador,Genero,Plataforma,Juego,Opinion,JuegosFavoritos,Imagen,Compania,Cde,Cpu
 import datetime
 
 class UserForm(UserCreationForm):
+    
     class Meta:
         model = User
         fields = ['username',
@@ -59,7 +60,7 @@ class UsuarioForm(forms.ModelForm):
             'fec_nac': 'Introduce tu fecha de nacimiento'
     }
     help_texts = {
-        'nombre': 'Texto de ayuda nombre.',
+        'nombre': 'Cómo te llamas',
     }
     #https://stackoverflow.com/questions/37088697/showing-custom-error-messages-in-django-model-form-with-bootstrap
     #Change error_messages  to  error
@@ -255,6 +256,13 @@ class OpinionForm(forms.ModelForm):
     class Meta:
         model = Opinion
         exclude = ['jugador','juego','comentario']
+        labels={
+            'gusto':'¿Qué tanto te gustó el juego en general?',
+            'guion':'Calificación del guión del juego',
+            'artes':'Calificación de la arte del juego',
+            'jugabilidad':'Calificación de la jugabilidad del juego',
+            'tecnico':'Calificación del aspecto técnico del juego',
+        }
         """
         labels={
                 'comentario':'Introduce tu impresión en general de este juego',
@@ -275,7 +283,6 @@ class JuegosFavoritosForm(forms.ModelForm):
     class Meta:
         model=JuegosFavoritos
         fields=['jugador', 'juego']
-
 
 class CdeForm(forms.ModelForm):
     class Meta:
@@ -309,4 +316,3 @@ class CpuForm(forms.ModelForm):
         'cpu8':'Caracteristica 9',
         'cpu9':'Caracteristica 10',
         }
-

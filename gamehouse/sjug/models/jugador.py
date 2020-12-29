@@ -13,8 +13,8 @@ class Usuario(models.Model):
     id_usuario = models.AutoField(primary_key=True)
     nombre = models.CharField(max_length=100)
     apellido = models.CharField(max_length=256)
-    correo = models.EmailField()
-    fec_nac = models.DateField(help_text="Use el formato:DD-MM-AAAA", default=date.today)
+    correo = models.EmailField(help_text="ejemplo: usuario@mail.com",)
+    fec_nac = models.DateField(help_text="Use el formato:Mes/Dia/Año", default=date.today)
 
     def __str__(self):
         return '%s, %s' % (self.nombre, self.correo)

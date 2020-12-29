@@ -16,6 +16,13 @@ def default(request):
 #no hecha
 def opiniones(request,jugador):
     return render(request,'pruebas/dashboard.html',{})
+    
+def busqueda(request):
+  search=""
+  if request.method == 'GET':
+    search=request.GET.get('search')
+    VJuego=Juego.objects.all().filter(titulo__icontains=search)
+    return render(request,'juegos/busqueda.html',{'fVJuego':VJuego})
 
 
 def juegos(request):
@@ -42,7 +49,7 @@ def ver_juego(request,id_juego):
                     opinion.jugador = jugador 
                     opinion.juego = juego
                     opinion.save()
-                    return redirect('/juegos/'+str(juego.id_juego)+'/')
+                    return redirect('ver_juego',id_juego=juego.id_juego)
             except Jugador.DoesNotExist:
                 return redirect('error_404')
         else:

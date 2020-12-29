@@ -4,11 +4,12 @@
 {% block content %}
  <!--BODY-->
  <div>
-   <h1 class="center-align titulo">Escriba 10 palabras</h1>
+   <h1 class="center-align titulo">Escriba 10 palabras <br> que describan los videojuegos <br> de su interes</h1>
  </div>
 <form method="POST">
 {% csrf_token %}
 <div class="row register-box">
+  <!-- <div class="col-4"></div> -->
   <div class="col-md-3">
 
     <div class="login-text-box form-group">
@@ -61,7 +62,7 @@
     <i class="fa fa-user" aria-hidden="true"></i>
     <div class="col-sm-12">{{fcde.cardes10}}</div>
   </div>
-  <input href="{% url 'regresar_user' %}" id="btn1" class="btn btn-sucess btn-lg btn-block" type="submit" value="Aceptar">
+  <input href="{% url 'jugador' user.get_username%}" id="btn1" class="btn btn-sucess btn-lg btn-block" type="submit" value="Aceptar">
   </div>
 </div>
 </form>

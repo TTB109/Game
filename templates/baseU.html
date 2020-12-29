@@ -26,19 +26,20 @@
 
 </head>
 <body>
+    {% if user.is_authenticated %}
 
     <!--NAVAR-->
     <nav class="fixed-top">
         <div class="menu">
             <ul>
-	                <li><a href="{% url 'index' %}"><i class="fa fa-gamepad"></i></a></li>
-                    <li><a href="{% url 'index' %}" class="menu-item">Inicio</a></li>                
-                    <li><a href="{% url 'consolas' %}" class="menu-item">Consolas</a></li>
-                    <li><a href="{% url 'generos' %}" class="menu-item">Generos</a></li>
+	                <li><a href="{% url 'dashboard' user.get_username%}"><i class="fa fa-gamepad"></i></a></li>
+                    <li><a href="{% url 'dashboard' user.get_username%}" class="menu-item">Inicio</a></li>                
+                    <li><a href="{% url 'recomendacion' user.get_username%}" class="menu-item">Recomendaciones</a></li>
+                    <li><a href="{% url 'logout' %}" class="menu-item">Salir</a></li>
                     <li><a href="#" id="searcher"><i class="fa fa-search"></i></a></li>
             </ul>
             <div class="searcher-form">
-                <form action="{% url 'index' %}" method="GET">
+                <form action="{% url 'busqueda' %}" method="GET">
                     <input type="text" name="search" 
                     placeholder="Buscar Juego...">
                     <button type="submit">O.K.</button>
@@ -49,7 +50,27 @@
     </nav>
     <hr>
 
-
+    {% else %}
+        <!--NAVAR-->
+    <nav class="fixed-top">
+        <div class="menu">
+            <ul>
+	                <li><a href="{% url 'index' %}"><i class="fa fa-gamepad"></i></a></li>
+                    <li><a href="{% url 'index' %}" class="menu-item">Inicio</a></li>
+                    <li><a href="#" id="searcher"><i class="fa fa-search"></i></a></li>
+            </ul>
+            <div class="searcher-form">
+                <form action="{% url 'busqueda' %}" method="GET">
+                    <input type="text" name="search" 
+                    placeholder="Buscar Juego...">
+                    <button type="submit">O.K.</button>
+                </form>
+            </div>
+            <a class="close"><i class="fa fa-times"></i></a>
+        </div>
+    </nav>
+    <hr>
+    {% endif %}
 
     <!--BODY-->
     {% block content%}

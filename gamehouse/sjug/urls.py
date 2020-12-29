@@ -8,7 +8,6 @@ from gamehouse.sjug.views import jugador as sjug_jugador
 from gamehouse.sjug.views import juego as sjug_juego
 
 """
-# python3 manage.py makemigrations sjug --empty --name inital_cfg
 CAMBIOS:
 ACTUAL | CAMBIO | DESCRIPCION
 
@@ -35,18 +34,26 @@ PENDIENTES:
 urlpatterns = [
    path('',sjug_juego.default, name = 'sjug'), #Terminada
    path('<jugador>/',sjug_jugador.perfil, name = 'jugador'),
+   path('<jugador>/palabras',sjug_jugador.registro_palabras, name = 'registro_palabras'),
    path('<jugador>/editar/',login_required(sjug_jugador.editar_perfil), name = 'editar_jugador'),
    path('<jugador>/eliminar/',login_required(sjug_jugador.eliminar_perfil), name = 'eliminar_jugador'),
    
-   path('<jugador>/gustos/',login_required(sjug_jugador.mis_gustos), name = 'mis_gustos'),
-   path('<jugador>/gustos/juegos/',login_required(sjug_jugador.mis_juegos), name = 'mis_juegos'),
-   path('<jugador>/gustos/juegos/<int:id_juego>/agregar/',login_required(sjug_jugador.agregar_mi_juego), name='agregar_mi_juego'),
-   path('<jugador>/gustos/juegos/<int:id_juego>/eliminar/',login_required(sjug_jugador.eliminar_mi_juego), name = 'eliminar_mi_juego'),
+   path('<jugador>/gusto',login_required(sjug_jugador.gusto), name = 'gusto'),
+   path('<jugador>/gusto/gustos',login_required(sjug_jugador.mis_gustos), name = 'mis_gustos'),
+   path('<jugador>/gusto/juegos/',login_required(sjug_jugador.mis_juegos), name = 'mis_juegos'),
+   path('<jugador>/gusto/juegos/<int:id_juego>/agregar/',login_required(sjug_jugador.agregar_mi_juego), name='agregar_mi_juego'),
+   path('<jugador>/gusto/juegos/<int:id_juego>/eliminar/',login_required(sjug_jugador.eliminar_mi_juego), name = 'eliminar_mi_juego'),
+   path('<jugador>/gusto/palabras/',login_required(sjug_jugador.mis_palabras), name = 'mis_palabras'),
       
    path('<jugador>/dashboard/',login_required(sjug_jugador.dashboard), name = 'dashboard'), ### /sjug/<jugador>/dashboard  Presentación de recomendaciones
-   path('<jugador>/dashboard/tf-idf/',login_required(sjug_jugador.tf_idf), name = 'tf_idf'),
    path('<jugador>/opiniones/',sjug_jugador.mis_opiniones, name = 'mis_opiniones'),  #Ver mis opiniones de todos los juegos
    #path('<jugador>/opiniones/<genero>/',sjug_juego.opiniones, name = 'mis_opiniones'), ## ver opiniones de cierto genero
-   #path('<jugador>/opiniones/<plataforma>/',sjug_juego.opiniones, name = 'mis_opiniones'), ## ver opiniones de cierta plataforma   
+   #path('<jugador>/opiniones/<plataforma>/',sjug_juego.opiniones, name = 'mis_opiniones'), ## ver opiniones de cierta plataforma 
+    
+   path('<jugador>/dashboard/recomendacion',login_required(sjug_jugador.recomendacion), name = 'recomendacion'),
+   path('<jugador>/dashboard/recomendacion/descripcion',login_required(sjug_jugador.recomendacion_descripcion), name = 'recomendacion_descripcion'),
+   path('<jugador>/dashboard/recomendacion/genero',login_required(sjug_jugador.recomendacion_genero), name = 'recomendacion_genero'),
+   path('<jugador>/dashboard/recomendacion/plataforma',login_required(sjug_jugador.recomendacion_plataforma), name = 'recomendacion_plataforma'),
+
 ]
 

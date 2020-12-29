@@ -1,14 +1,15 @@
 {% extends "baseU.html" %}
 {% load static %}
-{% block title %} Caracteristicas Explicitas {% endblock title%}   
+{% block title %} Mis Palabras {% endblock title%}   
 {% block content %}
  <!--BODY-->
  <div>
-   <h1 class="center-align titulo">Escriba 10 palabras</h1>
+   <h1 class="center-align titulo">Modifique las 10 palabras</h1>
  </div>
 <form method="POST">
 {% csrf_token %}
 <div class="row register-box">
+  <!-- <div class="col-4"></div> -->
   <div class="col-md-3">
 
     <div class="login-text-box form-group">
@@ -61,8 +62,9 @@
     <i class="fa fa-user" aria-hidden="true"></i>
     <div class="col-sm-12">{{fcde.cardes10}}</div>
   </div>
-  <input href="{% url 'regresar_user' %}" id="btn1" class="btn btn-sucess btn-lg btn-block" type="submit" value="Aceptar">
-  </div>
+  <input href="{% url 'gusto' user.get_username%}" id="btn1" class="btn btn-sucess btn-lg btn-block" type="submit" value="Aceptar">
+  <a href="{% url 'gusto' user.get_username %}" class="btn btn-danger btn-lg btn-block" >Regresar</a>
+</div>
 </div>
 </form>
 

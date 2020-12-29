@@ -9,7 +9,7 @@
           <form method="POST">
             {%csrf_token%}
             <input  href="{% url 'mis_juegos' user.get_username %}" class="btn btn-primary btn-lg btn-block" type = "submit" value="YES">
-            <a href="{% url 'jugador' user.get_username %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Cancelar</a>
+            <a href="{% url 'mis_juegos' user.get_username %}" class="btn btn-danger btn-lg btn-block" name="" type="submit">Cancelar</a>
           </form>                                                                    
         </div>
     </div>

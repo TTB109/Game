@@ -4,10 +4,11 @@ Created on 20/12/2020
 @author: mimr
 '''
 from django.contrib.auth.models import User
+from django.core.paginator import Paginator, EmptyPage, PageNotAnInteger
+from django.http import Http404,HttpResponseNotFound
 from django.shortcuts import render, get_object_or_404, redirect
-from gamehouse.sjug.models import Jugador,Usuario,Juego,Imagen
-from gamehouse.sjug.forms import UserForm,UsuarioForm,JugadorForm,MisGustosForm
-from django.http import Http404
+from gamehouse.sjug.models import Jugador,Usuario,Juego,Imagen,CDE,Opinion
+from gamehouse.sjug.forms import UserForm,UsuarioForm,JugadorForm,MisGustosForm,CdeForm
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
 import random
@@ -50,19 +51,30 @@ def editar_perfil(request,jugador):
 @login_required()
 def eliminar_perfil(request,jugador):
     try:
-        jugador = Jugador.objects.get(nickname = jugador)
-        if request.user.get_username() != jugador.nickname:
-            return redirect('error_403')    
+        solicitado = Jugador.objects.get(nickname = jugador)
+        if request.user.get_username() != solicitado.nickname:
+            return redirect('error_403')
+        try:
+            usuario=get_object_or_404(Usuario,nombre=solicitado.usuario.nombre)
+            userio=get_object_or_404(User,username=solicitado.nickname)
+            jugo=get_object_or_404(Jugador,nickname=solicitado.nickname)
+        except Exception:
+            return HttpResponseNotFound('<h1>Page not found</h1>')   
         if request.method == 'POST':
-            usuario = jugador.usuario
-            user = request.user
-            jugador.delete()
-            usuario.delete()
-            user.delete()
             auth_logout(request)
+            jugo.delete()
+            usuario.delete()
+            userio.delete()
             return redirect('index')
         else:
             return render(request,'jugador/eliminar_jugador.html')
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
+
+def gusto(request,jugador):
+    try:
+        solicitado = Jugador.objects.get(nickname = jugador)
+        return render(request,'jugador/gustos/gustos.html',{'jugador':solicitado})     
     except Jugador.DoesNotExist:
         return redirect('error_404')
 
@@ -79,10 +91,10 @@ def mis_gustos(request,jugador):
             if gustos_form.is_valid():
                 gustos_form.save()
                 #return redirect('mis_gustos_2',id=id_gustos)
-                return redirect('mis_juegos',jugador = jugador.nickname)
+                return redirect('gusto',jugador = jugador.nickname)
         else:
             gustos_form = MisGustosForm(instance = jugador)
-            return render(request,'jugador/gustos/mis_gustos.html',{'fgustos':gustos_form})
+            return render(request,'jugador/gustos/mis_gustos.html',{'fgustos':gustos_form,'jugador':jugador})
     except Jugador.DoesNotExist:
         return redirect('error_404')
 
@@ -97,9 +109,54 @@ def mis_juegos(request,jugador):
         juegos = Juego.objects.all()
         juegos = juegos[:15]
         favoritos = jugador.juegos.all()
-        return render(request,'jugador/gustos/mis_juegos.html',{'juegos':juegos,'favoritos':favoritos}) 
+        return render(request,'jugador/gustos/mis_juegos.html',{'juegos':juegos,'favoritos':favoritos,'jugador':jugador}) 
     except Jugador.DoesNotExist:
         return redirect('error_404')
+
+def registro_palabras(request,jugador):
+    try:
+        solicitado = Jugador.objects.get(nickname = jugador)
+        if request.user.get_username() != solicitado.nickname:
+            return redirect('error_403')
+        #usuario=Usuario.objects.get(id=id)
+        if request.method == 'POST':            
+            cde_form = CdeForm(request.POST)
+            if cde_form.is_valid():
+                caracteristicas = cde_form.save(commit = False)
+                caracteristicas.jugador = solicitado.usuario
+                caracteristicas.save()
+                return redirect('jugador',solicitado.nickname )
+        else:
+            cde_form = CdeForm()
+            return render(request,'jugador/registro_palabras.html',{'fcde':cde_form})
+        
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
+  
+
+def mis_palabras(request,jugador):
+    try:
+        solicitado = Jugador.objects.get(nickname = jugador)
+        if request.user.get_username() != solicitado.nickname:
+            return redirect('error_403')    
+        try:
+            #usuario=Usuario.objects.get(id_usuario=solicitado.usuario)
+            carDE=get_object_or_404(CDE,jugador=solicitado.usuario)
+        except Exception:
+            return HttpResponseNotFound('<h1>Page not found</h1>')
+
+        if request.method == 'POST':            
+            cde_form = CdeForm(request.POST,instance=carDE)
+            if cde_form.is_valid():
+                caracteristicas = cde_form.save(commit = False)
+                caracteristicas.jugador = solicitado.usuario
+                caracteristicas.save()      
+                return redirect('mis_palabras',jugador=solicitado.nickname)  
+        else:
+            cde_form = CdeForm(instance=carDE)
+            return render(request,'jugador/gustos/CDE.html',{'fcde':cde_form,'jugador':jugador})
+    except Jugador.DoesNotExist:
+        return redirect('error_404')  
 
 #Accesible, pero aún con problemas, falta comprobar
 @login_required()
@@ -156,12 +213,53 @@ def dashboard(request,jugador):
 
 def mis_opiniones(request, jugador):
     try:
+        solicitado = Jugador.objects.get(nickname = jugador)
+        if request.user.get_username() != solicitado.nickname:
+            return redirect('error_403')
+        miOpinion=Opinion.objects.filter(jugador=solicitado.nickname)
+        paginator=Paginator(miOpinion,5)
+        page=request.GET.get('page')
+        try:
+            posts=paginator.page(page)
+        except PageNotAnInteger:
+            posts=paginator.page(1)
+        except EmptyPage:
+            posts=paginator.page(paginator.num_pages)
+        return render(request,'jugador/opiniones.html',{'fOpinion':posts,'page':page})
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
+    
+
+#  Vistas para recomendacion 
+
+def recomendacion(request,jugador):
+    try:
+        solicitado = Jugador.objects.get(nickname = jugador)        
+        return render(request,'jugador/recomendacion/Recomendacion.html',{'jugador':solicitado})
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
+
+def recomendacion_descripcion(request,jugador):
+    try:
         jugador = Jugador.objects.get(nickname = jugador)
-        opiniones = jugador.opiniones.all()
-        for opinion in opiniones:
-            print(opinion)
-            print(type(opinion))
-        return render(request,'prueba.html') 
+        
+        return render(request,'jugador/recomendacion/Recomendacion_Descripcion.html')
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
+
+def recomendacion_genero(request,jugador):
+    try:
+        jugador = Jugador.objects.get(nickname = jugador)
+        
+        return render(request,'jugador/recomendacion/Recomendacion_Genero.html')
+    except Jugador.DoesNotExist:
+        return redirect('error_404')
+
+def recomendacion_plataforma(request,jugador):
+    try:
+        jugador = Jugador.objects.get(nickname = jugador)
+        
+        return render(request,'jugador/recomendacion/Recomendacion_Plataforma.html')
     except Jugador.DoesNotExist:
         return redirect('error_404')
 

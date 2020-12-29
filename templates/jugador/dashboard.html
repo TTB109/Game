@@ -8,6 +8,89 @@
 <script src="https://kit.fontawesome.com/b99e675b6e.js"></script>
 <link href='https://cdn.jsdelivr.net/npm/boxicons@2.0.5/css/boxicons.min.css' rel='stylesheet'>
 <script src="https://code.jquery.com/jquery-3.4.1.min.js"></script>
+<style>
+  @import url('https://fonts.googleapis.com/css2?family=Poppins:wght@200;300;400;500;600;700&display=swap');
+*{
+margin: 0;
+padding: 0;
+box-sizing: border-box;
+font-family: 'Poppins', sans-serif;
+}
+body{
+display: flex;
+align-items: center;
+justify-content: center;
+min-height: 100vh;
+}
+
+.cbp-rfgrid {
+margin: 90px 0 0 0;
+padding: 20px;
+list-style: none;
+position: relative;
+width: 100%;
+}
+
+.cbp-rfgrid li {
+position: relative;
+float: left;
+overflow: hidden;
+width: 25%; /* Fallback */
+width: -webkit-calc(100% / 4);
+width: calc(100% / 4);
+}
+
+.cbp-rfgrid li a,
+.cbp-rfgrid li a img {
+display: block;
+width: 100%;
+cursor: pointer;
+}
+
+.cbp-rfgrid li a img {
+max-width: 100%;
+opacity: 0;
+
+}
+
+/* Flexbox is used for centering the heading */
+.cbp-rfgrid li a div {
+position: absolute;
+left: 10px;
+top: 20px;
+right: 10px;
+bottom: 20px;
+background: rgba(24, 66, 80, 0.945);
+display: -webkit-flex;
+display: -moz-flex;
+display: -ms-flex;
+display: flex;
+-webkit-align-items: center;
+-moz-align-items: center;
+-ms-align-items: center;
+align-items: center;
+text-align: center;
+opacity: 1;
+}
+
+.cbp-rfgrid li a:hover div {
+opacity: .1;
+}
+.cbp-rfgrid li a:hover img {
+opacity: 1;
+
+}
+
+.cbp-rfgrid li a div strong {
+width: 100%;
+color: #fff;
+text-transform: uppercase;
+font-size: 1.2em;
+letter-spacing: 2px;
+padding: 0 8px;
+}
+</style>
+<script src="https://kit.fontawesome.com/a076d05399.js"></script>
 <script>
 $(document).ready(function(){
   $(".hamburger").click(function(){
@@ -16,18 +99,6 @@ $(document).ready(function(){
 });
 </script>
 
-<script>
-    $(document).ready(function(){
-        $('.chkvalue').click(function(){
-            var txt1="";
-            if($("#Primera").val().length > 0){
-              txt1=$("#Primera").val()+","+$("#Segunda").val()+","+$("#Tercera").val();
-            }
-            txt1=txt1.substring(0,txt1.length);
-            $('#txtvalues').val(txt1);
-        });
-    });
-</script>
 <hr>
     <!--BODY-->
 {% if user.is_authenticated %}
@@ -38,20 +109,13 @@ $(document).ready(function(){
 	        <div class="inner__sidebar_menu">
 
 	        	<ul>
-              <li class="dropdown">
-                <a class="nav__link">
-                  <span class="icon">
-                    <i class="bx bx-bookmark"></i></span>
-                  <span class="list">Mis Recomendaciones</span></a>
-                <div>
-                  <a href="" class="nav__link">Mis palabras</a>
-                  <a href="{% url 'index' %}" class="nav__link">Palabras del juego</a>
-                  <a href="{% url 'index' %}" class="nav__link">Genero y Plataforma</a>
-                  <a href="{% url 'index' %}" class="nav__link">TF-IDF</a>
-                </div>
-              </li>
-                  <li class="dropdown">
-                  </li>
+              <li>
+		            <a href="{% url 'recomendacion' user.get_username %}" class="nav__link">
+		              <span class="icon">
+		              	<i class="bx bx-user nav__icon"></i></span>
+		              <span class="list">Recomendaciones</span>
+		            </a>
+                  </li> 
                   <li>
 		            <a href="{% url 'jugador' user.get_username %}" class="nav__link">
 		              <span class="icon">
@@ -85,7 +149,7 @@ $(document).ready(function(){
 </div>
 {% endif %}
 
-<div class="container-generos">
+<!-- <div class="container-generos">
   <div class="row">
   {%for juego,imagen in juegos %}
     <div class="col-sm-6 col-md-4">
@@ -100,6 +164,19 @@ $(document).ready(function(){
     </div>
   {%endfor%}
   </div>
-</div>
+</div> -->
+
+<div class="row">
+  <div class="col-3"></div>
+  <div class="col-12">
+    <ul class="cbp-rfgrid">
+    <div class="row">             
+      {%for juego,imagen in juegos %}
+        <li><a href="{% url 'ver_juego' juego.id_juego%}"><img src="{{imagen.referencia}}" width="520" height="180"/><div><strong>{{juego.titulo}}</strong></div></a></li>
+      {%endfor%}
+    </div>
+    </div>  
+    </ul>
+  </div>
 
 {% endblock content %}

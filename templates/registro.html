@@ -7,19 +7,20 @@
 </div>
 <form method="POST">
 {% csrf_token %}
-<div class="row register-box">    
+<div class="row register-box">
+<!-- #<div class="col-4"></div> -->
 <div class="col-md-3">
 
 	 {% for campo in fusuario %}
 	 <div class="login-text-box form-group">
-            <label for="{{campo.id_for_label}}" class="col-sm-8"> {{ campo.label_tag }} </label>
+            <label for="{{campo.id_for_label}}" class="col-sm-8"> {{ campo.label }} </label>
             <i class="fa fa-user" aria-hidden="true"></i>
             <div class="col-sm-12"> {{ campo }} </div>
-            {% if field.help_text %}
-             <small style="color: grey">{{ field.help_text | safe }}</small>
+            {% if campo.help_text %}
+             <small style="color: grey;">{{ campo.help_text | safe }}</small>
             {% endif %}
-            {% for error in field.errors %}
-           	 <p style="color: red">ERROR: {{ error }}</p>
+            {% for error in campo.errors %}
+           	 <p style="color: red;">ERROR: {{ error }}</p>
             {% endfor %}
      </div>
      {% endfor %}
@@ -28,6 +29,12 @@
             <label for="{{fjugador.nickname.id_for_label }}" class="col-sm-8">{{fjugador.nickname.label}}</label>
             <i class="fa fa-user-ninja" aria-hidden="true"></i>
             <div class="col-sm-12">{{fjugador.nickname}}</div>
+            {% if nickname.help_text %}
+             <small style="color: grey;">{{ nickname.help_text | safe }}</small>
+            {% endif %}
+            {% for error in nickname.errors %}
+           	 <p style="color: red;">ERROR: {{ error }}</p>
+            {% endfor %}
      </div>
      <div class="login-text-box form-group">
             <label for="{{fuser.username.id_for_label }}" class="col-sm-8">{{fuser.username.label}}</label>
@@ -38,14 +45,27 @@
             <label for="{{fuser.password1.id_for_label }}" class="col-sm-8">{{fuser.password1.label}}</label>
             <i class="fa fa-lock" aria-hidden="true"></i>
             <div class="col-sm-12">{{fuser.password1}}</div>
+            <small style="color: grey;">Tu contraseña debe de minimo 8 caracteres con Mayusculas,Minusculas, Simbolos y Numeros</small>
+            {% if fuser.errors %}
+            {% for field in fuser %}
+                {% for error in field.errors %}
+                <p style="color: red;">ERROR:{{ error|escape }}</p>                    
+                {% endfor %}
+            {% endfor %}
+            {% endif %}
         </div>
         <div class="login-text-box form-group">
             <label for="{{fuser.password2.id_for_label }}" class="col-sm-8">{{fuser.password2.label}}</label>
             <i class="fa fa-lock" aria-hidden="true"></i>
             <div class="col-sm-12">{{fuser.password2}}</div>
+            <small style="color: grey;">Repita su contraseña </small>
+            {% for error in password2.errors %}
+           	 <p style="color: red;">ERROR: {{ error }} {{ password2.errors }}</p>
+            {% endfor %}
         </div>
     </div>
-    
+    <div>
+        <h1 class="center-align titulo">Elija sus <br> Generos preferidos</h1>
     <div class="row text-black">
         {% for value,label in fjugador.generos.field.choices %}
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -60,6 +80,10 @@
         </div>
         {% endfor %}
     </div>
+</div>
+
+    <div>
+        <h1 class="center-align titulo">Elija sus <br> Plataformas preferidas</h1>
     <div class="row text-black">
         {% for value,label in fjugador.plataformas.field.choices %}
         <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -74,6 +98,7 @@
         </div>
         {% endfor %}
     </div>
+</div>
 
     <input id="btn1" class="btn btn-sucess btn-lg btn-block" type="submit" value="Aceptar">
 </div>          
