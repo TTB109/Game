@@ -5,7 +5,7 @@ from django.contrib.auth.models import User
 from django.contrib.auth.forms import UserCreationForm
 from django.forms import models
 from django.forms.fields import MultipleChoiceField
-from .models import Usuario,Jugador,Genero,Plataforma,Juego,Opinion,JuegosFavoritos,Imagen,Compania,Cde,Cpu
+from .models import Usuario,Jugador,Genero,Plataforma,Juego,Opinion,JuegosFavoritos,Imagen,Compania,CDE,CPU
 import datetime
 
 class UserForm(UserCreationForm):
@@ -279,56 +279,34 @@ class JuegosFavoritosForm(forms.ModelForm):
 
 class CdeForm(forms.ModelForm):
     class Meta:
-        model=Cde
-        fields=['cardes1','cardes2','cardes3','cardes4','cardes5','cardes6','cardes7','cardes8','cardes9','cardes10']
-        labels={'cardes1':'Caracteristica 1',
-        'cardes2':'Caracteristica 2',
-        'cardes3':'Caracteristica 3',
-        'cardes4':'Caracteristica 4',
-        'cardes5':'Caracteristica 5',
-        'cardes6':'Caracteristica 6',
-        'cardes7':'Caracteristica 7',
-        'cardes8':'Caracteristica 8',
-        'cardes9':'Caracteristica 9',
-        'cardes10':'Caracteristica 10'}
-        widgets = {
-        # telling Django your password field in the mode is a password input on the template
-        'cardes1':forms.TextInput(attrs={'class':'form-control'}),
-        'cardes2':forms.TextInput(attrs={'class':'form-control'}),
-        'cardes3':forms.TextInput(attrs={'class':'form-control'}),
-        'cardes4':forms.TextInput(attrs={'class':'form-control'}),
-        'cardes5':forms.TextInput(attrs={'class':'form-control'}),
-        'cardes6':forms.TextInput(attrs={'class':'form-control'}),
-        'cardes7':forms.TextInput(attrs={'class':'form-control'}),
-        'cardes8':forms.TextInput(attrs={'class':'form-control'}),
-        'cardes9':forms.TextInput(attrs={'class':'form-control'}),
-        'cardes10':forms.TextInput(attrs={'class':'form-control'}),
-    }
+        model=CDE
+        exclude=['jugador']
+        labels={'cde0':'Caracteristica 1',
+        'cde1':'Caracteristica 2',
+        'cde2':'Caracteristica 3',
+        'cde3':'Caracteristica 4',
+        'cde4':'Caracteristica 5',
+        'cde5':'Caracteristica 6',
+        'cde6':'Caracteristica 7',
+        'cde7':'Caracteristica 8',
+        'cde8':'Caracteristica 9',
+        'cde9':'Caracteristica 10'
+        }
+        
 
 class CpuForm(forms.ModelForm):
     class Meta:
-        model=Cpu
-        fields=['carusu1','carusu2','carusu3','carusu4','carusu5','carusu6','carusu7','carusu8','carusu9','carusu10']
-        labels={'carusu1':'Caracteristica 1',
-        'carusu2':'Caracteristica 2',
-        'carusu3':'Caracteristica 3',
-        'carusu4':'Caracteristica 4',
-        'carusu5':'Caracteristica 5',
-        'carusu6':'Caracteristica 6',
-        'carusu7':'Caracteristica 7',
-        'carusu8':'Caracteristica 8',
-        'carusu9':'Caracteristica 9',
-        'carusu10':'Caracteristica 10',}
-        widgets = {
-        # telling Django your password field in the mode is a password input on the template
-        'carusu1':forms.TextInput(attrs={'class':'form-control'}),
-        'carusu2':forms.TextInput(attrs={'class':'form-control'}),
-        'carusu3':forms.TextInput(attrs={'class':'form-control'}),
-        'carusu4':forms.TextInput(attrs={'class':'form-control'}),
-        'carusu5':forms.TextInput(attrs={'class':'form-control'}),
-        'carusu6':forms.TextInput(attrs={'class':'form-control'}),
-        'carusu7':forms.TextInput(attrs={'class':'form-control'}),
-        'carusu8':forms.TextInput(attrs={'class':'form-control'}),
-        'carusu9':forms.TextInput(attrs={'class':'form-control'}),
-        'carusu10':forms.TextInput(attrs={'class':'form-control'}),
-    }
+        model=CPU
+        exclude=['jugador']
+        labels={'cpu0':'Caracteristica 1',
+        'cpu1':'Caracteristica 2',
+        'cpu2':'Caracteristica 3',
+        'cpu3':'Caracteristica 4',
+        'cpu4':'Caracteristica 5',
+        'cpu5':'Caracteristica 6',
+        'cpu6':'Caracteristica 7',
+        'cpu7':'Caracteristica 8',
+        'cpu8':'Caracteristica 9',
+        'cpu9':'Caracteristica 10',
+        }
+

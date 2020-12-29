@@ -8,6 +8,7 @@ from gamehouse.sjug.views import jugador as sjug_jugador
 from gamehouse.sjug.views import juego as sjug_juego
 
 """
+# python3 manage.py makemigrations sjug --empty --name inital_cfg
 CAMBIOS:
 ACTUAL | CAMBIO | DESCRIPCION
 

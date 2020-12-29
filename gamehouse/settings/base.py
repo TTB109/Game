@@ -1,6 +1,7 @@
 import os
 from django.urls import reverse_lazy
 from decouple import config 
+from gamehouse.algorithms.tf_idf import generation
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -19,12 +20,10 @@ INSTALLED_APPS = [
     'django.contrib.sessions',
     'django.contrib.messages',
     'django.contrib.staticfiles',
-    #.....................#
     #Sistema de jugadores 
     'gamehouse.sjug',
     #Sistema de administradores
     'gamehouse.sadm',
-    #.....................#
     'django_filters',
 ]
 
@@ -109,11 +108,31 @@ STATICFILES_DIRS = [STATIC_DIR,
  #('jquery-ui','%s/jquery-ui-1.10.4/'% (STATIC_DIR)), 
 ]
 
+## Media: https://www.caktusgroup.com/blog/2017/08/28/advanced-django-file-handling/
+
+MEDIA_ROOT = os.path.join(BASE_DIR, 'var/media')
+MEDIA_URL = '/media/'
+
+## Carpeta que tendra los vectores generados
+ANALITYCS_DIR = os.path.join(BASE_DIR, 'var/analitycs/')
+## Carpeta que tiene los algoritmos
+ALGORITHMS_DIR = os.path.join(PROJECT_DIR, 'algorithms/')
+
 """ Redireccionamiento automatico """
 #https://docs.djangoproject.com/en/3.1/ref/settings/#login-url
 LOGIN_REDIRECT_URL = reverse_lazy('dashboard')
 LOGIN_URL = '/login/'
 LOGOUT_REDIRECT_URL = '/'
 
-###
-#MEDIA_ROOT = STATIC_DIR+'/Raw/'
+def crear_externos():
+    """ Funcion para crear archivos TF-IDF si no existen """
+    if not os.path.isfile(ALGORITHMS_DIR+'tf_idf/lemmas.pkl'):
+        from gamehouse.algorithms.tf_idf.generation import generate_lemmas
+        generate_lemmas(ALGORITHMS_DIR+'tf_idf/')
+    if not os.path.isfile(ALGORITHMS_DIR+'tf_idf/tagger.pkl'):
+        from gamehouse.algorithms.tf_idf.generation import generate_tagger
+        generate_tagger(ALGORITHMS_DIR+'tf_idf/')
+    return
+
+crear_externos()
+

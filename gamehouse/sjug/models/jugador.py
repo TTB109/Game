@@ -180,60 +180,57 @@ class PlataformasFavoritas(models.Model):
                                    )
 
 
-class Cde(models.Model):
-    jugador = models.OneToOneField(Usuario,
+class CDE(models.Model):
+    jugador = models.OneToOneField(Jugador,
                                    on_delete=models.CASCADE,
                                    primary_key=True,
-                                   db_column="id_jugador",
+                                   db_column="jugador",
                                    verbose_name="Jugador a quien pertenecen las CDE")
-    cardes1 = models.CharField(max_length=256)
-    cardes2 = models.CharField(max_length=256)
-    cardes3 = models.CharField(max_length=256)
-    cardes4 = models.CharField(max_length=256)
-    cardes5 = models.CharField(max_length=256)
-    cardes6 = models.CharField(max_length=256)
-    cardes7 = models.CharField(max_length=256)
-    cardes8 = models.CharField(max_length=256)
-    cardes9 = models.CharField(max_length=256)
-    cardes10 = models.CharField(max_length=256)
+    
+    cde0 = models.CharField(max_length=256)
+    cde1 = models.CharField(max_length=256)
+    cde2 = models.CharField(max_length=256)
+    cde3 = models.CharField(max_length=256)
+    cde4 = models.CharField(max_length=256)
+    cde5 = models.CharField(max_length=256)
+    cde6 = models.CharField(max_length=256)
+    cde7 = models.CharField(max_length=256)
+    cde8 = models.CharField(max_length=256)
+    cde9 = models.CharField(max_length=256)
 
 
-class Cpu(models.Model):
-    cpu = models.OneToOneField(Usuario,
+class CPU(models.Model):
+    jugador = models.OneToOneField(Jugador,
                                on_delete=models.CASCADE,
                                primary_key=True,
-                               db_column="id_cpu",
-                               verbose_name="Identificador de CPU")
-    carusu1 = models.CharField(max_length=256)
-    carusu2 = models.CharField(max_length=256)
-    carusu3 = models.CharField(max_length=256)
-    carusu4 = models.CharField(max_length=256)
-    carusu5 = models.CharField(max_length=256)
-    carusu6 = models.CharField(max_length=256)
-    carusu7 = models.CharField(max_length=256)
-    carusu8 = models.CharField(max_length=256)
-    carusu9 = models.CharField(max_length=256)
-    carusu10 = models.CharField(max_length=256)
+                               db_column="jugador",
+                               verbose_name="Jugador a quien pertenecen las CPU")
+    cpu0 = models.CharField(max_length=256)
+    cpu1 = models.CharField(max_length=256)
+    cpu2 = models.CharField(max_length=256)
+    cpu3 = models.CharField(max_length=256)
+    cpu4 = models.CharField(max_length=256)
+    cpu5 = models.CharField(max_length=256)
+    cpu6 = models.CharField(max_length=256)
+    cpu7 = models.CharField(max_length=256)
+    cpu8 = models.CharField(max_length=256)
+    cpu9 = models.CharField(max_length=256)
 
 
 class Vector_Caracteristicas(models.Model):
     jugador = models.ForeignKey(Jugador,
                                 on_delete=models.SET_NULL,
-                                # AL Borrar el creador se pone en nulo y no
-                                # mueren comentarios
-                                to_field='nickname',
-                                related_name='vector_caracteristicas',
+                                related_name='vectores_caracteristicas',
                                 db_column='jugador',
-                                verbose_name='Creador de la opinion',
-                                null=True  # Activar para conservar la opinion SET_NULL CAMBIAR SI NECESARIO
-                                )  # PONER EN NULL si jugador muere
+                                verbose_name='Jugador al que pertenece este vector de caracteristicas',
+                                null=True 
+                                )
     juego = models.ForeignKey(Juego,
                               on_delete=models.CASCADE,
-                              # AL Borrar el juego se borran los comentarios
-                              # relacionados
+                              to_field='id_juego',
                               related_name='caracteristicas',
                               db_column='juego',
                               verbose_name='Juego al que pertenece la opinion',
                               )
-    cpu = models.CharField(max_length=100)
-    cde = models.CharField(max_length=100)
+    cpus = models.CharField(max_length=100)
+    cdes = models.CharField(max_length=100)

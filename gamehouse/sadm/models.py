@@ -1,5 +1,7 @@
+import os
+from django.conf import settings
 from django.db.models import *
-from django.db import models#, FloatField
+from django.db import models#, FloatField 
 from gamehouse.sjug.models import Juego,Usuario,JuegosFavoritos,Opinion
 
 
@@ -21,44 +23,29 @@ class MatrizJuegos(models.Model):
     db_column = "id_juego",
     verbose_name = "Identificador del juego"
   )
-  vectorGENERO =models.CharField(max_length=256)
-  vectorPLATAFORMA =models.CharField(max_length=256)
-  agno = models.PositiveIntegerField(default = 2000)
-  vectorCPU =models.CharField(max_length=256)
-  vectorCDE =models.CharField(max_length=256)
+  vector_genero =models.CharField(max_length=256)
+  vector_plataforma =models.CharField(max_length=256)
+  vector_cpu =models.CharField(max_length=256)
+  vector_cde =models.CharField(max_length=256)
 
-  # caractpu0 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractpu1 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractpu2 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractpu3 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractpu4 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractpu5 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractpu6 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractpu7 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractpu8 = models.PositiveIntegerField(default = 0, blank = True)  
-  # caractpu9 = models.PositiveIntegerField(default = 0, blank = True)
 
-  # caractde0 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractde1 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractde2 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractde3 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractde4 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractde5 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractde6 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractde7 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractde8 = models.PositiveIntegerField(default = 0, blank = True)
-  # caractde9 = models.PositiveIntegerField(default = 0, blank = True)
-
-class TfIdf(models.Model):
-  juego = models.OneToOneField(Juego, 
-    on_delete = models.CASCADE, 
-    primary_key = True,
-    db_column = "id_juego",
-    verbose_name = "Identificador del juego"
-  )
-  vector=models.CharField(max_length=256)
-  #vector = models.FileField(upload_to='raw/tfidf')
+def tf_idf_path():
+        return os.path.join(settings.ANALITYCS_DIR, 'tf-idf/')
   
+class Tf_Idf(models.Model):
+    juego = models.OneToOneField(Juego, 
+                                 on_delete = models.CASCADE, 
+                                 primary_key = True,
+                                 db_column = "juego",
+                                 verbose_name = "Identificador del juego"
+    )
+    vector = models.FilePathField(path=tf_idf_path)
+    
   
-  
-  
+""" Funciones """
+#https://www.youtube.com/watch?v=Zx09vcYq1oc
+#https://www.caktusgroup.com/blog/2017/08/28/advanced-django-file-handling/
+    
+def user_directory_path(instance, filename):
+    # file will be uploaded to MEDIA_ROOT/user_<id>/<filename>
+    return 'user_{0}/{1}'.format(instance.user.id, filename)

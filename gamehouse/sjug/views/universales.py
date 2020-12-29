@@ -2,11 +2,12 @@ from django.contrib.auth import authenticate
 from django.contrib.auth import login as auth_login
 from django.contrib.auth import logout as auth_logout
 from django.contrib.auth.decorators import login_required
-from gamehouse.sadm.models import Administrador
+from gamehouse.sadm.models import Administrador,Tf_Idf
 from django.shortcuts import redirect,render
 from gamehouse.sjug.forms import UserForm,JugadorForm,UsuarioForm,OpinionForm
 from gamehouse.sjug.models import Jugador, Usuario,Imagen,Juego
 from django.http import Http404
+
 
 """
 PENDIENTES:
@@ -94,3 +95,30 @@ def no_encontrado(request):
 def server_error(request):
     context = {}
     return render(request, '500.html', context, status=500)
+
+
+""" Prueba """
+def prueba(request):
+    primero = Tf_Idf.objects.first()
+    if primero: #Si existe algun vector
+        print("Ya existe algun dato, no se calcularan los anteriores")
+        #primero = Juego.objects.first()
+        #print(primero.tf_idf.vector)
+        faltantes = Juego.objects.filter(tf_idf=None)
+        for faltante in faltantes:
+            print("El juego "+faltante.titulo+' le falta vector, tiene id:',faltante.id_juego)
+        context = {'conjunto_1':faltantes}
+    else:
+        from django.conf import settings
+        juegos = Juego.objects.all()[:100]
+        ruta = settings.ALGORITHMS_DIR + 'tf_idf/'
+        for juego in juegos:
+            ruta_vector = ruta + str(juego.id_juego) + '.pkl'
+            print("El vector se guardara en:"+ruta_vector)
+            tf_idf = Tf_Idf(juego = juego, vector = ruta_vector)
+            tf_idf.save()
+            print("La ruta guardada:",tf_idf.vector)
+        vectores = Tf_Idf.objects.all()
+        context = {'conjunto_1':vectores} 
+    return render(request, 'prueba.html', context)
+

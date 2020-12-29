@@ -30,22 +30,35 @@ urls_universales = [
 urlpatterns = [
     path('',include(urls_universales)),
     path('sjug/',include('gamehouse.sjug.urls')),
-    path('sadm/',include('gamehouse.sadm.urls')), 
+    path('sadm/',include('gamehouse.sadm.urls')),
+    path('prueba/',universales.prueba,name='prueba'), 
 ]
 
 if settings.ADMIN_ENABLED is True:
 	from django.contrib import admin
 	urlpatterns += [path('admin/', admin.site.urls),]
 
-""" Para modo local
+""" 
+	ACTIVACION DE ADMIN DJANGO:
+
+Para modo local
 
 if settings.ADMIN_ENABLED is True:
 	from django.contrib import admin
 	urlpatterns += [path('admin/', admin.site.urls),]
   
-  Para modo produccion:
+Para modo produccion:
  ADMIN_ENABLED = config('ADMIN_ENABLED', default=False, cast=bool)
  if ADMIN_ENABLED is True:
 	from django.contrib import admin
 	urlpatterns += [path('admin/', admin.site.urls),]
+
+	ACTIVAR ACCESO A ARCHIVOS ESTATICOS
+
+from django.conf import settings
+from django.conf.urls.static import static
+
+if settings.DEBUG:
+urlpatterns += static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
+
 """

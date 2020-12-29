@@ -249,7 +249,7 @@ def ViewcaracteristicasPU(request,administrador):
         solicitado = Administrador.objects.get(nombre = administrador)
         jugador = Jugador.objects.get(usuario = solicitado.usuario)
         if request.user.get_username() == jugador.nickname: ## Tengo iniciada una sesión de adm
-            vcpu=Cpu.objects.all()
+            vcpu=CPU.objects.all()
             paginator=Paginator(vcpu,5)
             page=request.GET.get('page')
             try:
@@ -271,7 +271,7 @@ def ViewcaracteristicasDE(request,administrador):
         solicitado = Administrador.objects.get(nombre = administrador)
         jugador = Jugador.objects.get(usuario = solicitado.usuario)
         if request.user.get_username() == jugador.nickname: ## Tengo iniciada una sesión de adm
-          vcde=Cde.objects.all()
+          vcde=CDE.objects.all()
           paginator=Paginator(vcde,5)
           page=request.GET.get('page')
           try:

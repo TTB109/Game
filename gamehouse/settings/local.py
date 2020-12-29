@@ -20,3 +20,5 @@ INSTALLED_APPS.append('django.contrib.admin')
 ## Correr en la consola para settings locales
 #  export DJANGO_SETTINGS_MODULE=settings.local
 
+
+
