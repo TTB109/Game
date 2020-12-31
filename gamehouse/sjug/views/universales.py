@@ -106,31 +106,49 @@ def server_error(request):
 def algoritmos(request):
     return render(request, 'algoritmos.html')
 
-def obtener_tf_idf(request):
+def tf_idf_propio(request):
     """ Requisito haber limpiado las descripciones """
     #faltantes = Juego.objects.filter(tf_idf=None)
     faltantes = Juego.objects.filter(tf_idf=None)[:10] #Cien primeros juegos :100
     descripciones = faltantes.values_list('descripcion_limpia',flat=True)
-    from gamehouse.algorithms.tf_idf import get_vocabulary,implicit_tf_idf
-    vectors = implicit_tf_idf(descripciones)
-    for vector in vectors:
-        print(vector)
-    """ Calcular vector tf-idf 
-    if len(faltantes) > 0: #>200
-        
-        ee_tf_idf(faltantes)
-        #descripciones = faltantes.values_list('descripcion',flat=True)
-        #ruta = settings.ALGORITHMS_DIR + 'tf_idf/'
-        #for juego in faltantes:
-        #    ruta_vector = ruta + str(juego.id_juego) + '.pkl'
-        #    tf_idf = Tf_Idf(juego = juego, vector = ruta_vector)
-        #    tf_idf.save()
-    """
+    from gamehouse.algorithms.tf_idf import ex_tf_idf
+    vectors = ex_tf_idf(descripciones)
+    from pickle import dump
+    from django.conf import settings
+    i = 0
+    for juego in faltantes:
+        archivo = settings.ANALITYCS_DIR + str(juego.id_juego) +'.pkl' 
+        output = open(archivo,'wb') #web -- write bytes
+        dump(vectors[i],output, -1) #mete bytes en archivo nuestro diccionario de lemmas
+        output.close()
+        i = i + 1
+        tf_idf = Tf_Idf(juego = juego, vector = archivo)
+        tf_idf.save()    
+    return redirect('/algoritmos/')
+
+def tf_idf_sk(request):
+    """ Requisito haber limpiado las descripciones """
+    #faltantes = Juego.objects.filter(tf_idf=None)
+    faltantes = Juego.objects.filter(tf_idf=None)[:10] #Cien primeros juegos :100
+    descripciones = faltantes.values_list('descripcion_limpia',flat=True)
+    from gamehouse.algorithms.tf_idf import im_tf_idf
+    vectors = im_tf_idf(descripciones)
+    from pickle import dump
+    from django.conf import settings
+    i = 0
+    for juego in faltantes:
+        archivo = settings.ANALITYCS_DIR + str(juego.id_juego) +'.pkl' 
+        output = open(archivo,'wb') #web -- write bytes
+        dump(vectors[i],output, -1) #mete bytes en archivo nuestro diccionario de lemmas
+        output.close()
+        i = i + 1
+        tf_idf = Tf_Idf(juego = juego, vector = archivo)
+        tf_idf.save()
     return redirect('/algoritmos/')
 
 def limpiar_descripciones(request):
     """ Ejecutar antes de calcular vectores tf-idf """
-    sucios = Juego.objects.filter(descripcion_limpia = None)[:100]
+    sucios = Juego.objects.filter(descripcion_limpia = None)[:25]
     print("Hay "+str(len(sucios))+" juegos sucios")
     for sucio in sucios:
         sucio.descripcion_limpia = None

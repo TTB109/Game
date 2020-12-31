@@ -138,6 +138,7 @@ def clean_description(description):
     description = [word for word in description if word not in stopwords.words("spanish")]
     description = tag_description(description)
     description = lemmatize_description(description)
+    description = ' '.join(description)
     return description
 
 def preprocess(data):
@@ -162,17 +163,99 @@ def get_vocabulary(texts):
 def get_dict(voc):
     dict = {word: 0 for word in voc}
     return dict
+
+def obtener_tf(bow,voc):
+    """ Create a tf_vector for each description (bow) """ 
+    tf_vect = np.zeros(len(voc), dtype=float)
+    for word in bow:
+        tf_vect[voc.index(word)] += 1
+    #Version usando maximo 
+    tf_vect = tf_vect / np.amax(tf_vect)
+    """
+    tf_vect = tf_vect / len(bow) ## En lugar de len(bow) dividir entre la palabra más grande
+    """
+    return tf_vect
+
+def obtener_df(corpus,voc):
+    df_vect = np.zeros(len(voc), dtype=float)
+    for word in voc:
+        for desc in corpus:
+            if word in desc:
+                df_vect[voc.index(word)] += 1
+    return df_vect
+
 #https://towardsdatascience.com/natural-language-processing-feature-engineering-using-tf-idf-e8b9d00e7e76
 #https://towardsdatascience.com/a-gentle-introduction-to-calculating-the-tf-idf-values-9e391f8a13e5
+def ex_tf_idf(corpus):
+    N = len(corpus)
+    vocabulario = set()
+    corpus_bow = []
+    print("Número de descripciones a procesar:",N)
+    ## Convertir descripciones (string) a BoW(lista de strings)
+    for i in range(N):
+        #Convertir a tokens, lo que es una BoW
+        corpus_bow.append(nltk.word_tokenize(corpus[i], "spanish"))
+        vocabulario.update(set(corpus_bow[i]))
+    corpus = corpus_bow
+    vocabulario = sorted(vocabulario)
+    print("Tamanio vocabulario",len(vocabulario))
+    tf_vectors = []
+    for i in range(N):
+        tf_vectors.append(obtener_tf(corpus[i], vocabulario))
+    idf_vector = obtener_df(corpus, vocabulario) #Regresa el vector DF
+    print("Vector df:",idf_vector)
+    idf_vector = np.log(N / idf_vector)
+    print("Vector idf:",idf_vector)
+    tf_idf_vectors = []
+    for i in range(N):
+        tf_idf_vectors.append(np.multiply(tf_vectors[i], idf_vector))
+    return tf_idf_vectors
+    
+
+
+##https://chartio.com/resources/tutorials/how-to-filter-for-empty-or-null-values-in-a-django-queryset/
+##https://kavita-ganesan.com/tfidftransformer-tfidfvectorizer-usage-differences/
+def im_tf_idf(corpus):
+    """
+    from sklearn.feature_extraction.text import CountVectorizer,TfidfTransformer
+    #instantiate CountVectorizer() 
+    cv = CountVectorizer() 
+    # this steps generates word counts for the words in your docs 
+    vectores_frecuencias = cv.fit_transform(corpus) 
+    tfidf_transformer = TfidfTransformer(smooth_idf=True,use_idf=True)
+    tfidf_transformer.fit(vectores_frecuencias) 
+    vectores_tf_idf= tfidf_transformer.transform(vectores_frecuencias)
+    """
+    from sklearn.feature_extraction.text import TfidfVectorizer
+    vectorizer = TfidfVectorizer(use_idf=True)
+    vectores_tf_idf = vectorizer.fit_transform(corpus)
+    vocabulary = vectorizer.get_feature_names()
+    vectores_tf_idf = vectores_tf_idf.todense()
+    vectores_tf_idf = vectores_tf_idf.tolist()
+    vectores_numpy = []
+    for vector in vectores_tf_idf:
+        vectores_numpy.append(np.array(vector))
+    return vectores_numpy
+
+"""
+
+
+    # coseno = np.dot(vec_1,vec_2) / \
+    #     ( ( np.sqrt(np.sum(vec_1**2)) ) * ( np.sqrt(np.sum(vec_2**2)) ) )
+    
+    
+    VIEJO TF-IDF
+    
+
 def explicit_tf_idf(texts, voc):
     N = len(texts)
     voc = sorted(voc)
     dimension = len(voc)
-    """ Create a dictionary of positions """
+    # Create a dictionary of positions 
     positions = {}
     for i in range(dimension):
         positions[voc[i]] = i
-    """ Getting the DF """
+    #Getting the DF 
     DF = {}
     for i in range(N):
         desc = texts[i]  # Take each description
@@ -186,13 +269,13 @@ def explicit_tf_idf(texts, voc):
         DF[word] = len(DF[word])  # Replace the set with its length
     # Make DF vector
     df_vect = np.zeros(dimension, dtype=float)
-    """ Change later"""
+    #Change later
     for word in DF:
         index = positions[word]
         df_vect[index] = DF[word]
     df_vect = df_vect + 1
     idf_vect = np.log(N / df_vect)
-    """ Getting the TF """
+    #Getting the TF
     tf = []  # This list has a size of len(texts), each position is a vector
     for i in range(N):
         desc_vect = np.zeros(dimension, dtype=int)
@@ -207,25 +290,5 @@ def explicit_tf_idf(texts, voc):
         tfidf_vect = np.multiply(tf[i], idf_vect)
         tf_idf.append(tfidf_vect)
     return tf_idf
-
-##https://chartio.com/resources/tutorials/how-to-filter-for-empty-or-null-values-in-a-django-queryset/
-##https://kavita-ganesan.com/tfidftransformer-tfidfvectorizer-usage-differences/
-def implicit_tf_idf(corpus):
-    from sklearn.feature_extraction.text import TfidfVectorizer
-    vectorizer = TfidfVectorizer(use_idf=True)
-    vectors = vectorizer.fit_transform(corpus)
-    return vectors
-
-"""
-if __name__ == "__main__":
-    texts = get_data()
-    min_texts = texts[0:11]
-    min_texts = preprocess(min_texts)
-    voc = get_vocabulary(min_texts)
-    print("El vocabulario tiene longitud de:", len(voc))
-    vec_tfidf = tf_idf(min_texts, voc)
-    print(type(vec_tfidf[2]))
-    print(vec_tfidf[2])
-    # coseno = np.dot(vec_1,vec_2) / \
-    #     ( ( np.sqrt(np.sum(vec_1**2)) ) * ( np.sqrt(np.sum(vec_2**2)) ) )
+    
 """

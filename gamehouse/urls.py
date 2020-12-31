@@ -34,8 +34,9 @@ urlpatterns = [
     path('sadm/',include('gamehouse.sadm.urls')),
     #### Seccion pruebas
     path('algoritmos/',universales.algoritmos,name='algoritmos'),
-    path('tf-idf/',universales.obtener_tf_idf,name='vec_tf_idf'),
     path('descripciones/',universales.limpiar_descripciones,name='limpiar_descripciones'),
+    path('tf-idf-propio/',universales.tf_idf_propio,name='vec_tf_idf'),
+    path('tf-idf-sk/',universales.tf_idf_sk,name='vec_tf_idf_sk'),
     #path('algoritmos/',universales.algoritmos,name='algoritmos'), 
 ]
 
