@@ -209,6 +209,14 @@ def ex_tf_idf(corpus):
     tf_idf_vectors = []
     for i in range(N):
         tf_idf_vectors.append(np.multiply(tf_vectors[i], idf_vector))
+    """ Guardar vocabulario """
+    from django.conf import settings
+    from pickle import dump
+    archivo = settings.ANALITYCS_DIR +'vocabulario.pkl' 
+    output = open(archivo,'wb') #web -- write bytes
+    dump(vocabulario,output, -1) #mete bytes en archivo nuestro diccionario de lemmas
+    output.close()
+    
     return tf_idf_vectors
     
 
@@ -229,12 +237,20 @@ def im_tf_idf(corpus):
     from sklearn.feature_extraction.text import TfidfVectorizer
     vectorizer = TfidfVectorizer(use_idf=True)
     vectores_tf_idf = vectorizer.fit_transform(corpus)
-    vocabulary = vectorizer.get_feature_names()
     vectores_tf_idf = vectores_tf_idf.todense()
     vectores_tf_idf = vectores_tf_idf.tolist()
     vectores_numpy = []
     for vector in vectores_tf_idf:
         vectores_numpy.append(np.array(vector))
+        
+    """ Guardar vocabulario """
+    from django.conf import settings
+    from pickle import dump
+    vocabulary = vectorizer.get_feature_names()
+    archivo = settings.ANALITYCS_DIR +'vocabulario.pkl' 
+    output = open(archivo,'wb') #web -- write bytes
+    dump(vocabulary,output, -1) #mete bytes en archivo nuestro diccionario de lemmas
+    output.close()
     return vectores_numpy
 
 """

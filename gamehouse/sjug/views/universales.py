@@ -107,16 +107,18 @@ def algoritmos(request):
     return render(request, 'algoritmos.html')
 
 def tf_idf_propio(request):
-    """ Requisito haber limpiado las descripciones """
-    #faltantes = Juego.objects.filter(tf_idf=None)
-    faltantes = Juego.objects.filter(tf_idf=None)[:10] #Cien primeros juegos :100
-    descripciones = faltantes.values_list('descripcion_limpia',flat=True)
+    """ ESTA FUNCION CREA LOS VECTORES USANDO METODO PROPIO
+        DE TODOS LOS JUEGOS, TENGAN O NO YA DESCRIPCION
+        TOMARA TIEMPO EN TERMINAR
+     Requisito haber limpiado las descripciones """
+    juegos = Juego.objects.all()
+    descripciones = juegos.values_list('descripcion_limpia',flat=True)
     from gamehouse.algorithms.tf_idf import ex_tf_idf
     vectors = ex_tf_idf(descripciones)
     from pickle import dump
     from django.conf import settings
     i = 0
-    for juego in faltantes:
+    for juego in juegos:
         archivo = settings.ANALITYCS_DIR + str(juego.id_juego) +'.pkl' 
         output = open(archivo,'wb') #web -- write bytes
         dump(vectors[i],output, -1) #mete bytes en archivo nuestro diccionario de lemmas
@@ -127,16 +129,18 @@ def tf_idf_propio(request):
     return redirect('/algoritmos/')
 
 def tf_idf_sk(request):
-    """ Requisito haber limpiado las descripciones """
-    #faltantes = Juego.objects.filter(tf_idf=None)
-    faltantes = Juego.objects.filter(tf_idf=None)[:10] #Cien primeros juegos :100
-    descripciones = faltantes.values_list('descripcion_limpia',flat=True)
+    """ ESTA FUNCION CREA LOS VECTORES USANDO SKLEARN
+        DE TODOS LOS JUEGOS, TENGAN O NO YA DESCRIPCION
+        TOMA BASTANTE TIEMPO EN EJECUTARSE
+     Requisito haber limpiado las descripciones """
+    juegos = Juego.objects.all() 
+    descripciones = juegos.values_list('descripcion_limpia',flat=True)
     from gamehouse.algorithms.tf_idf import im_tf_idf
     vectors = im_tf_idf(descripciones)
     from pickle import dump
     from django.conf import settings
     i = 0
-    for juego in faltantes:
+    for juego in juegos:
         archivo = settings.ANALITYCS_DIR + str(juego.id_juego) +'.pkl' 
         output = open(archivo,'wb') #web -- write bytes
         dump(vectors[i],output, -1) #mete bytes en archivo nuestro diccionario de lemmas
@@ -147,27 +151,16 @@ def tf_idf_sk(request):
     return redirect('/algoritmos/')
 
 def limpiar_descripciones(request):
-    """ Ejecutar antes de calcular vectores tf-idf """
-    sucios = Juego.objects.filter(descripcion_limpia = None)[:25]
+    """ ESTA FUNCION LIMPIA LAS DESCRIPCIONES DE
+        TODOS LOS JUEGOS
+        TARDA BASTANTE 
+        LO IDEAL ES HACER LA LIMPIEZA POR FUERA
+        Ejecutar antes de calcular vectores tf-idf """
+    sucios = Juego.objects.filter(descripcion_limpia = None)
     print("Hay "+str(len(sucios))+" juegos sucios")
     for sucio in sucios:
         sucio.descripcion_limpia = None
         sucio.save()
     return redirect('/algoritmos')
 
-def ee_tf_idf(juegos):
-    """ Requisito haber limpiado las descripciones """
-    from gamehouse.algorithms.tf_idf import get_vocabulary,implicit_tf_idf
-    descripciones = juegos.values_list('descripcion',flat=True)
-    vocabulario = get_vocabulary(descripciones)
-    vectores = explicit_tf_idf(descripciones,vocabulario)
-    for i in range(len(juegos)):
-        juego = juegos[i]
-        descripcion = descripciones[i]
-        vector = vectores[i]
-        print("Juego "+juego.titulo+" con id "+str(juego.id_juego)+" tiene descripcion limpia:")
-        print(descripcion)
-        print("Su vector:")
-        print(vector)
-    print(sorted(vocabulario))
 
