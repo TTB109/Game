@@ -48,7 +48,8 @@ class Juego(models.Model):
     id_juego = models.AutoField(primary_key=True)
     titulo = models.CharField(max_length=200)
     anio = models.PositiveIntegerField(default=2020) #Tipo Date >:( 
-    descripcion = models.TextField(max_length=5000)
+    descripcion = models.TextField()
+    descripcion_limpia = models.TextField(blank = True, null = True)    
     generos = models.ManyToManyField(Genero,
                                      through='GenerosAsociados',
                                      through_fields=('juego', 'genero')
@@ -68,7 +69,12 @@ class Juego(models.Model):
 
     def slug(self):
         return slugify(self.titulo, allow_unicode=True)
-
+    
+    def save(self, *args, **kwargs):
+        if not self.descripcion_limpia: #Si no tienen descripcion limpia
+            from gamehouse.algorithms.tf_idf import clean_description
+            self.descripcion_limpia = clean_description(self.descripcion)
+        super(Juego, self).save(*args, **kwargs)
 
 class Imagen(models.Model):
     id_imagen = models.AutoField(primary_key=True)

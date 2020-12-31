@@ -1,7 +1,7 @@
 import os
 from django.urls import reverse_lazy
 from decouple import config 
-from gamehouse.algorithms.tf_idf import generation
+
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
@@ -126,12 +126,12 @@ LOGOUT_REDIRECT_URL = '/'
 
 def crear_externos():
     """ Funcion para crear archivos TF-IDF si no existen """
-    if not os.path.isfile(ALGORITHMS_DIR+'tf_idf/lemmas.pkl'):
-        from gamehouse.algorithms.tf_idf.generation import generate_lemmas
-        generate_lemmas(ALGORITHMS_DIR+'tf_idf/')
-    if not os.path.isfile(ALGORITHMS_DIR+'tf_idf/tagger.pkl'):
-        from gamehouse.algorithms.tf_idf.generation import generate_tagger
-        generate_tagger(ALGORITHMS_DIR+'tf_idf/')
+    if not os.path.isfile(ALGORITHMS_DIR+'lemmas.pkl'):
+        from gamehouse.algorithms.generation import generate_lemmas
+        generate_lemmas(ALGORITHMS_DIR)
+    if not os.path.isfile(ALGORITHMS_DIR+'tagger.pkl'):
+        from gamehouse.algorithms.generation import generate_tagger
+        generate_tagger(ALGORITHMS_DIR)
     return
 
 crear_externos()

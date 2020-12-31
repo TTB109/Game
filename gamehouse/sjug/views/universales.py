@@ -7,6 +7,7 @@ from django.shortcuts import redirect,render
 from gamehouse.sjug.forms import UserForm,JugadorForm,UsuarioForm,OpinionForm
 from gamehouse.sjug.models import Jugador, Usuario,Imagen,Juego
 from django.http import Http404
+from pickle import NONE
 
 
 """
@@ -102,27 +103,53 @@ def server_error(request):
 
 
 """ Prueba """
-def prueba(request):
-    primero = Tf_Idf.objects.first()
-    if primero: #Si existe algun vector
-        print("Ya existe algun dato, no se calcularan los anteriores")
-        #primero = Juego.objects.first()
-        #print(primero.tf_idf.vector)
-        faltantes = Juego.objects.filter(tf_idf=None)
-        for faltante in faltantes:
-            print("El juego "+faltante.titulo+' le falta vector, tiene id:',faltante.id_juego)
-        context = {'conjunto_1':faltantes}
-    else:
-        from django.conf import settings
-        juegos = Juego.objects.all()[:100]
-        ruta = settings.ALGORITHMS_DIR + 'tf_idf/'
-        for juego in juegos:
-            ruta_vector = ruta + str(juego.id_juego) + '.pkl'
-            print("El vector se guardara en:"+ruta_vector)
-            tf_idf = Tf_Idf(juego = juego, vector = ruta_vector)
-            tf_idf.save()
-            print("La ruta guardada:",tf_idf.vector)
-        vectores = Tf_Idf.objects.all()
-        context = {'conjunto_1':vectores} 
-    return render(request, 'prueba.html', context)
+def algoritmos(request):
+    return render(request, 'algoritmos.html')
+
+def obtener_tf_idf(request):
+    """ Requisito haber limpiado las descripciones """
+    #faltantes = Juego.objects.filter(tf_idf=None)
+    faltantes = Juego.objects.filter(tf_idf=None)[:10] #Cien primeros juegos :100
+    descripciones = faltantes.values_list('descripcion_limpia',flat=True)
+    from gamehouse.algorithms.tf_idf import get_vocabulary,implicit_tf_idf
+    vectors = implicit_tf_idf(descripciones)
+    for vector in vectors:
+        print(vector)
+    """ Calcular vector tf-idf 
+    if len(faltantes) > 0: #>200
+        
+        ee_tf_idf(faltantes)
+        #descripciones = faltantes.values_list('descripcion',flat=True)
+        #ruta = settings.ALGORITHMS_DIR + 'tf_idf/'
+        #for juego in faltantes:
+        #    ruta_vector = ruta + str(juego.id_juego) + '.pkl'
+        #    tf_idf = Tf_Idf(juego = juego, vector = ruta_vector)
+        #    tf_idf.save()
+    """
+    return redirect('/algoritmos/')
+
+def limpiar_descripciones(request):
+    """ Ejecutar antes de calcular vectores tf-idf """
+    sucios = Juego.objects.filter(descripcion_limpia = None)[:100]
+    print("Hay "+str(len(sucios))+" juegos sucios")
+    for sucio in sucios:
+        sucio.descripcion_limpia = None
+        sucio.save()
+    return redirect('/algoritmos')
+
+def ee_tf_idf(juegos):
+    """ Requisito haber limpiado las descripciones """
+    from gamehouse.algorithms.tf_idf import get_vocabulary,implicit_tf_idf
+    descripciones = juegos.values_list('descripcion',flat=True)
+    vocabulario = get_vocabulary(descripciones)
+    vectores = explicit_tf_idf(descripciones,vocabulario)
+    for i in range(len(juegos)):
+        juego = juegos[i]
+        descripcion = descripciones[i]
+        vector = vectores[i]
+        print("Juego "+juego.titulo+" con id "+str(juego.id_juego)+" tiene descripcion limpia:")
+        print(descripcion)
+        print("Su vector:")
+        print(vector)
+    print(sorted(vocabulario))
 

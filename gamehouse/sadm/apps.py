@@ -6,7 +6,8 @@ from django.apps import AppConfig
 class SadmConfig(AppConfig):
     name = 'gamehouse.sadm'
     #El siguiente código se ejecutara cada vez al iniciar 
+    """
     def ready(self):
         from gamehouse.algorithms import updater
         updater.start_prueba() 
-        
+    """

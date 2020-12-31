@@ -53,7 +53,6 @@ class Jugador(models.Model):
     def __str__(self):
         return self.nickname
 
-
 class Opinion(models.Model):
     jugador = models.ForeignKey(Jugador,
                                 on_delete=models.SET_NULL,
@@ -106,9 +105,28 @@ class Opinion(models.Model):
                                         choices = CHOICES,
                                         verbose_name='Calificación del aspecto técnico del juego',
                                         )
-    def __str__(self):
-        return '%s, %s' % (self.jugador.id, self.juego.titulo)
+    puntaje_total = models.PositiveSmallIntegerField(default=5, blank=True,
+                                        validators=[
+                                            MinValueValidator(5), MaxValueValidator(50)],
+                                        verbose_name='Puntaje total del juego de acuerdo al usuario'
+                                        ) 
+    #https://stackoverflow.com/questions/26632784/django-update-model-field-based-on-another-field
+    def save(self, *args, **kwargs):
+        self.puntaje_total = self.gusto + \
+                             self.guion + \
+                             self.artes + \
+                             self.jugabilidad + \
+                             self.tecnico
+        super(Opinion, self).save(*args, **kwargs)
 
+    def __str__(self):
+        datos = 'Opinion del jugador %s, acerca del juego %s(%d).\n' % (self.jugador.nickname, self.juego.titulo,self.juego.id_juego) 
+        aspectos = 'Dio las siguientes valoraciones: General: %d,' \
+                   'Guion: %d, Artes: %d, Jugabilidad: %d, Tecnico: %d.\n' % (self.gusto, self.guion, self.artes, self.jugabilidad, self.tecnico)
+        total = 'Puntaje total:%d.\n' % (self.puntaje_total)
+        escrito = 'Escribió el siguiente comentario: %s.' % (self.comentario) 
+        return  datos + aspectos + total + escrito
+     
 
 """ Entidades de relacion """
 
@@ -186,18 +204,31 @@ class CDE(models.Model):
                                    primary_key=True,
                                    db_column="jugador",
                                    verbose_name="Jugador a quien pertenecen las CDE")
+    cde0= models.CharField(max_length=255)
+    cde1 = models.CharField(max_length=255)
+    cde2 = models.CharField(max_length=255)
+    cde3 = models.CharField(max_length=255)
+    cde4 = models.CharField(max_length=255)
+    cde5 = models.CharField(max_length=255)
+    cde6 = models.CharField(max_length=255)
+    cde7 = models.CharField(max_length=255)
+    cde8 = models.CharField(max_length=255)
+    cde9 = models.CharField(max_length=255)
+    def save(self, *args, **kwargs):
+        from gamehouse.algorithms.tf_idf import clean_word 
+        self.cde0 = clean_word(self.cde0)
+        self.cde1 = clean_word(self.cde1)
+        self.cde2 = clean_word(self.cde2)
+        self.cde3 = clean_word(self.cde3)
+        self.cde4 = clean_word(self.cde4)
+        self.cde5 = clean_word(self.cde5)
+        self.cde6 = clean_word(self.cde6)
+        self.cde7 = clean_word(self.cde7)
+        self.cde8 = clean_word(self.cde8)
+        self.cde9 = clean_word(self.cde9)
+        super(CDE, self).save(*args, **kwargs)
     
-    cde0 = models.CharField(max_length=256)
-    cde1 = models.CharField(max_length=256)
-    cde2 = models.CharField(max_length=256)
-    cde3 = models.CharField(max_length=256)
-    cde4 = models.CharField(max_length=256)
-    cde5 = models.CharField(max_length=256)
-    cde6 = models.CharField(max_length=256)
-    cde7 = models.CharField(max_length=256)
-    cde8 = models.CharField(max_length=256)
-    cde9 = models.CharField(max_length=256)
-
+    
 
 class CPU(models.Model):
     jugador = models.OneToOneField(Jugador,
@@ -205,17 +236,29 @@ class CPU(models.Model):
                                primary_key=True,
                                db_column="jugador",
                                verbose_name="Jugador a quien pertenecen las CPU")
-    cpu0 = models.CharField(max_length=256)
-    cpu1 = models.CharField(max_length=256)
-    cpu2 = models.CharField(max_length=256)
-    cpu3 = models.CharField(max_length=256)
-    cpu4 = models.CharField(max_length=256)
-    cpu5 = models.CharField(max_length=256)
-    cpu6 = models.CharField(max_length=256)
-    cpu7 = models.CharField(max_length=256)
-    cpu8 = models.CharField(max_length=256)
-    cpu9 = models.CharField(max_length=256)
-
+    cpu0 = models.CharField(max_length=255)
+    cpu1 = models.CharField(max_length=255)
+    cpu2 = models.CharField(max_length=255)
+    cpu3 = models.CharField(max_length=255)
+    cpu4 = models.CharField(max_length=255)
+    cpu5 = models.CharField(max_length=255)
+    cpu6 = models.CharField(max_length=255)
+    cpu7 = models.CharField(max_length=255)
+    cpu8 = models.CharField(max_length=255)
+    cpu9 = models.CharField(max_length=255)
+    def save(self, *args, **kwargs):
+        from gamehouse.algorithms.tf_idf import clean_word 
+        self.cpu0 = clean_word(self.cde0)
+        self.cpu1 = clean_word(self.cpu1)
+        self.cpu2 = clean_word(self.cpu2)
+        self.cpu3 = clean_word(self.cpu3)
+        self.cpu4 = clean_word(self.cpu4)
+        self.cpu5 = clean_word(self.cpu5)
+        self.cpu6 = clean_word(self.cpu6)
+        self.cpu7 = clean_word(self.cpu7)
+        self.cpu8 = clean_word(self.cpu8)
+        self.cpu9 = clean_word(self.cpu9)
+        super(CPU, self).save(*args, **kwargs)
 
 class Vector_Caracteristicas(models.Model):
     jugador = models.ForeignKey(Jugador,

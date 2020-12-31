@@ -127,6 +127,7 @@ def mis_juegos(request,jugador):
     except Jugador.DoesNotExist:
         return redirect('error_404')
 
+@login_required()
 def registro_palabras(request,jugador):
     try:
         solicitado = Jugador.objects.get(nickname = jugador)

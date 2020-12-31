@@ -32,7 +32,11 @@ urlpatterns = [
     path('',include(urls_universales)),
     path('sjug/',include('gamehouse.sjug.urls')),
     path('sadm/',include('gamehouse.sadm.urls')),
-    path('prueba/',universales.prueba,name='prueba'), 
+    #### Seccion pruebas
+    path('algoritmos/',universales.algoritmos,name='algoritmos'),
+    path('tf-idf/',universales.obtener_tf_idf,name='vec_tf_idf'),
+    path('descripciones/',universales.limpiar_descripciones,name='limpiar_descripciones'),
+    #path('algoritmos/',universales.algoritmos,name='algoritmos'), 
 ]
 
 if settings.ADMIN_ENABLED is True:

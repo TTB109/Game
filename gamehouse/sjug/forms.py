@@ -255,7 +255,7 @@ class OpinionForm(forms.ModelForm):
     tecnico = forms.TypedChoiceField(choices=Opinion.CHOICES, widget=forms.RadioSelect, coerce=int)
     class Meta:
         model = Opinion
-        exclude = ['jugador','juego','comentario']
+        exclude = ['jugador','juego','comentario','puntaje_total']
         labels={
             'gusto':'¿Qué tanto te gustó el juego en general?',
             'guion':'Calificación del guión del juego',

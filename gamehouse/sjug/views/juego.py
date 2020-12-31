@@ -49,6 +49,7 @@ def ver_juego(request,id_juego):
                     opinion.jugador = jugador 
                     opinion.juego = juego
                     opinion.save()
+                    print(opinion)
                     return redirect('ver_juego',id_juego=juego.id_juego)
             except Jugador.DoesNotExist:
                 return redirect('error_404')

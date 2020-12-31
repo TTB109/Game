@@ -28,19 +28,15 @@ class MatrizJuegos(models.Model):
   vector_cpu =models.CharField(max_length=256)
   vector_cde =models.CharField(max_length=256)
 
-
-def tf_idf_path():
-        return os.path.join(settings.ANALITYCS_DIR, 'tf-idf/')
   
 class Tf_Idf(models.Model):
     juego = models.OneToOneField(Juego, 
                                  on_delete = models.CASCADE, 
                                  primary_key = True,
                                  db_column = "juego",
-                                 verbose_name = "Identificador del juego"
+                                 verbose_name = "Juego del vector tf-idf"
     )
-    vector = models.FilePathField(path=tf_idf_path)
-    
+    vector = models.FilePathField(path=settings.ANALITYCS_DIR)
   
 """ Funciones """
 #https://www.youtube.com/watch?v=Zx09vcYq1oc
