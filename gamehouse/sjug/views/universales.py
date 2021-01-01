@@ -164,3 +164,24 @@ def limpiar_descripciones(request):
     return redirect('/algoritmos')
 
 
+### nltk FreqDist
+
+def contar_cpus(request):
+    jugadores = Jugador.objects.all()
+    for jugador in jugadores:
+        generos_favoritos = jugador.generosfavoritos.all()
+        cdes = jugador.cdes
+        for genero in generos_favoritos:
+            juegos_genero = Juego.objects.filter(genero = genero)
+            if len(juegos_genero) > 20:
+                juegos_genero = juegos_genero[:20]
+            for juego in juegos_genero:
+                
+                descripcion_limpia = juego.descripcion_limpia
+                descripcion_limpia = descripcion_limpia.split() ["halo","mundo","jefe","maestro"]
+                for cde in cdes:
+                   if cde in descripcion_limpia:  
+    
+    a1 -> [1,2,20,10,15,1,..,0] -> "1,2,20,10,15"
+    
+

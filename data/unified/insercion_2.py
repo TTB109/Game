@@ -33,7 +33,7 @@ def insert_database(datos,tabla):
 
 if __name__ == "__main__":
     database_name = "gamehouse.db"
-    queries = [ "INSERT INTO sjug_juego (titulo,anio,descripcion) VALUES (?,?,?)",
+    queries = [ "INSERT INTO sjug_juego (titulo,anio,descripcion,descripcion_limpia) VALUES (?,?,?,?)",
                  ###OBTENER ID DEL JUEGO
                  "SELECT id_juego FROM sjug_juego WHERE titulo = ?",#Obtener id_juego
                  ####### INSERTAR GENERO
@@ -66,7 +66,7 @@ if __name__ == "__main__":
         """ Limpiar titulo """
         splited[0] = splited[0].replace("\n","")
         """ Insertar juego """
-        t = (splited[0],splited[2],splited[5]) #tit.,anio.,descrip.
+        t = (splited[0],splited[2],splited[5],clean_description(splited[5])) #tit.,anio.,descrip.
         cr.execute(queries[0],t)
         """ Obtener id del juego insertado """
         cr.execute(queries[1],(splited[0],))

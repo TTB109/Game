@@ -175,6 +175,8 @@ class MisGustosForm(forms.ModelForm):
         queryset=Plataforma.objects.all(),
         widget=forms.CheckboxSelectMultiple)    
 
+
+
 class GeneroForm(forms.ModelForm):
     class Meta:
         model= Genero
