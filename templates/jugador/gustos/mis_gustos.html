@@ -33,7 +33,9 @@
       </div>
      <form method="POST">
         {% csrf_token %}
-     <div class="row register-box">         
+     <div class="row register-box">
+     <div>
+            <h1 class="center-align titulo">Elija sus <br> Plataformas preferidas</h1>          
          <div class="row text-black">
             {% for value,label in fgustos.generos.field.choices %}
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -48,6 +50,10 @@
             </div>
             {% endfor %}
         </div>
+     </div>
+        
+    <div>
+            <h1 class="center-align titulo">Elija sus <br> Plataformas preferidas</h1>
         <div class="row text-black">
             {% for value,label in fgustos.plataformas.field.choices %}
             <div class="col-lg-6 col-md-6 col-sm-12 col-xs-12">
@@ -62,6 +68,8 @@
             </div>
             {% endfor %}
         </div>
+    </div>
+
     <input href="{% url 'gusto' user.get_username %}" id="btn1" class="btn btn-sucess btn-lg btn-block" type="submit" value="Aceptar" >
     <a href="{% url 'gusto' user.get_username %}" class="btn btn-danger btn-lg btn-block" >Regresar</a>
     </div>

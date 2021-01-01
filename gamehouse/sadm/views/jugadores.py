@@ -70,8 +70,9 @@ def editar_usuarios(request,administrador,id_usuario):
         jugador = Jugador.objects.get(usuario = solicitado.usuario)
         if request.user.get_username() == jugador.nickname: 
             try:    
-                usuario=get_object_or_404(Usuario,id=id_usuario)
-                jugador=get_object_or_404(Jugador,usuario=usuario)
+                usuario=get_object_or_404(Usuario,id_usuario=id_usuario)
+                userio=get_object_or_404(User,username=one.nickname)
+                jugador=get_object_or_404(Jugador,nickname=one.nickname)
             except Exception:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
 
@@ -101,9 +102,9 @@ def eliminar_usuarios(request,administrador,id_usuario):
         jugador = Jugador.objects.get(usuario = solicitado.usuario)
         if request.user.get_username() == jugador.nickname: 
             try:
-                usuario=get_object_or_404(Usuario,id=id_usuario)
-                userio=get_object_or_404(User,id=id_usuario)
-                jugador=get_object_or_404(Jugador,usuario=usuario)
+                usuario=get_object_or_404(Usuario,id_usuario=id_usuario)
+                userio=get_object_or_404(User,username=one.nickname)
+                jugador=get_object_or_404(Jugador,nickname=one.nickname)
             except Exception:
                 return HttpResponseNotFound('<h1>Page not found</h1>')
 
