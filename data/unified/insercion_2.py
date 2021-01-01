@@ -16,6 +16,7 @@ splited[7] --> resto_del_texto
 
 """
 import sqlite3
+from one_try import clean_description
 
 def insert_database(datos,tabla):
     database_name = "gamehouse.db"
@@ -50,7 +51,7 @@ if __name__ == "__main__":
                  "INSERT INTO sjug_imagen (referencia,alt,juego) VALUES (?,?,?)"
               ]
     """ Leer archivo que contiene todos los juegos """
-    document_name = "gameset.txt"
+    document_name = "mobyset.txt"
     document = open(document_name, encoding = "utf-8")
     games = document.read() 
     document.close()
