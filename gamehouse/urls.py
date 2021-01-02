@@ -37,7 +37,7 @@ urlpatterns = [
     path('descripciones/',universales.limpiar_descripciones,name='limpiar_descripciones'),
     path('tf-idf-propio/',universales.tf_idf_propio,name='vec_tf_idf'),
     path('tf-idf-sk/',universales.tf_idf_sk,name='vec_tf_idf_sk'),
-    path('contar-cpus/',universales.contar_cpus,name='vec_tf_idf_sk'),
+    path('contar_caracteristicas/',universales.contar_caracteristicas,name='contar_caracteristicas'),
     #path('algoritmos/',universales.algoritmos,name='algoritmos'), 
 ]
 

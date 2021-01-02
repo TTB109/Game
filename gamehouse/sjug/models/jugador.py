@@ -227,7 +227,8 @@ class CDE(models.Model):
         self.cde8 = clean_word(self.cde8)
         self.cde9 = clean_word(self.cde9)
         super(CDE, self).save(*args, **kwargs)
-    
+    def __str__(self):
+        return '%s, %s,%s, %s,%s, %s,%s, %s,%s, %s' % (self.cde0, self.cde1,self.cde2, self.cde3,self.cde4, self.cde5,self.cde6, self.cde7,self.cde8, self.cde9)
     
 
 class CPU(models.Model):
@@ -259,6 +260,8 @@ class CPU(models.Model):
         self.cpu8 = clean_word(self.cpu8)
         self.cpu9 = clean_word(self.cpu9)
         super(CPU, self).save(*args, **kwargs)
+    def __str__(self):
+        return '%s, %s,%s, %s,%s, %s,%s, %s,%s, %s' % (self.cpu0, self.cpu1,self.cpu2, self.cpu3,self.cpu4, self.cpu5,self.cpu6, self.cpu7,self.cpu8, self.cpu9)
 
 class Vector_Caracteristicas(models.Model):
     jugador = models.ForeignKey(Jugador,

@@ -5,7 +5,7 @@ from django.contrib.auth.decorators import login_required
 from gamehouse.sadm.models import Administrador,Tf_Idf
 from django.shortcuts import redirect,render
 from gamehouse.sjug.forms import UserForm,JugadorForm,UsuarioForm,OpinionForm
-from gamehouse.sjug.models import Jugador, Usuario,Imagen,Juego
+from gamehouse.sjug.models import Jugador, Usuario,Imagen,Juego,CDE,CPU
 from django.http import Http404
 from pickle import NONE
 
@@ -165,23 +165,45 @@ def limpiar_descripciones(request):
 
 
 ### nltk FreqDist
-
-def contar_cpus(request):
+#sudo pip install -U nltk
+import nltk
+def contar_caracteristicas(request):
     jugadores = Jugador.objects.all()
-    for jugador in jugadores:
-        generos_favoritos = jugador.generosfavoritos.all()
-        cdes = jugador.cdes
+    for gamer in jugadores:
+        generos_favoritos = gamer.generos.all()
+        plataformas_favoritas = gamer.plataformas.all()
+        carcde= CDE.objects.filter(jugador=gamer)
+        carcpu= CPU.objects.filter(jugador=gamer)
+        #como van a cambiar combiene hacerlos cada vez y no haccer la tabla
+        caracteristicaDE=list(carcde.cde0+carcde.cde1+carcde.cde2+carcde.cde3+carcde.cde4+carcde.cde5+carcde.cde6+carcde.cde7+carcde.cde8+carcde.cde9)
+        caracteristicaPU=list(carcpu.cpu0+carcpu.cpu1+carcpu.cpu2+carcpu.cpu3+carcpu.cpu4+carcpu.cpu5+carcpu.cpu6+carcpu.cpu7+carcpu.cpu8+carcpu.cpu9)
+        
         for genero in generos_favoritos:
-            juegos_genero = Juego.objects.filter(genero = genero)
-            if len(juegos_genero) > 20:
+            print("Generos",genero)
+            juegos_genero = Juego.objects.filter(generos = genero)
+            if len(juegos_genero) > 20:#Elije los primeros 20
                 juegos_genero = juegos_genero[:20]
-            for juego in juegos_genero:
-                
+            for juego in juegos_genero:                
                 descripcion_limpia = juego.descripcion_limpia
-                descripcion_limpia = descripcion_limpia.split() ["halo","mundo","jefe","maestro"]
-                for cde in cdes:
-                   if cde in descripcion_limpia:  
+                freGenCDE = FreqDist(len(caracteristicaDE) for caracteristicaDE in descripcion_limpia)
+                freGenCPU = FreqDist(len(caracteristicaPU) for caracteristicaPU in descripcion_limpia)
+
+        for plataforma in plataformas_favoritas:
+            print("Plataformas",plataforma)
+            juegos_genero = Juego.objects.filter(plataformas = plataforma)
+            if len(juegos_genero) > 20:#Elije los primeros 20
+                juegos_genero = juegos_genero[:20]
+            for juego in juegos_genero:                
+                descripcion_limpia = juego.descripcion_limpia
+                frePlaCDE = FreqDist(len(caracteristicaDE) for caracteristicaDE in descripcion_limpia)
+                frePlaCPU = FreqDist(len(caracteristicaPU) for caracteristicaPU in descripcion_limpia)
+    return redirect('/algoritmos/')
+                #----fdist1 = FreqDist(descripcion_limpia)
+                #----listtemp=[]
+                #descripcion_limpia = descripcion_limpia.split()
+                #----for cde in caracteristicaDE:
+                    #----listtemp.append(fdist1[cde])
     
-    a1 -> [1,2,20,10,15,1,..,0] -> "1,2,20,10,15"
+    # a1 -> [1,2,20,10,15,1,..,0] -> "1,2,20,10,15"
     
 
