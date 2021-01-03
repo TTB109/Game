@@ -84,7 +84,7 @@
                 <li>
                     <label class="checkbox-label-container">
                         <input type="checkbox" value="{{ value }}" name="generos">
-                        <span class="checkmark"></span><a href="https://codechef.com/problems/{{label}}" target="_blank">
+                        <span class="checkmark"></span><a href="{% url 'InfGeneros' %}" target="_blank">
                             <strong>
                             <span id="{{ value }}">{{ label }}</span></a></strong>
                     </label>
@@ -98,7 +98,7 @@
                 <li>
                     <label class="checkbox-label-container">
                         <input type="checkbox" value="{{ value }}" name="plataformas">
-                        <span class="checkmark"></span><a href="https://codechef.com/problems/{{label}}" target="_blank">
+                        <span class="checkmark"></span><a href="{% url 'InfConsolas' %}" target="_blank">
                             <strong>
                             <span id="{{ value }}">{{ label }}</span></a></strong>
                     </label>

@@ -227,8 +227,8 @@ class CDE(models.Model):
         self.cde8 = clean_word(self.cde8)
         self.cde9 = clean_word(self.cde9)
         super(CDE, self).save(*args, **kwargs)
-    def __str__(self):
-        return '%s, %s,%s, %s,%s, %s,%s, %s,%s, %s' % (self.cde0, self.cde1,self.cde2, self.cde3,self.cde4, self.cde5,self.cde6, self.cde7,self.cde8, self.cde9)
+    # def __str__(self):
+    #     return '%s, %s,%s, %s,%s, %s,%s, %s,%s, %s' % (self.cde0, self.cde1,self.cde2, self.cde3,self.cde4, self.cde5,self.cde6, self.cde7,self.cde8, self.cde9)
     
 
 class CPU(models.Model):
