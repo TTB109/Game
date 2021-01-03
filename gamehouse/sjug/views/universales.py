@@ -208,14 +208,11 @@ def contar_caracteristicas(request):
   caracteristicaDE=[]
   caracteristicaPU=[]
   for gamer in jugadores:
-    print("GAMER",gamer)
     generos_favoritos = gamer.generos.all()
     plataformas_favoritas = gamer.plataformas.all()
-    print("GENES",generos_favoritos)
-    print("PLATAS",plataformas_favoritas)
     carcde= CDE.objects.get(jugador=gamer)
-    #carcpu= CPU.objects.get(jugador=gamer)
-    carcpu= CPU.objects.get(jugador=4)
+    carcpu= CPU.objects.get(jugador=gamer)
+    #carcpu= CPU.objects.get(jugador=4)
     #como van a cambiar combiene hacerlos cada vez y no haccer la tabla
     caracteristicaDE.extend([carcde.cde0,carcde.cde1,carcde.cde2,carcde.cde3,carcde.cde4,carcde.cde5,carcde.cde6,carcde.cde7,carcde.cde8,carcde.cde9])
     caracteristicaPU.extend([carcpu.cpu0,carcpu.cpu1,carcpu.cpu2,carcpu.cpu3,carcpu.cpu4,carcpu.cpu5,carcpu.cpu6,carcpu.cpu7,carcpu.cpu8,carcpu.cpu9])
@@ -224,39 +221,37 @@ def contar_caracteristicas(request):
       if len(juegos_genero) > 20:#Elije los primeros 20
         juegos_genero = juegos_genero[:20]
       for juego in juegos_genero:
-        print("El jugador",gamer)
-        # cpus=""
-        # cdes=""
-        # descripcion_limpia = juego.descripcion_limpia
-        # listDescripcion = list(descripcion_limpia.split(" "))     
-        # freGen = FreqDist(listDescripcion)
-        # cdes=calcular_caracteristicas(caracteristicaDE,freGen)
-        # cpus=calcular_caracteristicas(caracteristicaPU,freGen)
-        # tabla_gen = Vector_Caracteristicas()
-        # tabla_gen.jugador = gamer
-        # tabla_gen.juego=juego
-        # tabla_gen.cpus=cpus
-        # tabla_gen.cdes=cdes
-        # tabla_gen.save()                                  
+        cpus=""
+        cdes=""
+        descripcion_limpia = juego.descripcion_limpia
+        listDescripcion = list(descripcion_limpia.split(" "))     
+        freGen = FreqDist(listDescripcion)
+        cdes=calcular_caracteristicas(caracteristicaDE,freGen)
+        cpus=calcular_caracteristicas(caracteristicaPU,freGen)
+        tabla_gen = Vector_Caracteristicas()
+        tabla_gen.jugador = gamer
+        tabla_gen.juego=juego
+        tabla_gen.cpus=cpus
+        tabla_gen.cdes=cdes
+        tabla_gen.save()                                  
     for plataforma in plataformas_favoritas:
       juegos_genero = Juego.objects.filter(plataformas = plataforma)
       if len(juegos_genero) > 20:#Elije los primeros 20
         juegos_genero = juegos_genero[:20]
-      for juego in juegos_genero:
-        pass
-        # cpus=""
-        # cdes=""
-        # descripcion_limpia = juego.descripcion_limpia
-        # listDescripcion = list(descripcion_limpia.split(" "))     
-        # frePla = FreqDist(listDescripcion)
-        # cdes=calcular_caracteristicas(caracteristicaDE,frePla)
-        # cpus=calcular_caracteristicas(caracteristicaPU,frePla)
-        # tabla_pla = Vector_Caracteristicas()
-        # tabla_pla.jugador = gamer
-        # tabla_pla.juego=juego
-        # tabla_pla.cpus=cpus
-        # tabla_pla.cdes=cdes
-        # tabla_pla.save()            
+      for juego in juegos_genero:                
+        cpus=""
+        cdes=""
+        descripcion_limpia = juego.descripcion_limpia
+        listDescripcion = list(descripcion_limpia.split(" "))     
+        frePla = FreqDist(listDescripcion)
+        cdes=calcular_caracteristicas(caracteristicaDE,frePla)
+        cpus=calcular_caracteristicas(caracteristicaPU,frePla)
+        tabla_pla = Vector_Caracteristicas()
+        tabla_pla.jugador = gamer
+        tabla_pla.juego=juego
+        tabla_pla.cpus=cpus
+        tabla_pla.cdes=cdes
+        tabla_pla.save()            
   return redirect('/algoritmos/')
 
 """

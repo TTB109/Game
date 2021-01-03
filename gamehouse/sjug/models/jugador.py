@@ -249,7 +249,8 @@ class CPU(models.Model):
     cpu9 = models.CharField(max_length=255)
     def __str__(self):
         return '%s, %s,%s, %s,%s, %s,%s, %s,%s, %s' % (self.cpu0, self.cpu1,self.cpu2, self.cpu3,self.cpu4, self.cpu5,self.cpu6, self.cpu7,self.cpu8, self.cpu9)
-    
+ 
+
 
 class Vector_Caracteristicas(models.Model):
     jugador = models.ForeignKey(Jugador,
