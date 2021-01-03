@@ -7,7 +7,7 @@ import num2words as nw
 import numpy as np
 import math as mt
 from nltk.corpus import stopwords
-
+import random
 
 
 """ FUNCIONES DE PREPROCESAMIENTO """
@@ -252,6 +252,30 @@ def im_tf_idf(corpus):
     dump(vocabulary,output, -1) #mete bytes en archivo nuestro diccionario de lemmas
     output.close()
     return vectores_numpy
+
+""" FUNCION DE RECOMENDACION """
+def recomendar_tf_idf(game,generos):
+    from gamehouse.sadm.models import Tf_Idf
+    from django.conf import settings
+    from pickle import load
+    #dt = open(game.vector, 'rb')
+    #vector = load(dt)
+    #dt.close()
+    #juego = game.juego
+    for genero in generos:
+        juegos = []
+        numero_juegos = genero.juego_set.all().count()
+        muestreo = 20
+        if numero_juegos < 20:
+            muestreo = numero_juegos
+        randomList = random.sample(range(0, numero_juegos), muestreo)
+        for indice in randomList:
+            juegos.append(genero.juego_set.all()[indice])
+          
+    return 
+
+
+
 
 """
 

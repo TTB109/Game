@@ -37,8 +37,9 @@ urlpatterns = [
     path('descripciones/',universales.limpiar_descripciones,name='limpiar_descripciones'),
     path('tf-idf-propio/',universales.tf_idf_propio,name='vec_tf_idf'),
     path('tf-idf-sk/',universales.tf_idf_sk,name='vec_tf_idf_sk'),
-    path('contar-cpus/',universales.contar_cpus,name='vec_tf_idf_sk'),
-    #path('algoritmos/',universales.algoritmos,name='algoritmos'), 
+    path('obtener-cpus/',universales.obtener_cpus,name='obtener_cpus'),
+    path('generar-tf-idf/', universales.generar_tf_idf , name='generar_tf_idf'),
+    path('contar_caracteristicas/',universales.contar_caracteristicas,name='contar_caracteristicas'),    
 ]
 
 if settings.ADMIN_ENABLED is True:

@@ -51,10 +51,10 @@ urlpatterns = [
    #path('<jugador>/opiniones/<genero>/',sjug_juego.opiniones, name = 'mis_opiniones'), ## ver opiniones de cierto genero
    #path('<jugador>/opiniones/<plataforma>/',sjug_juego.opiniones, name = 'mis_opiniones'), ## ver opiniones de cierta plataforma 
     
-   path('<jugador>/dashboard/recomendacion',login_required(sjug_jugador.recomendacion), name = 'recomendacion'),
-   path('<jugador>/dashboard/recomendacion/descripcion',login_required(sjug_jugador.recomendacion_descripcion), name = 'recomendacion_descripcion'),
-   path('<jugador>/dashboard/recomendacion/genero',login_required(sjug_jugador.recomendacion_genero), name = 'recomendacion_genero'),
-   path('<jugador>/dashboard/recomendacion/plataforma',login_required(sjug_jugador.recomendacion_plataforma), name = 'recomendacion_plataforma'),
+   path('<jugador>/dashboard/recomendacion/',login_required(sjug_jugador.recomendacion), name = 'recomendacion'),
+   path('<jugador>/dashboard/recomendacion/descripcion/',login_required(sjug_jugador.recomendacion_descripcion), name = 'recomendacion_descripcion'),
+   path('<jugador>/dashboard/recomendacion/genero/',login_required(sjug_jugador.recomendacion_genero), name = 'recomendacion_genero'),
+   path('<jugador>/dashboard/recomendacion/plataforma/',login_required(sjug_jugador.recomendacion_plataforma), name = 'recomendacion_plataforma'),
 
 ]
 

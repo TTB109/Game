@@ -150,7 +150,7 @@ class JuegosFavoritos(models.Model):
                               )
 
     def __str__(self):
-        return '%s, %s' % (self.jugador.id, self.juego.titulo)
+        return '%s, %s' % (self.jugador.nickname, self.juego.titulo)
     # Dejando este campo opcional como comentario por el momento
     """
   fecha_adicion = models.DateField(blank = TRUE,
@@ -227,7 +227,8 @@ class CDE(models.Model):
         self.cde8 = clean_word(self.cde8)
         self.cde9 = clean_word(self.cde9)
         super(CDE, self).save(*args, **kwargs)
-    
+    def __str__(self):
+        return '%s, %s,%s, %s,%s, %s,%s, %s,%s, %s' % (self.cde0, self.cde1,self.cde2, self.cde3,self.cde4, self.cde5,self.cde6, self.cde7,self.cde8, self.cde9)
     
 
 class CPU(models.Model):
@@ -246,19 +247,9 @@ class CPU(models.Model):
     cpu7 = models.CharField(max_length=255)
     cpu8 = models.CharField(max_length=255)
     cpu9 = models.CharField(max_length=255)
-    def save(self, *args, **kwargs):
-        from gamehouse.algorithms.tf_idf import clean_word 
-        self.cpu0 = clean_word(self.cde0)
-        self.cpu1 = clean_word(self.cpu1)
-        self.cpu2 = clean_word(self.cpu2)
-        self.cpu3 = clean_word(self.cpu3)
-        self.cpu4 = clean_word(self.cpu4)
-        self.cpu5 = clean_word(self.cpu5)
-        self.cpu6 = clean_word(self.cpu6)
-        self.cpu7 = clean_word(self.cpu7)
-        self.cpu8 = clean_word(self.cpu8)
-        self.cpu9 = clean_word(self.cpu9)
-        super(CPU, self).save(*args, **kwargs)
+    def __str__(self):
+        return '%s, %s,%s, %s,%s, %s,%s, %s,%s, %s' % (self.cpu0, self.cpu1,self.cpu2, self.cpu3,self.cpu4, self.cpu5,self.cpu6, self.cpu7,self.cpu8, self.cpu9)
+    
 
 class Vector_Caracteristicas(models.Model):
     jugador = models.ForeignKey(Jugador,

@@ -19,9 +19,15 @@ class Recomendacion(models.Model):
                                 db_column='jugador',
                                 verbose_name='Jugador al que se le hace esta recomendacion',
                                 )
+    tipo = models.CharField(
+        null=False,
+        max_length=30,
+        verbose_name="Tipo de recomendación"
+    )
     # Calificacion del usuario del 1 al 10 indicando que tanto le gusto este
     # conjunto de listas
-    retroalimentacion = models.PositiveIntegerField(default=1, blank=True,
+    retroalimentacion = models.PositiveIntegerField(default=1, null = True , 
+                                                    blank=True,
                                                     validators=[
                                                         MinValueValidator(1), MaxValueValidator(10)]
                                                     )
